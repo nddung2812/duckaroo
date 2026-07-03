@@ -3,11 +3,6 @@ import Stripe from "stripe";
 import emailjs from "@emailjs/browser";
 import { createOrder } from "@/lib/orders";
 
-// Validate Stripe secret key
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error("STRIPE_SECRET_KEY environment variable is not set");
-}
-
 // Validate webhook secret
 if (!process.env.STRIPE_WEBHOOK_SECRET) {
   console.warn(
@@ -15,9 +10,17 @@ if (!process.env.STRIPE_WEBHOOK_SECRET) {
   );
 }
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: "2023-10-16",
-});
+// Initialized lazily so a missing env var fails the request, not the build
+let stripe;
+function getStripe() {
+  if (!process.env.STRIPE_SECRET_KEY) {
+    throw new Error("STRIPE_SECRET_KEY environment variable is not set");
+  }
+  stripe ??= new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: "2023-10-16",
+  });
+  return stripe;
+}
 
 const sendConfirmationEmail = async (paymentIntent) => {
   try {
@@ -74,7 +77,7 @@ export async function POST(request) {
 
     if (process.env.STRIPE_WEBHOOK_SECRET) {
       try {
-        event = stripe.webhooks.constructEvent(
+        event = getStripe().webhooks.constructEvent(
           body,
           signature,
           process.env.STRIPE_WEBHOOK_SECRET

@@ -71,9 +71,8 @@ function Breadcrumb({ product }) {
 
 const getImageSrc = (img) => (typeof img === "string" ? img : img?.url ?? "");
 
-export default function ProductPageContent({ product }) {
+export default function ProductPageContent({ product, relatedProducts = [] }) {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
-  const [relatedProducts, setRelatedProducts] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [isFav, setIsFav] = useState(false);
   const router = useRouter();
@@ -89,20 +88,6 @@ export default function ProductPageContent({ product }) {
     getTotalItems: getTotalItemsContext,
     getTotalPrice: getTotalPriceContext,
   } = useCart();
-
-  // Fetch related products from the same category
-  useEffect(() => {
-    if (!product) return;
-    fetch("/api/stock")
-      .then((res) => res.json())
-      .then((data) => {
-        const related = (data.items ?? [])
-          .filter((p) => p.category === product.category && p.id !== product.id)
-          .slice(0, 3);
-        setRelatedProducts(related);
-      })
-      .catch(() => {});
-  }, [product?.id]);
 
   // Check if product is favorited on mount
   useEffect(() => {

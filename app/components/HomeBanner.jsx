@@ -1,6 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -67,16 +66,7 @@ const services = [
   },
 ];
 
-export default function HomeBanner() {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
-
-  useEffect(() => {
-    fetch("/api/stock")
-      .then((res) => res.json())
-      .then((data) => setFeaturedProducts((data.items ?? []).slice(0, 3)))
-      .catch(() => {});
-  }, []);
-
+export default function HomeBanner({ featuredProducts = [] }) {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen px-4 pt-20 relative z-10">
       {/* Hero Section - Split Layout */}

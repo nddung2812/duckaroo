@@ -1,3 +1,5 @@
+import ProductsProviders from "./components/ProductsProviders";
+
 export const metadata = {
   title:
     "Rare Aquatic Plants Brisbane | Bucephalandra, Anubias & Live Plants | Duckaroo",
@@ -83,7 +85,7 @@ export const metadata = {
 
 export default function ProductsLayout({ children }) {
   return (
-    <>
+    <ProductsProviders>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -339,6 +341,6 @@ export default function ProductsLayout({ children }) {
       />
 
       {children}
-    </>
+    </ProductsProviders>
   );
 }

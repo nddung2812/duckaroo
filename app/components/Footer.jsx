@@ -1,9 +1,4 @@
-import {
-  TfiYoutube,
-  TfiFacebook,
-  TfiInstagram,
-  TfiEmail,
-} from "react-icons/tfi";
+import { Youtube, Facebook, Instagram, Mail } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -56,22 +51,22 @@ const Footer = () => {
 
   const socialLinks = [
     {
-      icon: <TfiFacebook className="w-5 h-5" />,
+      icon: <Facebook className="w-5 h-5" />,
       href: "https://www.facebook.com/aquaticswandesign",
       label: "Facebook",
     },
     {
-      icon: <TfiYoutube className="w-5 h-5" />,
+      icon: <Youtube className="w-5 h-5" />,
       href: "https://www.youtube.com/@aquaticswandesigntv1518",
       label: "YouTube",
     },
     {
-      icon: <TfiInstagram className="w-5 h-5" />,
+      icon: <Instagram className="w-5 h-5" />,
       href: "https://www.instagram.com/__duckaroo__/",
       label: "Instagram",
     },
     {
-      icon: <TfiEmail className="w-5 h-5" />,
+      icon: <Mail className="w-5 h-5" />,
       href: "mailto:aquaticswandesign@gmail.com",
       label: "Email",
     },

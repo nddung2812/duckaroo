@@ -2,8 +2,13 @@ import { blogs, blogCategories, getFeaturedBlogs } from "@/data/blogs";
 import Layout from "@/app/components/Layout";
 import BlogsClientWrapper from "./BlogsClientWrapper";
 
+// The listing only needs card metadata — never send full article bodies to the client.
+const toCard = ({ id, slug, title, description, category, image, imageAlt, publishDate, readTime }) => ({
+  id, slug, title, description, category, image, imageAlt, publishDate, readTime,
+});
+
 export default function BlogsPage() {
-  const featuredBlogs = getFeaturedBlogs().slice(0, 2);
+  const featuredBlogs = getFeaturedBlogs().slice(0, 2).map(toCard);
 
   return (
     <Layout className="bg-gradient-to-br from-slate-950 via-slate-900 to-black">
@@ -25,7 +30,7 @@ export default function BlogsPage() {
         </section>
 
         <BlogsClientWrapper
-          blogs={blogs}
+          blogs={blogs.map(toCard)}
           blogCategories={blogCategories}
           featuredBlogs={featuredBlogs}
         />

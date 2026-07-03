@@ -26,7 +26,14 @@ export async function GET(request) {
     ]);
 
     const categoryCounts = Object.fromEntries(countRows.map(r => [r.category, Number(r.count)]));
-    return NextResponse.json({ items, total, page, totalPages: Math.ceil(total / limit), categoryCounts });
+    return NextResponse.json(
+      { items, total, page, totalPages: Math.ceil(total / limit), categoryCounts },
+      {
+        // Let the CDN absorb repeat product-listing traffic instead of Neon.
+        // Admin mutations tolerate up to 5 min of staleness on the public grid.
+        headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=3600" },
+      }
+    );
   } catch (error) {
     console.error("GET /api/stock error:", error);
     return NextResponse.json({ error: "Failed to fetch stock items" }, { status: 500 });
@@ -59,6 +66,7 @@ export async function POST(request) {
 
     revalidatePath(`/products/${item.slug}`);
     revalidatePath("/products");
+    revalidatePath("/"); // homepage shows featured products
     return NextResponse.json({ item }, { status: 201 });
   } catch (error) {
     console.error("POST /api/stock error:", error);

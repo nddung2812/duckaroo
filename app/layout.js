@@ -1,9 +1,6 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import LazyAnalytics from "./components/LazyAnalytics";
-import { CartProvider } from "./context/CartContext";
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -328,21 +325,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={inter.className}>
         <LazyAnalytics />
-        <CartProvider>
-          {children}
-          <ToastContainer
-            position="top-right"
-            autoClose={3000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-        </CartProvider>
+        {children}
       </body>
     </html>
   );

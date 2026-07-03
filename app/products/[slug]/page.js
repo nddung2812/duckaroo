@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getStockItemBySlug, getAllStockItems } from "@/lib/stock";
+import { getStockItemBySlug, getAllStockItems, getRelatedStockItems } from "@/lib/stock";
 import ProductPageContent from "./ProductPageContent";
 
 const getImageSrc = (img) => (typeof img === "string" ? img : img?.url ?? "");
@@ -384,10 +384,17 @@ export default async function ProductPage({ params }) {
     notFound();
   }
 
+  let relatedProducts = [];
+  try {
+    relatedProducts = await getRelatedStockItems(product.category, product.id, 3);
+  } catch (error) {
+    console.error("Failed to load related products:", error);
+  }
+
   return (
     <>
       <ProductStructuredData product={product} />
-      <ProductPageContent product={product} />
+      <ProductPageContent product={product} relatedProducts={relatedProducts} />
     </>
   );
 }

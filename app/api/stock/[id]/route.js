@@ -43,6 +43,7 @@ export async function PUT(request, { params }) {
     if (!item) return NextResponse.json({ error: "Not found" }, { status: 404 });
     revalidatePath(`/products/${item.slug}`);
     revalidatePath("/products");
+    revalidatePath("/"); // homepage shows featured products
     return NextResponse.json({ item });
   } catch (error) {
     console.error("PUT /api/stock/[id] error:", error);
@@ -60,6 +61,7 @@ export async function DELETE(request, { params }) {
     const { id } = await params;
     await deleteStockItem(Number(id));
     revalidatePath("/products");
+    revalidatePath("/"); // homepage shows featured products
     return NextResponse.json({ success: true, id: Number(id) });
   } catch (error) {
     console.error("DELETE /api/stock/[id] error:", error);

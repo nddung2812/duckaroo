@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import StatsCards from "./StatsCards";
 import StockTable from "./StockTable";
 import StockFormModal from "./StockFormModal";
@@ -423,6 +424,7 @@ export default function DashboardClient() {
         onConfirm={handleDeleteConfirm}
         onCancel={() => setDeleteItem(null)}
       />
+      <ToastContainer position="top-right" autoClose={3000} theme="light" />
     </div>
   );
 }
