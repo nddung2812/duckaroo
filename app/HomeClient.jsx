@@ -105,19 +105,30 @@ const FALLBACK_ARTEFACTS = [
 ];
 
 // Rising bubble columns: [left, scale, duration s, delay s]
+// Negative delays start each bubble mid-rise, so the streams are visible on first load.
 const HERO_BUBBLES = [
-  ["4%", 0.55, 19, 0],
-  ["16%", 0.24, 14, 5],
-  ["34%", 0.16, 16, 9],
-  ["58%", 0.3, 15, 2.5],
-  ["74%", 0.45, 21, 7],
-  ["89%", 0.2, 13, 11],
+  ["4%", 0.275, 19, -6],
+  ["16%", 0.12, 14, -10],
+  ["34%", 0.08, 16, -3],
+  ["58%", 0.15, 15, -12],
+  ["74%", 0.225, 21, -15],
+  ["89%", 0.1, 13, -5],
+  ["10%", 0.09, 17, -13],
+  ["25%", 0.16, 15, -2],
+  ["44%", 0.11, 18, -8],
+  ["52%", 0.07, 14, -16],
+  ["66%", 0.19, 20, -4],
+  ["82%", 0.13, 16, -9],
+  ["95%", 0.08, 13, -1],
 ];
 
 const BAND_BUBBLES = [
-  ["10%", 0.32, 16, 1],
-  ["50%", 0.18, 13, 6],
-  ["84%", 0.4, 18, 3],
+  ["10%", 0.16, 16, -7],
+  ["50%", 0.09, 13, -4],
+  ["84%", 0.2, 18, -11],
+  ["28%", 0.12, 15, -9],
+  ["66%", 0.1, 17, -2],
+  ["92%", 0.08, 14, -13],
 ];
 
 function Bubble({ left, scale, duration, delay }) {
@@ -133,13 +144,8 @@ function Bubble({ left, scale, duration, delay }) {
     >
       <div className={styles.bubbleScale} style={{ transform: `scale(${scale})` }}>
         <div className={styles.bubbleArt}>
-          <i className={styles.bubbleBlue} />
-          <i className={styles.bubbleGreen} />
-          <i className={styles.bubbleDeep} />
-          <i className={styles.bubbleAmber} />
-          <i className={styles.bubbleWhite} />
-          <i className={styles.bubbleDot1} />
-          <i className={styles.bubbleDot2} />
+          <i className={styles.bubbleGlint} />
+          <i className={styles.bubbleGlintSmall} />
         </div>
       </div>
     </div>
