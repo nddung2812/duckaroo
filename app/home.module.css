@@ -156,16 +156,33 @@
   position: absolute;
   left: 50%;
   bottom: -6px;
-  margin-left: max(-340px, -29vw);
+  margin-left: max(-430px, -37vw);
   z-index: 2;
   will-change: transform;
 }
 
 .rockCenter img {
-  width: min(680px, 58vw);
+  width: min(860px, 74vw);
   height: auto;
   display: block;
   filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.55));
+}
+
+/* rhino locked inside the arch opening, just above the ground */
+.rhino {
+  position: absolute;
+  left: 50%;
+  bottom: 20%;
+  transform: translateX(-50%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+.rhino img {
+  width: min(430px, 38vw);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.5));
 }
 
 /* mossy rock — bottom left */

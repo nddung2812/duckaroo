@@ -14,11 +14,13 @@ const Footer = dynamic(() => import("./components/Footer"), {
 const LOGO =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1739712659/swan-logo-transparent_rphcfl";
 const ROCK_CENTER =
-  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237487/Rock-center_xw2rvu.png";
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783253120/Rock-Center-HD_kzxg0g.png";
 const ROCK_BOTTOM_LEFT =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237487/Rock-bottom-left_diuj3o.png";
 const ROCK_FLOATING =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237486/floating-rock_zvbbxe.png";
+const RHINO =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783241985/Rhino_nobg_wjxfsr.png";
 
 const NAV_LINKS = [
   { href: "#worlds", label: "Worlds" },
@@ -270,11 +272,22 @@ const Home = ({ featuredProducts = [] }) => {
             <Image
               src={ROCK_CENTER}
               alt="Moss-covered stone archway aquascape"
-              width={680}
-              height={680}
+              width={860}
+              height={860}
               priority
-              sizes="(max-width: 768px) 58vw, 680px"
+              sizes="(max-width: 768px) 74vw, 860px"
             />
+            {/* rhino perched on the centre rock */}
+            <div className={styles.rhino}>
+              <Image
+                src={RHINO}
+                alt="Rhino standing inside the centre aquascape rock arch"
+                width={430}
+                height={430}
+                priority
+                sizes="(max-width: 768px) 38vw, 430px"
+              />
+            </div>
           </div>
 
           {/* mossy rock, bottom left */}
