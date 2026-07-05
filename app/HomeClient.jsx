@@ -17,10 +17,14 @@ const ROCK_CENTER =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783253120/Rock-Center-HD_kzxg0g.png";
 const ROCK_BOTTOM_LEFT =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237487/Rock-bottom-left_diuj3o.png";
+const ROCK_BOTTOM_RIGHT =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783253867/Rock-bottom-right_igegjy.png";
 const ROCK_FLOATING =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237486/floating-rock_zvbbxe.png";
 const RHINO =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783241985/Rhino_nobg_wjxfsr.png";
+const TREX =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783241984/Trex_nobg_t0clwt.png";
 
 const NAV_LINKS = [
   { href: "#worlds", label: "Worlds" },
@@ -170,7 +174,6 @@ const Home = ({ featuredProducts = [] }) => {
 
     const layers = Array.from(root.querySelectorAll("[data-depth]"));
     const headline = root.querySelector("[data-hero-headline]");
-    const cue = root.querySelector("[data-hero-cue]");
     let ticking = false;
 
     const onScroll = () => {
@@ -186,7 +189,6 @@ const Home = ({ featuredProducts = [] }) => {
           headline.style.opacity = String(Math.max(1 - p * 1.15, 0));
           headline.style.transform = `translate3d(0,${y * -0.28}px,0)`;
         }
-        if (cue) cue.style.opacity = String(Math.max(0.7 - p * 2, 0));
         ticking = false;
       });
     };
@@ -258,7 +260,6 @@ const Home = ({ featuredProducts = [] }) => {
           <div className={styles.heroOverlay} />
 
           {/* distant silhouettes */}
-          <div data-depth="0.3" className={styles.silhouetteLeft} />
           <div data-depth="0.3" className={styles.silhouetteRight} />
 
           {/* god rays */}
@@ -277,16 +278,28 @@ const Home = ({ featuredProducts = [] }) => {
               priority
               sizes="(max-width: 768px) 74vw, 860px"
             />
-            {/* rhino perched on the centre rock */}
-            <div className={styles.rhino}>
-              <Image
-                src={RHINO}
-                alt="Rhino standing inside the centre aquascape rock arch"
-                width={430}
-                height={430}
-                priority
-                sizes="(max-width: 768px) 38vw, 430px"
-              />
+            {/* T-rex vs rhino, squaring off inside the arch */}
+            <div className={styles.arena}>
+              <div className={`${styles.combatant} ${styles.trex}`}>
+                <Image
+                  src={TREX}
+                  alt="Dinosaur facing off inside the centre aquascape rock arch"
+                  width={460}
+                  height={460}
+                  priority
+                  sizes="(max-width: 768px) 38vw, 420px"
+                />
+              </div>
+              <div className={`${styles.combatant} ${styles.rhino}`}>
+                <Image
+                  src={RHINO}
+                  alt="Rhino facing off inside the centre aquascape rock arch"
+                  width={460}
+                  height={460}
+                  priority
+                  sizes="(max-width: 768px) 38vw, 420px"
+                />
+              </div>
             </div>
           </div>
 
@@ -295,6 +308,19 @@ const Home = ({ featuredProducts = [] }) => {
             <Image
               src={ROCK_BOTTOM_LEFT}
               alt="Moss-covered aquascape rock"
+              width={460}
+              height={460}
+              priority
+              sizes="(max-width: 768px) 30vw, 460px"
+            />
+          </div>
+
+          {/* mossy rock, bottom right */}
+          <div data-depth="0.42" className={styles.rockRight}>
+            <Image
+              src={ROCK_BOTTOM_RIGHT}
+              alt=""
+              aria-hidden="true"
               width={460}
               height={460}
               priority
@@ -389,12 +415,6 @@ const Home = ({ featuredProducts = [] }) => {
                 Book a service
               </Link>
             </div>
-          </div>
-
-          {/* scroll cue */}
-          <div data-hero-cue="" className={styles.scrollCue}>
-            <div className={styles.scrollCueLabel}>Descend</div>
-            <div className={styles.scrollCueLine} />
           </div>
         </div>
       </div>
