@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -9,16 +9,13 @@ import Link from "next/link";
 import { projects } from "./clientdata";
 import MediaLightbox from "./MediaLightbox";
 import { getThumbUrl } from "./mediaUtils";
+import PageAmbience from "../components/PageAmbience";
 
 // Thumbnails rendered inline per card; the rest open in the lightbox.
 const MAX_THUMBS = 4;
 
 export default function AquariumProjectsClient() {
   const [lightbox, setLightbox] = useState(null); // { project, index }
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [showPlayButton, setShowPlayButton] = useState(false);
-
-  const videoRef = useRef(null);
 
   const openLightbox = (project, mediaIndex) => {
     setLightbox({ project, index: mediaIndex });
@@ -37,123 +34,33 @@ export default function AquariumProjectsClient() {
     });
   };
 
-  const handleVideoPlay = () => {
-    if (videoRef.current) {
-      videoRef.current
-        .play()
-        .then(() => {
-          setShowPlayButton(false);
-        })
-        .catch(() => {
-          setShowPlayButton(true);
-        });
-    }
-  };
-
-  useEffect(() => {
-    // Try to play video immediately
-    if (videoRef.current) {
-      videoRef.current.play().catch(() => {
-        setShowPlayButton(true);
-      });
-    }
-  }, []);
-
   return (
     <>
-      {/* Fallback Dark Background */}
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 -z-30"
-        style={{ minWidth: "100vw", minHeight: "100vh" }}
-      />
+      <PageAmbience />
 
-      {/* Background Video - Desktop Only for Performance */}
-      <div className="hidden md:block">
-        <video
-          ref={videoRef}
-          aria-hidden="true"
-          className="fixed top-0 left-0 w-full h-full object-cover -z-20"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-          }}
-          autoPlay
-          muted
-          loop
-          playsInline
-          preload="auto"
-          onLoadedData={() => setVideoLoaded(true)}
-          onError={() => setShowPlayButton(true)}
-          onCanPlay={() => {
-            if (videoRef.current) {
-              videoRef.current.play().catch(() => setShowPlayButton(true));
-            }
-          }}
-        >
-          <source
-            src="https://res.cloudinary.com/dhvj8x2nq/video/upload/q_auto:good,w_1280,h_720/v1739712678/koifish_feh63y.mp4"
-            type="video/mp4"
-          />
-        </video>
-      </div>
-
-      {/* Mobile Static Background - Blue Ocean Theme */}
-      <div
-        className="md:hidden fixed top-0 left-0 w-full h-full -z-20"
-        style={{
-          minWidth: "100vw",
-          minHeight: "100vh",
-          background:
-            "linear-gradient(180deg, #0a1628 0%, #0c1f4a 25%, #1e3a8a 50%, #1e40af 75%, #1d4ed8 100%)",
-        }}
-      />
-
-      {/* Video Play Button Overlay - Shows if autoplay fails */}
-      {showPlayButton && (
-        <div className="fixed inset-0 flex items-center justify-center z-40 bg-black/50 backdrop-blur-sm">
-          <Button
-            onClick={handleVideoPlay}
-            size="lg"
-            aria-label="Play background video"
-            className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:bg-white/30 text-white shadow-2xl"
-          >
-            <Play className="h-8 w-8 ml-1" aria-hidden="true" />
-            <span className="sr-only">Play background video</span>
-          </Button>
-        </div>
-      )}
-
-      {/* Dark overlay for better text readability */}
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-black/30 -z-10"
-        style={{ minWidth: "100vw", minHeight: "100vh" }}
-      />
-
-      <div className="min-h-screen relative">
+      <div className="min-h-screen relative z-10">
         {/* Hero Section */}
         <section className="relative pt-28 pb-12 md:py-20 px-4">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-900/20 to-teal-900/20"></div>
           <div className="relative max-w-7xl mx-auto text-center">
-            <Badge className="mb-6 bg-emerald-500/30 border-emerald-400 text-emerald-100">
+            <Badge className="mb-6 bg-moss/60 border-amber-glow/40 text-amber-glow">
               Real Results From Brisbane & Gold Coast&apos;s #1 Fish Tank
               Service
             </Badge>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6">
+            <h1 className="font-display text-4xl md:text-6xl font-medium text-parchment mb-6">
               Customer Success Stories
             </h1>
 
-            <p className="text-xl text-white/80 max-w-3xl mx-auto mb-8">
+            <p className="text-xl text-cream/80 max-w-3xl mx-auto mb-8">
               See the stunning transformations and professional results from our
               expert
-              <strong className="text-emerald-300">
+              <strong className="text-amber-glow">
                 {" "}
                 fish tank cleaning service
               </strong>{" "}
               across Brisbane. From emergency rescues to luxury installations,
               discover why customers trust
-              <strong className="text-emerald-300">
+              <strong className="text-amber-glow">
                 {" "}
                 Duckaroo&apos;s professional aquarium maintenance
               </strong>
@@ -164,7 +71,7 @@ export default function AquariumProjectsClient() {
               <Button
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-8 py-3"
+                className="bg-amber-glow text-[#04121b] rounded-full text-[13px] uppercase tracking-[0.14em] font-medium hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)] px-8 py-3"
               >
                 <Link href="/service">Get Your Free Quote</Link>
               </Button>
@@ -172,7 +79,7 @@ export default function AquariumProjectsClient() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-white/20 text-white hover:bg-white/10 px-8 py-3"
+                className="border border-cream/30 text-cream/90 rounded-full bg-transparent hover:border-cream/60 hover:bg-cream/5 text-[13px] uppercase tracking-[0.14em] px-8 py-3"
               >
                 <Link href="/contact">Contact Our Experts</Link>
               </Button>
@@ -184,10 +91,10 @@ export default function AquariumProjectsClient() {
         <section className="py-16 px-4">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              <h2 className="font-display text-3xl md:text-4xl font-medium text-parchment mb-4">
                 Our Success Stories
               </h2>
-              <p className="text-white/70 max-w-2xl mx-auto">
+              <p className="text-cream/70 max-w-2xl mx-auto">
                 Browse our portfolio of successful aquarium projects across
                 Brisbane. Each project showcases our commitment to excellence in
                 fish tank cleaning and maintenance.
@@ -199,17 +106,17 @@ export default function AquariumProjectsClient() {
               {projects.map((project) => (
                 <Card
                   key={project.id}
-                  className="group bg-white/10 backdrop-blur-md border border-white/20 hover:bg-white/15 hover:border-emerald-400/50 transition-all duration-300 overflow-hidden"
+                  className="group bg-cream/5 backdrop-blur-md border border-cream/15 rounded-2xl hover:bg-cream/10 hover:border-amber-glow/50 transition-all duration-300 overflow-hidden"
                 >
                   <CardContent className="p-0">
                     {/* Project Header */}
                     <div className="p-6 pb-4">
                       <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
                         <div>
-                          <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">
+                          <h3 className="font-display text-xl font-medium text-parchment mb-2 group-hover:text-amber-glow transition-colors">
                             {project.name}
                           </h3>
-                          <div className="flex items-center gap-4 text-sm text-white/70 mb-2">
+                          <div className="flex items-center gap-4 text-sm text-cream/70 mb-2">
                             <span className="flex items-center gap-1">
                               <Calendar className="w-4 h-4" />
                               {formatDate(project.date)}
@@ -226,18 +133,18 @@ export default function AquariumProjectsClient() {
                                 className="w-4 h-4 fill-yellow-400 text-yellow-400"
                               />
                             ))}
-                            <span className="text-white/70 text-sm ml-2">
+                            <span className="text-cream/70 text-sm ml-2">
                               {project.client}
                             </span>
                           </div>
                         </div>
 
-                        <Badge className="bg-blue-500/20 border-blue-400 text-blue-200">
+                        <Badge className="bg-moss/60 border-amber-glow/40 text-amber-glow">
                           {project.type}
                         </Badge>
                       </div>
 
-                      <p className="text-white/80 text-sm mb-4 leading-relaxed">
+                      <p className="text-cream/80 text-sm mb-4 leading-relaxed">
                         {project.description}
                       </p>
 
@@ -247,7 +154,7 @@ export default function AquariumProjectsClient() {
                           <Badge
                             key={index}
                             variant="outline"
-                            className="text-xs border-white/20 text-white/70 hover:border-emerald-400/50 hover:text-emerald-300 transition-colors"
+                            className="text-xs border-cream/20 text-cream/75 hover:border-amber-glow/50 hover:text-amber-glow transition-colors"
                           >
                             {tag}
                           </Badge>
@@ -292,7 +199,7 @@ export default function AquariumProjectsClient() {
                             </div>
                             {/* Main Image Badge */}
                             <div className="absolute top-3 left-3">
-                              <Badge className="bg-black/50 backdrop-blur-sm border-white/20 text-white text-xs">
+                              <Badge className="bg-black/50 backdrop-blur-sm border-cream/20 text-cream text-xs">
                                 Featured
                               </Badge>
                             </div>
@@ -342,7 +249,7 @@ export default function AquariumProjectsClient() {
 
                                     {showMoreOverlay ? (
                                       <div className="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-all duration-300 flex items-center justify-center">
-                                        <span className="text-white text-lg font-semibold">
+                                        <span className="text-cream text-lg font-semibold">
                                           +{hiddenCount} more
                                         </span>
                                       </div>
@@ -366,12 +273,12 @@ export default function AquariumProjectsClient() {
         </section>
 
         {/* Call to Action */}
-        <section className="py-16 px-4 bg-gradient-to-r from-emerald-900/20 to-teal-900/20">
+        <section className="py-16 px-4 bg-moss/30">
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            <h2 className="font-display text-3xl md:text-4xl font-medium text-parchment mb-6">
               Ready to Transform Your Aquarium?
             </h2>
-            <p className="text-xl text-white/80 mb-8">
+            <p className="text-xl text-cream/80 mb-8">
               Join hundreds of satisfied Brisbane & Gold Coast customers who
               trust our professional fish tank cleaning and maintenance
               services.
@@ -380,7 +287,7 @@ export default function AquariumProjectsClient() {
               <Button
                 asChild
                 size="lg"
-                className="bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white px-8 py-3"
+                className="bg-amber-glow text-[#04121b] rounded-full text-[13px] uppercase tracking-[0.14em] font-medium hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)] px-8 py-3"
               >
                 <Link href="/service">Book Your Service</Link>
               </Button>
@@ -388,7 +295,7 @@ export default function AquariumProjectsClient() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-white/20 text-white hover:bg-white/10 px-8 py-3"
+                className="border border-cream/30 text-cream/90 rounded-full bg-transparent hover:border-cream/60 hover:bg-cream/5 text-[13px] uppercase tracking-[0.14em] px-8 py-3"
               >
                 <Link href="/contact">Call (04) 5766 3939</Link>
               </Button>

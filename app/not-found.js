@@ -15,6 +15,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import Layout from "@/app/components/Layout";
+import PageAmbience from "@/app/components/PageAmbience";
 
 export default function NotFound() {
   const [fishPosition, setFishPosition] = useState({ x: 50, y: 50 });
@@ -89,18 +90,20 @@ export default function NotFound() {
 
   return (
     <Layout>
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black relative overflow-hidden">
+      <div className="min-h-screen relative overflow-hidden">
+        <PageAmbience />
+
         {/* Animated background elements */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute top-20 left-10 w-2 h-2 bg-blue-400 rounded-full animate-pulse"></div>
-          <div className="absolute top-40 right-20 w-1 h-1 bg-emerald-400 rounded-full animate-pulse delay-1000"></div>
-          <div className="absolute bottom-40 left-1/4 w-1.5 h-1.5 bg-teal-400 rounded-full animate-pulse delay-2000"></div>
-          <div className="absolute bottom-20 right-1/3 w-1 h-1 bg-cyan-400 rounded-full animate-pulse delay-3000"></div>
+          <div className="absolute top-20 left-10 w-2 h-2 bg-amber-glow rounded-full animate-pulse"></div>
+          <div className="absolute top-40 right-20 w-1 h-1 bg-cream/70 rounded-full animate-pulse delay-1000"></div>
+          <div className="absolute bottom-40 left-1/4 w-1.5 h-1.5 bg-amber-glow rounded-full animate-pulse delay-2000"></div>
+          <div className="absolute bottom-20 right-1/3 w-1 h-1 bg-cream/70 rounded-full animate-pulse delay-3000"></div>
         </div>
 
         {/* Swimming fish animation */}
         <div
-          className="absolute w-8 h-8 text-blue-400/30 transition-all duration-3000 ease-in-out"
+          className="absolute w-8 h-8 text-amber-glow/30 transition-all duration-3000 ease-in-out"
           style={{
             left: `${fishPosition.x}%`,
             top: `${fishPosition.y}%`,
@@ -115,14 +118,14 @@ export default function NotFound() {
             {/* Main 404 Section */}
             <div className="text-center mb-16">
               <div className="mb-8">
-                <h1 className="text-8xl md:text-9xl font-bold text-white/10 mb-4 select-none">
+                <h1 className="font-display text-8xl md:text-9xl font-medium text-parchment/15 mb-4 select-none">
                   404
                 </h1>
                 <div className="relative">
-                  <h2 className="text-3xl md:text-5xl font-bold text-white mb-4">
+                  <h2 className="font-display text-3xl md:text-5xl font-medium text-parchment mb-4">
                     Lost in the Deep
                   </h2>
-                  <p className="text-xl text-white/70 mb-8 max-w-2xl mx-auto">
+                  <p className="text-xl text-cream/70 mb-8 max-w-2xl mx-auto">
                     This page seems to have swum away. Let&apos;s help you
                     navigate back to calmer waters.
                   </p>
@@ -132,14 +135,14 @@ export default function NotFound() {
               {/* Search Bar */}
               <div className="max-w-md mx-auto mb-12">
                 <div className="relative">
-                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white/60 w-5 h-5" />
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-cream/60 w-5 h-5" />
                   <input
                     type="text"
                     placeholder="Search for pages, products, guides..."
-                    className={`w-full pl-12 pr-4 py-4 bg-white/10 backdrop-blur-md border rounded-xl text-white placeholder:text-white/60 transition-all duration-300 ${
+                    className={`w-full pl-12 pr-4 py-4 bg-cream/5 backdrop-blur-md border rounded-full text-cream placeholder:text-cream/60 transition-all duration-300 ${
                       isSearchFocused
-                        ? "border-blue-400 bg-white/20 shadow-lg shadow-blue-400/20"
-                        : "border-white/30 hover:border-white/50"
+                        ? "border-amber-glow bg-cream/10 shadow-lg shadow-amber-glow/20"
+                        : "border-cream/30 hover:border-cream/50"
                     }`}
                     onFocus={() => setIsSearchFocused(true)}
                     onBlur={() => setIsSearchFocused(false)}
@@ -152,7 +155,7 @@ export default function NotFound() {
                 <Button
                   asChild
                   size="lg"
-                  className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-blue-500/25"
+                  className="bg-amber-glow hover:bg-amber-glow text-[#04121b] text-[13px] uppercase tracking-[0.14em] font-medium px-8 py-3 rounded-full transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
                 >
                   <Link href="/" className="flex items-center gap-2">
                     <Home className="w-5 h-5" />
@@ -162,7 +165,7 @@ export default function NotFound() {
                 <Button
                   asChild
                   size="lg"
-                  className="border border-white/30 text-white hover:bg-white/10 hover:border-white/50 bg-transparent px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105"
+                  className="border border-cream/30 text-cream/90 hover:bg-cream/5 hover:border-cream/60 bg-transparent text-[13px] uppercase tracking-[0.14em] px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
                   onClick={() => window.history.back()}
                 >
                   <Link href="#" className="flex items-center gap-2">
@@ -173,7 +176,7 @@ export default function NotFound() {
                 <Button
                   variant="ghost"
                   size="lg"
-                  className="text-white hover:bg-white/10 px-8 py-3 rounded-xl transition-all duration-300 hover:scale-105"
+                  className="text-cream/90 hover:bg-cream/5 hover:text-cream text-[13px] uppercase tracking-[0.14em] px-8 py-3 rounded-full transition-all duration-300 hover:scale-105"
                   onClick={() => window.location.reload()}
                 >
                   <RefreshCw className="w-5 h-5 mr-2" />
@@ -185,10 +188,10 @@ export default function NotFound() {
             {/* Quick Links and Recent Pages */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Quick Navigation */}
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 transition-all duration-300">
+              <Card className="bg-cream/5 backdrop-blur-md border-cream/15 rounded-2xl hover:border-amber-glow/50 transition-all duration-300">
                 <CardContent className="p-8">
-                  <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-                    <Waves className="w-5 h-5 text-blue-400" />
+                  <h3 className="font-display text-xl font-medium text-parchment mb-6 flex items-center gap-2">
+                    <Waves className="w-5 h-5 text-amber-glow" />
                     Quick Navigation
                   </h3>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3">
@@ -196,9 +199,9 @@ export default function NotFound() {
                       <Link
                         key={index}
                         href={link.href}
-                        className="flex items-center gap-3 p-4 rounded-lg bg-white/5 hover:bg-white/20 transition-all duration-300 group text-white/90 hover:text-white"
+                        className="flex items-center gap-3 p-4 rounded-lg bg-cream/5 hover:bg-cream/10 transition-all duration-300 group text-cream/90 hover:text-cream"
                       >
-                        <div className="text-blue-400 group-hover:text-blue-300 transition-colors">
+                        <div className="text-amber-glow group-hover:text-amber-glow/80 transition-colors">
                           {link.icon}
                         </div>
                         <span className="font-medium">{link.label}</span>
@@ -210,10 +213,10 @@ export default function NotFound() {
               </Card>
 
               {/* Recent/Popular Pages */}
-              <Card className="bg-white/10 backdrop-blur-md border-white/20 hover:bg-white/20 transition-all duration-300">
+              <Card className="bg-cream/5 backdrop-blur-md border-cream/15 rounded-2xl hover:border-amber-glow/50 transition-all duration-300">
                 <CardContent className="p-8">
-                  <h3 className="text-xl font-semibold text-white mb-6 flex items-center gap-2">
-                    <Clock className="w-5 h-5 text-emerald-400" />
+                  <h3 className="font-display text-xl font-medium text-parchment mb-6 flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-amber-glow" />
                     Popular Pages
                   </h3>
                   <div className="space-y-3">
@@ -221,15 +224,15 @@ export default function NotFound() {
                       <Link
                         key={index}
                         href={page.href}
-                        className="flex items-center justify-between p-4 rounded-lg bg-white/5 hover:bg-white/20 transition-all duration-300 group"
+                        className="flex items-center justify-between p-4 rounded-lg bg-cream/5 hover:bg-cream/10 transition-all duration-300 group"
                       >
                         <div>
-                          <h4 className="font-medium text-white group-hover:text-blue-300 transition-colors">
+                          <h4 className="font-medium text-cream group-hover:text-amber-glow transition-colors">
                             {page.title}
                           </h4>
-                          <p className="text-sm text-white/60">{page.time}</p>
+                          <p className="text-sm text-cream/60">{page.time}</p>
                         </div>
-                        <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white/80 transition-colors" />
+                        <ChevronRight className="w-4 h-4 text-cream/40 group-hover:text-cream/80 transition-colors" />
                       </Link>
                     ))}
                   </div>
@@ -239,18 +242,18 @@ export default function NotFound() {
 
             {/* Support Section */}
             <div className="mt-16 text-center">
-              <Card className="bg-white/5 backdrop-blur-md border-white/10 max-w-2xl mx-auto">
+              <Card className="bg-cream/5 backdrop-blur-md border-cream/15 rounded-2xl max-w-2xl mx-auto">
                 <CardContent className="p-8">
-                  <h3 className="text-lg font-semibold text-white mb-4">
+                  <h3 className="font-display text-lg font-medium text-parchment mb-4">
                     Still can&apos;t find what you&apos;re looking for?
                   </h3>
-                  <p className="text-white/70 mb-6">
+                  <p className="text-cream/70 mb-6">
                     Our aquatic experts are here to help you navigate any
                     challenges.
                   </p>
                   <Button
                     asChild
-                    className="bg-emerald-600 hover:bg-emerald-700 text-white"
+                    className="bg-amber-glow hover:bg-amber-glow text-[#04121b] text-[13px] uppercase tracking-[0.14em] font-medium rounded-full hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
                   >
                     <Link href="/contact">Contact Support</Link>
                   </Button>

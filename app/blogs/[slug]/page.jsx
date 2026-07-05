@@ -10,6 +10,7 @@ import {
 } from "@/data/blogs";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import PageAmbience from "../../components/PageAmbience";
 import ShareButton from "./ShareButton";
 
 export async function generateStaticParams() {
@@ -124,35 +125,32 @@ export default async function BlogPost({ params }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black">
+      <PageAmbience />
+      <div className="min-h-screen relative z-10">
         <div className="max-w-3xl mx-auto px-4 pt-28 pb-24">
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-white/40 text-xs mb-10">
-            <Link href="/blogs" className="hover:text-white/70 transition-colors">
+          <nav className="flex items-center gap-2 text-cream/50 text-xs mb-10">
+            <Link href="/blogs" className="hover:text-amber-glow transition-colors">
               Blog
             </Link>
             <ChevronRight className="w-3 h-3" />
-            <span
-              className={`font-medium bg-gradient-to-r ${categoryInfo?.color} bg-clip-text text-transparent`}
-            >
+            <span className="font-medium text-amber-glow">
               {categoryInfo?.name}
             </span>
           </nav>
 
           {/* Article Header */}
           <header className="mb-10">
-            <span
-              className={`text-xs font-semibold bg-gradient-to-r ${categoryInfo?.color} bg-clip-text text-transparent uppercase tracking-widest`}
-            >
+            <span className="text-xs uppercase tracking-[0.3em] text-amber-glow font-medium">
               {categoryInfo?.name}
             </span>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-4 leading-tight">
+            <h1 className="font-display text-4xl md:text-5xl font-medium text-parchment mt-2 mb-4 leading-tight [text-wrap:balance]">
               {blog.title}
             </h1>
-            <p className="text-white/65 text-lg leading-relaxed mb-6">
+            <p className="text-cream/75 text-lg leading-relaxed mb-6">
               {blog.description}
             </p>
-            <div className="flex flex-wrap items-center gap-5 text-white/45 text-sm border-t border-b border-white/10 py-4">
+            <div className="flex flex-wrap items-center gap-5 text-cream/60 text-sm border-t border-b border-cream/15 py-4">
               <span className="flex items-center gap-1.5">
                 <User className="w-4 h-4" />
                 {blog.author}
@@ -170,7 +168,7 @@ export default async function BlogPost({ params }) {
           </header>
 
           {/* Featured Image */}
-          <div className="relative h-56 md:h-80 rounded-xl overflow-hidden mb-12 bg-white/5">
+          <div className="relative h-56 md:h-80 rounded-2xl overflow-hidden mb-12 bg-cream/5 border border-cream/15">
             <Image
               src={blog.image}
               alt={blog.imageAlt || blog.title}
@@ -182,21 +180,21 @@ export default async function BlogPost({ params }) {
           </div>
 
           {/* Article Body */}
-          <article className="prose prose-lg prose-invert max-w-none mb-14">
+          <article className="prose prose-lg prose-invert max-w-none mb-14 prose-headings:font-display prose-headings:text-parchment prose-a:text-amber-glow">
             {blog.content.map((paragraph, index) => (
-              <p key={index} className="text-white/85 leading-relaxed mb-6 text-base md:text-lg">
+              <p key={index} className="text-cream/80 leading-relaxed mb-6 text-base md:text-lg">
                 {paragraph}
               </p>
             ))}
           </article>
 
           {/* Tags */}
-          <div className="flex flex-wrap items-center gap-2 py-6 border-t border-white/10">
-            <Tag className="w-4 h-4 text-white/35" />
+          <div className="flex flex-wrap items-center gap-2 py-6 border-t border-cream/15">
+            <Tag className="w-4 h-4 text-cream/50" />
             {blog.tags.map((tag, index) => (
               <span
                 key={index}
-                className="text-xs text-white/55 border border-white/15 rounded-full px-3 py-1"
+                className="text-xs text-cream/75 border border-cream/20 rounded-full px-3 py-1"
               >
                 {tag}
               </span>
@@ -204,13 +202,13 @@ export default async function BlogPost({ params }) {
           </div>
 
           {/* Author */}
-          <div className="flex items-start gap-4 py-6 border-t border-white/10">
-            <div className="w-12 h-12 bg-gradient-to-br from-emerald-500 to-teal-600 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0">
+          <div className="flex items-start gap-4 py-6 border-t border-cream/15">
+            <div className="w-12 h-12 bg-moss/60 border border-amber-glow/40 rounded-full flex items-center justify-center text-amber-glow font-display font-medium text-lg flex-shrink-0">
               {blog.author.charAt(0)}
             </div>
             <div>
-              <p className="text-white font-semibold text-sm">{blog.author}</p>
-              <p className="text-white/55 text-sm mt-1 leading-relaxed">
+              <p className="text-parchment font-semibold text-sm">{blog.author}</p>
+              <p className="text-cream/70 text-sm mt-1 leading-relaxed">
                 Aquarium specialist at Duckaroo Brisbane with years of experience in aquatic care, fish
                 health, and aquascaping.
               </p>
@@ -219,8 +217,8 @@ export default async function BlogPost({ params }) {
 
           {/* Related Articles */}
           {relatedBlogs.length > 0 && (
-            <div className="mt-12 pt-8 border-t border-white/10">
-              <p className="text-xs text-white/40 uppercase tracking-widest mb-5">
+            <div className="mt-12 pt-8 border-t border-cream/15">
+              <p className="text-xs uppercase tracking-[0.3em] text-amber-glow font-medium mb-5">
                 Related Articles
               </p>
               <div className="space-y-5">
@@ -228,15 +226,13 @@ export default async function BlogPost({ params }) {
                   const relCat = blogCategories.find((c) => c.id === related.category);
                   return (
                     <div key={related.id} className="group">
-                      <span
-                        className={`text-xs font-medium bg-gradient-to-r ${relCat?.color} bg-clip-text text-transparent`}
-                      >
+                      <span className="text-xs font-medium text-amber-glow uppercase tracking-[0.14em]">
                         {relCat?.name}
                       </span>
-                      <h3 className="text-white font-medium group-hover:text-emerald-300 transition-colors leading-snug mt-0.5">
+                      <h3 className="font-display font-medium text-parchment group-hover:text-amber-glow transition-colors leading-snug mt-0.5">
                         <Link href={`/blogs/${related.slug}`}>{related.title}</Link>
                       </h3>
-                      <p className="text-white/40 text-xs mt-1">
+                      <p className="text-cream/50 text-xs mt-1">
                         {formatDate(related.publishDate)} · {related.readTime}
                       </p>
                     </div>
@@ -246,7 +242,7 @@ export default async function BlogPost({ params }) {
               <div className="mt-8">
                 <Link
                   href="/blogs"
-                  className="text-emerald-400 hover:text-emerald-300 text-sm font-medium transition-colors"
+                  className="text-amber-glow hover:text-amber-glow/80 text-xs font-medium uppercase tracking-[0.14em] transition-colors"
                 >
                   ← Back to all articles
                 </Link>

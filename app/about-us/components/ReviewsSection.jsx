@@ -156,7 +156,7 @@ const ReviewsSection = () => {
       <Star
         key={index}
         className={`w-4 h-4 ${
-          index < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"
+          index < rating ? "fill-yellow-400 text-yellow-400" : "text-cream/30"
         }`}
       />
     ));
@@ -169,19 +169,19 @@ const ReviewsSection = () => {
         <div className="text-center mb-16">
           <Badge
             variant="outline"
-            className="mb-6 bg-emerald-500/20 border-emerald-400 text-emerald-300 text-lg px-6 py-2"
+            className="mb-6 bg-moss/60 border-amber-glow/40 text-amber-glow text-lg px-6 py-2 rounded-full"
           >
             Customer Reviews
           </Badge>
 
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight">
+          <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium text-parchment mb-6 leading-tight">
             What Our
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300 block">
+            <span className="text-amber-glow block">
               Brisbane Customers Say
             </span>
           </h2>
 
-          <p className="text-xl md:text-2xl text-white/80 mb-8 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-cream/75 mb-8 max-w-4xl mx-auto leading-relaxed">
             Don&apos;t just take our word for it - see why Brisbane families and
             businesses trust Duckaroo for all their{" "}
             <strong>aquarium cleaning</strong> and maintenance needs.
@@ -190,8 +190,8 @@ const ReviewsSection = () => {
           {/* Overall Rating */}
           <div className="flex justify-center items-center gap-4 mb-8">
             <div className="flex items-center gap-1">{renderStars(5)}</div>
-            <span className="text-2xl font-bold text-white">5.0</span>
-            <span className="text-white/70">Based on 247+ Google Reviews</span>
+            <span className="text-2xl font-bold text-parchment">5.0</span>
+            <span className="text-cream/70">Based on 247+ Google Reviews</span>
           </div>
         </div>
 
@@ -206,7 +206,7 @@ const ReviewsSection = () => {
             onClick={prevSlide}
             variant="ghost"
             size="icon"
-            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white shadow-lg -translate-x-6"
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-cream/5 backdrop-blur-sm border border-cream/15 hover:bg-cream/10 hover:border-amber-glow/50 text-cream/90 shadow-lg -translate-x-6"
           >
             <ChevronLeft className="h-6 w-6" />
           </Button>
@@ -215,7 +215,7 @@ const ReviewsSection = () => {
             onClick={nextSlide}
             variant="ghost"
             size="icon"
-            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 text-white shadow-lg translate-x-6"
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-12 h-12 rounded-full bg-cream/5 backdrop-blur-sm border border-cream/15 hover:bg-cream/10 hover:border-amber-glow/50 text-cream/90 shadow-lg translate-x-6"
           >
             <ChevronRight className="h-6 w-6" />
           </Button>
@@ -225,14 +225,14 @@ const ReviewsSection = () => {
             {getCurrentReviews().map((review, index) => (
               <Card
                 key={`${currentSlide}-${index}`}
-                className="bg-white/15 backdrop-blur-md border border-white/30 hover:bg-white/20 hover:border-emerald-400/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl group h-full"
+                className="bg-cream/5 backdrop-blur-md border border-cream/15 rounded-2xl hover:bg-cream/10 hover:border-amber-glow/50 transition-all duration-300 hover:scale-105 hover:shadow-2xl group h-full"
               >
                 <CardContent className="p-6 flex flex-col h-full">
                   {/* Quote Icon */}
-                  <Quote className="w-8 h-8 text-emerald-400 mb-4 opacity-50" />
+                  <Quote className="w-8 h-8 text-amber-glow mb-4 opacity-50" />
 
                   {/* Review Text */}
-                  <p className="text-white/90 text-sm leading-relaxed mb-6 flex-grow">
+                  <p className="text-cream/90 text-sm leading-relaxed mb-6 flex-grow">
                     &quot;{review.review}&quot;
                   </p>
 
@@ -247,23 +247,23 @@ const ReviewsSection = () => {
                   </div>
 
                   {/* Customer Info */}
-                  <div className="border-t border-white/20 pt-4">
+                  <div className="border-t border-cream/15 pt-4">
                     <div className="flex justify-between items-start mb-2">
                       <div>
-                        <h4 className="text-white font-semibold text-sm">
+                        <h4 className="text-parchment font-semibold text-sm">
                           {review.name}
                         </h4>
-                        <p className="text-white/70 text-xs">
+                        <p className="text-cream/70 text-xs">
                           {review.location}
                         </p>
                       </div>
-                      <span className="text-white/60 text-xs">
+                      <span className="text-cream/60 text-xs">
                         {review.date}
                       </span>
                     </div>
                     <Badge
                       variant="outline"
-                      className="bg-emerald-500/20 border-emerald-400/50 text-emerald-300 text-xs"
+                      className="bg-moss/60 border-amber-glow/40 text-amber-glow text-xs rounded-full"
                     >
                       {review.service}
                     </Badge>
@@ -281,8 +281,8 @@ const ReviewsSection = () => {
                 onClick={() => goToSlide(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
                   index === currentSlide
-                    ? "bg-emerald-400 scale-125"
-                    : "bg-white/30 hover:bg-white/50"
+                    ? "bg-amber-glow scale-125"
+                    : "bg-cream/30 hover:bg-cream/50"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />
@@ -292,12 +292,12 @@ const ReviewsSection = () => {
 
         {/* Call to Action */}
         <div className="text-center mt-16">
-          <Card className="bg-white/10 backdrop-blur-md border border-white/30 max-w-4xl mx-auto">
+          <Card className="bg-cream/5 backdrop-blur-md border border-cream/15 rounded-2xl max-w-4xl mx-auto">
             <CardContent className="p-8">
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+              <h3 className="font-display text-2xl md:text-3xl font-medium text-parchment mb-4">
                 Ready to Join Our Happy Customers?
               </h3>
-              <p className="text-white/80 mb-6 leading-relaxed">
+              <p className="text-cream/75 mb-6 leading-relaxed">
                 Experience Brisbane&apos;s #1 rated aquarium service. Get your
                 free quote today and see why over 1000+ customers trust Duckaroo
                 for their aquatic needs.
@@ -306,14 +306,14 @@ const ReviewsSection = () => {
                 <Button
                   asChild
                   size="lg"
-                  className="w-full sm:w-auto bg-gradient-to-br from-[#8044e2] to-[#0f172a] text-white hover:bg-gradient-to-br hover:from-[#506ef8] hover:to-[#0f172a] border-none px-6 py-6 text-lg"
+                  className="w-full sm:w-auto bg-amber-glow text-[#04121b] hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)] border-none rounded-full px-8 py-6 text-[13px] uppercase tracking-[0.14em] font-medium"
                 >
                   <a href="/service">Get Free Quote</a>
                 </Button>
                 <Button
                   asChild
                   size="lg"
-                  className="w-full sm:w-auto bg-gradient-to-br from-[#10b981] to-[#0f172a] text-white hover:bg-gradient-to-br hover:from-[#34d399] hover:to-[#0f172a] border-none px-6 py-6 text-lg"
+                  className="w-full sm:w-auto border border-cream/30 text-cream/90 bg-transparent hover:border-cream/60 hover:bg-cream/5 rounded-full px-8 py-6 text-[13px] uppercase tracking-[0.14em] font-medium"
                 >
                   <a href="tel:0457663939">Call (04) 57663939</a>
                 </Button>

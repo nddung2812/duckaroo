@@ -50,8 +50,17 @@ module.exports = {
           4: "hsl(var(--chart-4))",
           5: "hsl(var(--chart-5))",
         },
+        // "Living Art" design language (see app/home.module.css)
+        abyss: "#020e07",
+        ink: "#041b0d",
+        moss: "#0b3018",
+        "amber-glow": "#e8a05c",
+        cream: "#ede9db",
+        parchment: "#f4f1e6",
       },
       fontFamily: {
+        display: ["var(--font-cormorant)", "Georgia", "serif"],
+        body: ["var(--font-jost)", "sans-serif"],
         mono: [
           "ui-monospace",
           "Menlo",

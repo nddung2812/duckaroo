@@ -151,7 +151,7 @@ export default function MediaLightbox({ project, startIndex = 0, onClose }) {
         <button
           onClick={onClose}
           aria-label="Close"
-          className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+          className="absolute top-4 right-4 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-cream hover:text-amber-glow transition-colors"
         >
           <X className="w-6 h-6" />
         </button>
@@ -162,14 +162,14 @@ export default function MediaLightbox({ project, startIndex = 0, onClose }) {
             <button
               onClick={prevMedia}
               aria-label="Previous"
-              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+              className="absolute left-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-cream hover:text-amber-glow transition-colors"
             >
               <ChevronLeft className="w-6 h-6" />
             </button>
             <button
               onClick={nextMedia}
               aria-label="Next"
-              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-white transition-colors"
+              className="absolute right-4 top-1/2 -translate-y-1/2 z-10 p-2 bg-black/50 hover:bg-black/70 rounded-full text-cream hover:text-amber-glow transition-colors"
             >
               <ChevronRight className="w-6 h-6" />
             </button>
@@ -216,14 +216,14 @@ export default function MediaLightbox({ project, startIndex = 0, onClose }) {
         </div>
 
         {/* Info */}
-        <div className="bg-black/50 backdrop-blur-sm p-4 rounded-b-lg">
-          <h3 className="text-white font-semibold text-lg">{project.name}</h3>
-          <p className="text-white/70">
+        <div className="bg-black/50 backdrop-blur-sm p-4 rounded-b-2xl">
+          <h3 className="font-display text-parchment font-medium text-lg">{project.name}</h3>
+          <p className="text-cream/70">
             {current.type === "video" ? "📹 Video" : "📸 Image"}{" "}
             {currentMediaIndex + 1} of {count}
           </p>
           {count > 1 && (
-            <p className="text-white/50 text-xs mt-2">
+            <p className="text-cream/50 text-xs mt-2">
               Swipe, drag, or use arrow keys to navigate
             </p>
           )}

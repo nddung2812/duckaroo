@@ -22,25 +22,25 @@ import {
 
 function Phase({ title, icon: Icon, children, isOpen, onToggle }) {
     return (
-        <div className="mb-6 border border-gray-700 rounded-xl overflow-hidden bg-gray-800/40 backdrop-blur-sm transition-all duration-300 hover:border-gray-600">
+        <div className="mb-6 border border-cream/15 rounded-2xl overflow-hidden bg-cream/5 backdrop-blur-sm transition-all duration-300 hover:border-amber-glow/50">
             <button
                 onClick={onToggle}
-                className="w-full flex items-center justify-between p-6 text-left bg-gray-800/60 hover:bg-gray-700/60 transition-colors"
+                className="w-full flex items-center justify-between p-6 text-left bg-cream/5 hover:bg-cream/10 transition-colors"
             >
                 <div className="flex items-center gap-4">
-                    <div className="p-3 bg-blue-600/20 rounded-lg text-blue-400">
+                    <div className="p-3 bg-moss/60 rounded-lg text-amber-glow">
                         <Icon size={24} />
                     </div>
-                    <h2 className="text-xl md:text-2xl font-bold text-white">{title}</h2>
+                    <h2 className="font-display text-xl md:text-2xl font-medium text-parchment">{title}</h2>
                 </div>
-                {isOpen ? <ChevronUp className="text-gray-400" /> : <ChevronDown className="text-gray-400" />}
+                {isOpen ? <ChevronUp className="text-amber-glow" /> : <ChevronDown className="text-amber-glow" />}
             </button>
 
             <div
                 className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen ? "max-h-[2000px] opacity-100" : "max-h-0 opacity-0"
                     }`}
             >
-                <div className="p-6 border-t border-gray-700">
+                <div className="p-6 border-t border-cream/15">
                     {children}
                 </div>
             </div>
@@ -50,10 +50,10 @@ function Phase({ title, icon: Icon, children, isOpen, onToggle }) {
 
 function InfoCard({ title, children, type = "info" }) {
     const styles = {
-        info: "bg-blue-900/20 border-blue-800/50 text-blue-100",
+        info: "bg-moss/40 border-cream/15 text-cream/90",
         warning: "bg-yellow-900/20 border-yellow-800/50 text-yellow-100",
-        tip: "bg-green-900/20 border-green-800/50 text-green-100",
-        default: "bg-gray-800/50 border-gray-700 text-gray-200"
+        tip: "bg-moss/40 border-amber-glow/30 text-cream/90",
+        default: "bg-cream/5 border-cream/15 text-cream/80"
     };
 
     const icons = {
@@ -64,7 +64,7 @@ function InfoCard({ title, children, type = "info" }) {
     };
 
     return (
-        <div className={`p-4 rounded-lg border ${styles[type]} mb-4`}>
+        <div className={`p-4 rounded-2xl border ${styles[type]} mb-4`}>
             <div className="flex items-center gap-2 mb-2 font-semibold opacity-90">
                 {icons[type]}
                 <span>{title}</span>
@@ -78,21 +78,21 @@ function InfoCard({ title, children, type = "info" }) {
 
 function EquipmentCard({ title, icon: Icon, description, recommendation, link }) {
     return (
-        <div className="bg-gray-900/50 p-5 rounded-xl border border-gray-700 hover:border-blue-500/50 transition-all group">
+        <div className="bg-cream/5 p-5 rounded-2xl border border-cream/15 hover:border-amber-glow/50 transition-all group">
             <div className="flex items-start justify-between mb-3">
-                <div className="p-2 bg-gray-800 rounded-lg text-gray-300 group-hover:text-blue-400 transition-colors">
+                <div className="p-2 bg-moss/60 rounded-lg text-cream/75 group-hover:text-amber-glow transition-colors">
                     <Icon size={20} />
                 </div>
                 {link && (
-                    <Link href={link} target="_blank" className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1">
+                    <Link href={link} target="_blank" className="text-xs text-amber-glow hover:text-amber-glow/80 flex items-center gap-1">
                         Shop <ShoppingBag size={12} />
                     </Link>
                 )}
             </div>
-            <h3 className="font-bold text-white mb-2">{title}</h3>
-            <p className="text-sm text-gray-400 mb-3">{description}</p>
-            <div className="text-xs bg-blue-900/30 text-blue-200 p-2 rounded border border-blue-800/30">
-                <span className="font-semibold">Best Pick:</span> {recommendation}
+            <h3 className="font-display font-medium text-parchment mb-2">{title}</h3>
+            <p className="text-sm text-cream/60 mb-3">{description}</p>
+            <div className="text-xs bg-moss/60 text-cream/85 p-2 rounded border border-amber-glow/30">
+                <span className="font-semibold text-amber-glow">Best Pick:</span> {recommendation}
             </div>
         </div>
     );
@@ -100,7 +100,7 @@ function EquipmentCard({ title, icon: Icon, description, recommendation, link })
 
 function FeaturedProduct({ title, image, link, description }) {
     return (
-        <Link href={link} target="_blank" className="group block relative overflow-hidden rounded-xl border border-gray-700 hover:border-blue-500 transition-all">
+        <Link href={link} target="_blank" className="group block relative overflow-hidden rounded-2xl border border-cream/15 hover:border-amber-glow/50 transition-all">
             <div className="relative h-48 w-full">
                 <Image
                     src={image}
@@ -108,12 +108,12 @@ function FeaturedProduct({ title, image, link, description }) {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent opacity-80" />
+                <div className="absolute inset-0 bg-gradient-to-t from-abyss via-transparent to-transparent opacity-80" />
                 <div className="absolute bottom-0 left-0 p-4 w-full">
-                    <h3 className="text-lg font-bold text-white group-hover:text-blue-300 transition-colors flex items-center gap-2">
+                    <h3 className="font-display text-lg font-medium text-parchment group-hover:text-amber-glow transition-colors flex items-center gap-2">
                         {title} <ArrowRight size={16} className="opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                     </h3>
-                    <p className="text-xs text-gray-300 line-clamp-2">{description}</p>
+                    <p className="text-xs text-cream/80 line-clamp-2">{description}</p>
                 </div>
             </div>
         </Link>
@@ -131,10 +131,10 @@ export default function GuideContent() {
         <div className="max-w-4xl mx-auto px-4 py-12">
             {/* Intro Section */}
             <div className="text-center mb-16">
-                <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300 mb-6">
+                <h1 className="font-display text-4xl md:text-6xl font-medium text-amber-glow mb-6">
                     Your First Aquarium
                 </h1>
-                <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+                <p className="text-xl text-cream/75 max-w-2xl mx-auto leading-relaxed">
                     A simplified, step-by-step guide to building a thriving ecosystem.
                     No fluff, just what you need to know.
                 </p>
@@ -148,23 +148,23 @@ export default function GuideContent() {
                 onToggle={() => togglePhase(1)}
             >
                 <div className="space-y-6">
-                    <p className="text-gray-300">
+                    <p className="text-cream/75">
                         Before buying anything, you must understand the <strong>Nitrogen Cycle</strong>.
                         This is the biological engine of your aquarium.
                     </p>
 
                     <div className="grid md:grid-cols-3 gap-4">
-                        <div className="bg-gray-900/50 p-4 rounded-lg text-center border border-gray-700">
+                        <div className="bg-cream/5 p-4 rounded-2xl text-center border border-cream/15">
                             <div className="text-red-400 font-bold mb-2">1. Ammonia</div>
-                            <p className="text-xs text-gray-400">Fish waste & food creates toxic Ammonia.</p>
+                            <p className="text-xs text-cream/60">Fish waste & food creates toxic Ammonia.</p>
                         </div>
-                        <div className="bg-gray-900/50 p-4 rounded-lg text-center border border-gray-700">
+                        <div className="bg-cream/5 p-4 rounded-2xl text-center border border-cream/15">
                             <div className="text-yellow-400 font-bold mb-2">2. Nitrite</div>
-                            <p className="text-xs text-gray-400">Bacteria converts Ammonia to Nitrite (still toxic).</p>
+                            <p className="text-xs text-cream/60">Bacteria converts Ammonia to Nitrite (still toxic).</p>
                         </div>
-                        <div className="bg-gray-900/50 p-4 rounded-lg text-center border border-gray-700">
+                        <div className="bg-cream/5 p-4 rounded-2xl text-center border border-cream/15">
                             <div className="text-green-400 font-bold mb-2">3. Nitrate</div>
-                            <p className="text-xs text-gray-400">More bacteria converts Nitrite to Nitrate (safe in low levels).</p>
+                            <p className="text-xs text-cream/60">More bacteria converts Nitrite to Nitrate (safe in low levels).</p>
                         </div>
                     </div>
 
@@ -175,7 +175,7 @@ export default function GuideContent() {
                     <div className="flex justify-center mt-4">
                         <Link
                             href="https://duckaroo.com.au/collections/accessories"
-                            className="inline-flex items-center gap-2 px-5 py-2.5 bg-blue-600/20 text-blue-300 rounded-full hover:bg-blue-600/30 transition-colors border border-blue-500/30 text-sm font-medium"
+                            className="inline-flex items-center gap-2 px-5 py-2.5 border border-cream/30 text-cream/90 rounded-full bg-transparent hover:border-cream/60 hover:bg-cream/5 transition-colors text-[13px] uppercase tracking-[0.14em] font-medium"
                         >
                             <ShoppingBag size={16} /> Shop Water Testing Kits
                         </Link>
@@ -244,35 +244,35 @@ export default function GuideContent() {
                 onToggle={() => togglePhase(3)}
             >
                 <div className="space-y-8">
-                    <div className="relative border-l-2 border-blue-500/30 pl-8 space-y-8">
+                    <div className="relative border-l-2 border-amber-glow/30 pl-8 space-y-8">
                         <div className="relative">
-                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">1</span>
-                            <h3 className="text-lg font-bold text-white mb-2">Prep & Position</h3>
-                            <p className="text-gray-400 text-sm">Place tank on a level stand. Rinse substrate (sand/gravel) thoroughly until water runs clear.</p>
+                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-amber-glow text-xs font-bold text-[#04121b]">1</span>
+                            <h3 className="font-display text-lg font-medium text-parchment mb-2">Prep & Position</h3>
+                            <p className="text-cream/60 text-sm">Place tank on a level stand. Rinse substrate (sand/gravel) thoroughly until water runs clear.</p>
                         </div>
                         <div className="relative">
-                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">2</span>
-                            <h3 className="text-lg font-bold text-white mb-2">Hardscape & Planting</h3>
-                            <p className="text-gray-400 text-sm">Add rocks, wood, and plants. <span className="text-blue-300">Epiphytes</span> like Anubias and Java Fern are best for beginners—glue or tie them to rocks, don&apos;t bury them!</p>
+                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-amber-glow text-xs font-bold text-[#04121b]">2</span>
+                            <h3 className="font-display text-lg font-medium text-parchment mb-2">Hardscape & Planting</h3>
+                            <p className="text-cream/60 text-sm">Add rocks, wood, and plants. <span className="text-amber-glow">Epiphytes</span> like Anubias and Java Fern are best for beginners—glue or tie them to rocks, don&apos;t bury them!</p>
                         </div>
                         <div className="relative">
-                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">3</span>
-                            <h3 className="text-lg font-bold text-white mb-2">Fill & Dechlorinate</h3>
-                            <p className="text-gray-400 text-sm">Fill with water (use a plate to prevent disturbing sand). Add <strong>Dechlorinator</strong> immediately.</p>
+                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-amber-glow text-xs font-bold text-[#04121b]">3</span>
+                            <h3 className="font-display text-lg font-medium text-parchment mb-2">Fill & Dechlorinate</h3>
+                            <p className="text-cream/60 text-sm">Fill with water (use a plate to prevent disturbing sand). Add <strong>Dechlorinator</strong> immediately.</p>
                         </div>
                         <div className="relative">
-                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">4</span>
-                            <h3 className="text-lg font-bold text-white mb-2">Start the Cycle</h3>
-                            <p className="text-gray-400 text-sm">Turn on filter and heater. Add an ammonia source (fish food or pure ammonia). Wait 4-8 weeks or use seeded media.</p>
+                            <span className="absolute -left-[41px] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-amber-glow text-xs font-bold text-[#04121b]">4</span>
+                            <h3 className="font-display text-lg font-medium text-parchment mb-2">Start the Cycle</h3>
+                            <p className="text-cream/60 text-sm">Turn on filter and heater. Add an ammonia source (fish food or pure ammonia). Wait 4-8 weeks or use seeded media.</p>
                         </div>
                     </div>
 
-                    <div className="bg-gray-800/40 p-6 rounded-xl border border-gray-700 text-center">
-                        <h4 className="text-white font-bold mb-3">Need Plants?</h4>
-                        <p className="text-sm text-gray-400 mb-4">Live plants help filter your water and make fish feel safe.</p>
+                    <div className="bg-cream/5 p-6 rounded-2xl border border-cream/15 text-center">
+                        <h4 className="font-display font-medium text-parchment mb-3">Need Plants?</h4>
+                        <p className="text-sm text-cream/60 mb-4">Live plants help filter your water and make fish feel safe.</p>
                         <Link
                             href="/products"
-                            className="inline-flex items-center gap-2 px-6 py-2 bg-green-700 hover:bg-green-600 text-white rounded-lg transition-colors text-sm font-semibold"
+                            className="inline-flex items-center gap-2 px-6 py-2.5 bg-amber-glow text-[#04121b] rounded-full transition-shadow text-[13px] uppercase tracking-[0.14em] font-medium hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
                         >
                             Shop Beginner Plants <ArrowRight size={16} />
                         </Link>
@@ -288,35 +288,35 @@ export default function GuideContent() {
                 onToggle={() => togglePhase(4)}
             >
                 <div className="space-y-6">
-                    <p className="text-gray-300">
+                    <p className="text-cream/75">
                         Once your test kit shows <strong>0 Ammonia, 0 Nitrite, and some Nitrates</strong>, you are cycled!
                     </p>
 
                     <div className="grid md:grid-cols-2 gap-6">
-                        <div className="bg-gray-800/50 p-5 rounded-xl border border-gray-700">
-                            <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-                                <Fish size={18} className="text-pink-400" /> Beginner Stars
+                        <div className="bg-cream/5 p-5 rounded-2xl border border-cream/15">
+                            <h3 className="font-display font-medium text-parchment mb-3 flex items-center gap-2">
+                                <Fish size={18} className="text-amber-glow" /> Beginner Stars
                             </h3>
-                            <ul className="space-y-2 text-sm text-gray-300">
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Betta Fish (Solo)</li>
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Guppies or Endlers</li>
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> Cherry Shrimp</li>
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-400" /> White Cloud Minnows</li>
+                            <ul className="space-y-2 text-sm text-cream/75">
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-glow" /> Betta Fish (Solo)</li>
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-glow" /> Guppies or Endlers</li>
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-glow" /> Cherry Shrimp</li>
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-glow" /> White Cloud Minnows</li>
                             </ul>
-                            <Link href="https://duckaroo.com.au/collections/aquarium-shrimp" className="inline-block mt-4 text-xs text-blue-400 hover:text-blue-300">
+                            <Link href="https://duckaroo.com.au/collections/aquarium-shrimp" className="inline-block mt-4 text-xs text-amber-glow hover:text-amber-glow/80">
                                 Browse Live Stock →
                             </Link>
                         </div>
 
-                        <div className="bg-gray-800/50 p-5 rounded-xl border border-gray-700">
-                            <h3 className="font-bold text-white mb-3 flex items-center gap-2">
-                                <CheckCircle2 size={18} className="text-green-400" /> Weekly Routine
+                        <div className="bg-cream/5 p-5 rounded-2xl border border-cream/15">
+                            <h3 className="font-display font-medium text-parchment mb-3 flex items-center gap-2">
+                                <CheckCircle2 size={18} className="text-amber-glow" /> Weekly Routine
                             </h3>
-                            <ul className="space-y-2 text-sm text-gray-300">
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-gray-500" /> Change 20-30% of water</li>
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-gray-500" /> Test water parameters</li>
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-gray-500" /> Rinse filter sponge in tank water</li>
-                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-gray-500" /> Scrape glass algae</li>
+                            <ul className="space-y-2 text-sm text-cream/75">
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cream/40" /> Change 20-30% of water</li>
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cream/40" /> Test water parameters</li>
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cream/40" /> Rinse filter sponge in tank water</li>
+                                <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-cream/40" /> Scrape glass algae</li>
                             </ul>
                         </div>
                     </div>
@@ -333,23 +333,23 @@ export default function GuideContent() {
             </Phase>
 
             {/* Call to Action */}
-            <div className="mt-12 p-8 bg-gradient-to-br from-blue-900/40 to-purple-900/40 rounded-2xl border border-blue-800/30 text-center relative overflow-hidden">
+            <div className="mt-12 p-8 bg-moss/40 rounded-2xl border border-cream/15 text-center relative overflow-hidden">
                 <div className="absolute inset-0 bg-[url('https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto,w_1200,h_600,c_fill/v1757335537/bucephalandra_bush_oyiznj')] opacity-10 bg-cover bg-center" />
                 <div className="relative z-10">
-                    <h2 className="text-2xl font-bold text-white mb-4">Ready to Dive In?</h2>
-                    <p className="text-gray-300 mb-6 max-w-lg mx-auto">
+                    <h2 className="font-display text-2xl font-medium text-parchment mb-4">Ready to Dive In?</h2>
+                    <p className="text-cream/75 mb-6 max-w-lg mx-auto">
                         The key to a successful aquarium is patience. Take your time, test your water, and enjoy the process of creating a world.
                     </p>
                     <div className="flex flex-wrap justify-center gap-4">
                         <Link
                             href="/products"
-                            className="px-6 py-3 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-blue-900/20"
+                            className="px-6 py-3 bg-amber-glow text-[#04121b] font-medium rounded-full transition-shadow text-[13px] uppercase tracking-[0.14em] hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
                         >
                             Shop Equipment
                         </Link>
                         <Link
                             href="https://duckaroo.com.au/collections/aquarium-shrimp"
-                            className="px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-gray-900/20"
+                            className="px-6 py-3 border border-cream/30 text-cream/90 rounded-full bg-transparent hover:border-cream/60 hover:bg-cream/5 transition-colors text-[13px] uppercase tracking-[0.14em] font-medium"
                         >
                             Browse Fish & Shrimp
                         </Link>

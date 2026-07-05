@@ -7,22 +7,22 @@ import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 
 const TYPE_LABELS = {
-  "Parasitic (Ciliate Protozoan)": { label: "Parasitic", color: "text-amber-400" },
-  "Parasitic (Dinoflagellate)": { label: "Parasitic", color: "text-amber-400" },
-  "Parasitic (Microsporidian)": { label: "Parasitic", color: "text-amber-400" },
-  "Parasitic": { label: "Parasitic", color: "text-amber-400" },
-  "Bacterial": { label: "Bacterial", color: "text-blue-400" },
-  "Bacterial/Physical": { label: "Bacterial", color: "text-blue-400" },
-  "Viral": { label: "Viral", color: "text-red-400" },
-  "Fungal": { label: "Fungal", color: "text-purple-400" },
-  "Environmental": { label: "Environmental", color: "text-slate-400" },
-  "Environmental/Nutritional": { label: "Environmental", color: "text-slate-400" },
+  "Parasitic (Ciliate Protozoan)": { label: "Parasitic", color: "text-amber-glow" },
+  "Parasitic (Dinoflagellate)": { label: "Parasitic", color: "text-amber-glow" },
+  "Parasitic (Microsporidian)": { label: "Parasitic", color: "text-amber-glow" },
+  "Parasitic": { label: "Parasitic", color: "text-amber-glow" },
+  "Bacterial": { label: "Bacterial", color: "text-amber-glow" },
+  "Bacterial/Physical": { label: "Bacterial", color: "text-amber-glow" },
+  "Viral": { label: "Viral", color: "text-amber-glow" },
+  "Fungal": { label: "Fungal", color: "text-amber-glow" },
+  "Environmental": { label: "Environmental", color: "text-amber-glow" },
+  "Environmental/Nutritional": { label: "Environmental", color: "text-amber-glow" },
 };
 
 const TANK_COLORS = {
-  Freshwater: "text-cyan-400",
-  Marine: "text-blue-300",
-  Both: "text-emerald-400",
+  Freshwater: "text-cream/75",
+  Marine: "text-cream/75",
+  Both: "text-cream/75",
 };
 
 const getTankTypeLabel = (tankType) => {
@@ -61,12 +61,12 @@ export default function DiseasesClientWrapper({ diseases }) {
         {/* Filter & Search */}
         <div className="flex flex-col sm:flex-row gap-3 mb-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-cream/50 w-4 h-4" />
             <Input
               placeholder="Search diseases..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-9 bg-white/5 border-white/15 text-white placeholder:text-white/40 focus:border-emerald-500/50"
+              className="pl-9 bg-cream/5 border-cream/20 text-cream placeholder:text-cream/40 focus:border-amber-glow/50"
             />
           </div>
           <div className="flex gap-2">
@@ -78,8 +78,8 @@ export default function DiseasesClientWrapper({ diseases }) {
                 variant={activeFilter === filter ? "default" : "outline"}
                 className={
                   activeFilter === filter
-                    ? "bg-emerald-600 hover:bg-emerald-700 border-emerald-600"
-                    : "border-white/20 text-white hover:border-white/40"
+                    ? "rounded-full bg-amber-glow text-[#04121b] border-amber-glow hover:bg-amber-glow/90"
+                    : "rounded-full border border-cream/30 text-cream/90 bg-transparent hover:border-cream/60 hover:bg-cream/5"
                 }
               >
                 {filter}
@@ -88,18 +88,18 @@ export default function DiseasesClientWrapper({ diseases }) {
           </div>
         </div>
 
-        <p className="text-white/35 text-xs mb-8">
+        <p className="text-cream/50 text-xs mb-8">
           {filtered.length} of {diseases.length} diseases
         </p>
 
         {/* Disease List */}
         {filtered.length === 0 ? (
-          <p className="text-white/50 py-8 text-center">No diseases match that filter.</p>
+          <p className="text-cream/60 py-8 text-center">No diseases match that filter.</p>
         ) : (
-          <div className="divide-y divide-white/10">
+          <div className="divide-y divide-cream/15">
             {filtered.map((disease) => {
-              const typeInfo = TYPE_LABELS[disease.disease_type] || { label: disease.disease_type, color: "text-slate-400" };
-              const tankColor = TANK_COLORS[disease.tank_type] || "text-slate-400";
+              const typeInfo = TYPE_LABELS[disease.disease_type] || { label: disease.disease_type, color: "text-amber-glow" };
+              const tankColor = TANK_COLORS[disease.tank_type] || "text-cream/75";
               const preview = disease.blog_paragraph
                 ? disease.blog_paragraph.length > 200
                   ? disease.blog_paragraph.slice(0, 200) + "…"
@@ -109,38 +109,38 @@ export default function DiseasesClientWrapper({ diseases }) {
               return (
                 <article key={disease.id} className="py-6 group">
                   <div className="flex items-center gap-3 mb-1.5 text-xs">
-                    <span className={`font-medium ${typeInfo.color}`}>{typeInfo.label}</span>
-                    <span className="text-white/20">·</span>
+                    <span className={`font-medium uppercase tracking-[0.14em] ${typeInfo.color}`}>{typeInfo.label}</span>
+                    <span className="text-cream/30">·</span>
                     <span className={`${tankColor}`}>{getTankTypeLabel(disease.tank_type)}</span>
                     {disease.contagious?.startsWith("Yes") && (
                       <>
-                        <span className="text-white/20">·</span>
-                        <span className="text-red-400">Contagious</span>
+                        <span className="text-cream/30">·</span>
+                        <span className="text-red-300">Contagious</span>
                       </>
                     )}
                     {disease.notifiable_in_australia && (
                       <>
-                        <span className="text-white/20">·</span>
+                        <span className="text-cream/30">·</span>
                         <span className="text-red-300 font-medium">Notifiable</span>
                       </>
                     )}
                     {disease.zoonotic && (
                       <>
-                        <span className="text-white/20">·</span>
-                        <span className="text-orange-400">Zoonotic</span>
+                        <span className="text-cream/30">·</span>
+                        <span className="text-orange-300">Zoonotic</span>
                       </>
                     )}
                   </div>
-                  <h2 className="text-lg font-semibold text-white group-hover:text-emerald-300 transition-colors leading-snug">
+                  <h2 className="text-xl font-display font-medium text-parchment group-hover:text-amber-glow transition-colors leading-snug">
                     <Link href={`/common-aquarium-diseases/${disease.slug}`}>
                       {disease.disease_name}
                     </Link>
                   </h2>
                   {disease.common_names && (
-                    <p className="text-white/45 text-sm mt-0.5 italic">{disease.common_names}</p>
+                    <p className="text-cream/60 text-sm mt-0.5 italic">{disease.common_names}</p>
                   )}
                   {preview && (
-                    <p className="text-white/60 text-sm leading-relaxed mt-2 line-clamp-2">{preview}</p>
+                    <p className="text-cream/75 text-sm leading-relaxed mt-2 line-clamp-2">{preview}</p>
                   )}
 
                   {/* Image Grid */}
@@ -152,7 +152,7 @@ export default function DiseasesClientWrapper({ diseases }) {
                           href={image.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="group relative overflow-hidden rounded bg-white/5 border border-white/10 hover:border-emerald-500/40 transition-all"
+                          className="group relative overflow-hidden rounded-xl bg-cream/5 border border-cream/15 hover:border-amber-glow/50 transition-all"
                         >
                           <img
                             src={image.url}
@@ -162,8 +162,8 @@ export default function DiseasesClientWrapper({ diseases }) {
                         </a>
                       ))}
                       {disease.images.length > 3 && (
-                        <div className="relative overflow-hidden rounded bg-white/5 border border-white/10 flex items-center justify-center">
-                          <span className="text-white/70 text-sm font-medium">+{disease.images.length - 3} more</span>
+                        <div className="relative overflow-hidden rounded-xl bg-cream/5 border border-cream/15 flex items-center justify-center">
+                          <span className="text-cream/75 text-sm font-medium">+{disease.images.length - 3} more</span>
                         </div>
                       )}
                     </div>
@@ -171,7 +171,7 @@ export default function DiseasesClientWrapper({ diseases }) {
 
                   <Link
                     href={`/common-aquarium-diseases/${disease.slug}`}
-                    className="inline-block mt-3 text-emerald-400 hover:text-emerald-300 text-sm font-medium transition-colors"
+                    className="inline-block mt-3 text-amber-glow hover:text-amber-glow/80 text-xs font-medium uppercase tracking-[0.14em] transition-colors"
                   >
                     View guide →
                   </Link>

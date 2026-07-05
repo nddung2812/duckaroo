@@ -93,17 +93,17 @@ export default function ProductGrid({ products, onAddToCart }) {
   const getCategoryBadgeColor = (category) => {
     switch (category) {
       case "plants":
-        return "bg-green-100 text-green-800 hover:bg-green-200";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow hover:bg-moss/80";
       case "livestock":
-        return "bg-teal-100 text-teal-800 hover:bg-teal-200";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow hover:bg-moss/80";
       case "probiotics":
-        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow hover:bg-moss/80";
       case "accessories":
-        return "bg-purple-100 text-purple-800 hover:bg-purple-200";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow hover:bg-moss/80";
       case "equipment":
-        return "bg-orange-100 text-orange-800 hover:bg-orange-200";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow hover:bg-moss/80";
       default:
-        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
+        return "bg-moss/60 border border-cream/20 text-cream/75 hover:bg-moss/80";
     }
   };
 
@@ -116,10 +116,10 @@ export default function ProductGrid({ products, onAddToCart }) {
   if (products.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="text-gray-500 text-lg">
+        <div className="text-cream/70 text-lg">
           No products found matching your criteria
         </div>
-        <p className="text-gray-400 mt-2">
+        <p className="text-cream/50 mt-2">
           Try adjusting your search or filter options
         </p>
       </div>
@@ -132,10 +132,10 @@ export default function ProductGrid({ products, onAddToCart }) {
         {products.map((product) => (
           <Card
             key={product.id}
-            className="group flex h-full flex-col hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
+            className="group flex h-full flex-col rounded-2xl bg-cream/5 border-cream/15 backdrop-blur-sm hover:border-amber-glow/50 hover:-translate-y-1 hover:shadow-lg transition-all duration-300"
           >
             <CardHeader className="p-0">
-              <div className="relative overflow-hidden rounded-t-lg">
+              <div className="relative overflow-hidden rounded-t-2xl">
                 <Link href={`/products/${product.slug}`}>
                   <Image
                     src={
@@ -159,13 +159,13 @@ export default function ProductGrid({ products, onAddToCart }) {
                   {product.category}
                 </Badge>
                 {product.stock < 10 && (
-                  <Badge className="absolute top-2 left-2 bg-red-100 text-red-800">
+                  <Badge className="absolute top-2 left-2 bg-red-950/30 border border-red-800/40 text-red-300">
                     Low Stock
                   </Badge>
                 )}
                 {getBuyerAwareWarning(product) && (
                   <Badge
-                    className="absolute bottom-2 left-2 bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1"
+                    className="absolute bottom-2 left-2 bg-amber-950/40 text-amber-glow border border-amber-glow/40 flex items-center gap-1"
                     title={getBuyerAwareWarning(product).shortMessage}
                   >
                     <AlertTriangle className="w-3 h-3" />
@@ -177,18 +177,18 @@ export default function ProductGrid({ products, onAddToCart }) {
 
             <CardContent className="flex flex-1 flex-col p-4">
               <Link href={`/products/${product.slug}`}>
-                <CardTitle className="text-lg font-semibold mb-2 line-clamp-2 hover:text-blue-600 transition-colors cursor-pointer">
+                <CardTitle className="font-display text-lg font-medium text-parchment mb-2 line-clamp-2 hover:text-amber-glow transition-colors cursor-pointer">
                   {product.name}
                 </CardTitle>
               </Link>
-              <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+              <p className="text-cream/70 text-sm mb-3 line-clamp-2">
                 {stripHtml(product.description)}
               </p>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl font-bold text-blue-600">
+                <span className="text-2xl font-bold text-amber-glow">
                   {formatPrice(product.price)}
                 </span>
-                <div className="flex items-center text-yellow-500">
+                <div className="flex items-center text-yellow-400">
                   <Star className="w-4 h-4 fill-current" />
                   <Star className="w-4 h-4 fill-current" />
                   <Star className="w-4 h-4 fill-current" />
@@ -196,7 +196,7 @@ export default function ProductGrid({ products, onAddToCart }) {
                   <Star className="w-4 h-4 fill-current" />
                 </div>
               </div>
-              <div className="mt-auto text-sm text-gray-500">
+              <div className="mt-auto text-sm text-cream/60">
                 {(() => {
                   const currentCartQuantity = isClient
                     ? getCartItemQuantity(product.id)
@@ -207,21 +207,21 @@ export default function ProductGrid({ products, onAddToCart }) {
 
                   return (
                     <div className="flex justify-between items-center">
-                      <div className="text-blue-600">
+                      <div className="text-amber-glow">
                         In Cart: {currentCartQuantity}
                       </div>
                       <div className="text-right">
                         <span
                           className={
                             availableStock > 0
-                              ? "text-green-600"
-                              : "text-red-600"
+                              ? "text-green-300"
+                              : "text-red-300"
                           }
                         >
                           Available: {availableStock}
                         </span>
                         {isAtMaxStock && (
-                          <span className="text-red-600 ml-1 block">
+                          <span className="text-red-300 ml-1 block">
                             {product.stock === 0 ? "Out of Stock" : "(Max reached)"}
                           </span>
                         )}
@@ -238,7 +238,7 @@ export default function ProductGrid({ products, onAddToCart }) {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="flex-1 bg-white text-gray-900 border-gray-300 hover:bg-gray-50 hover:text-gray-900"
+                  className="flex-1 rounded-full border border-cream/30 bg-transparent text-cream/90 hover:border-cream/60 hover:bg-cream/5 hover:text-cream"
                   onClick={() => handleQuickView(product)}
                 >
                   <Eye className="w-4 h-4 mr-1" />
@@ -246,7 +246,7 @@ export default function ProductGrid({ products, onAddToCart }) {
                 </Button>
                 <Button
                   size="sm"
-                  className="flex-1"
+                  className="flex-1 rounded-full bg-amber-glow text-[#04121b] font-medium hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
                   onClick={() => handleAddToCart(product)}
                   disabled={!canAddToCart(product)}
                 >
@@ -259,7 +259,7 @@ export default function ProductGrid({ products, onAddToCart }) {
                 <Link href={`/products/${product.slug}`}>
                   <Button
                     size="sm"
-                    className="w-full bg-green-600 text-white hover:bg-green-700 border-none"
+                    className="w-full rounded-full border border-cream/30 bg-transparent text-cream/90 shadow-none hover:border-cream/60 hover:bg-cream/5 hover:text-cream text-[13px] uppercase tracking-[0.14em]"
                   >
                     <ExternalLink className="w-4 h-4 mr-2" />
                     View Full Details

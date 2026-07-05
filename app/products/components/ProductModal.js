@@ -88,17 +88,17 @@ export default function ProductModal({
   const getCategoryBadgeColor = (category) => {
     switch (category) {
       case "plants":
-        return "bg-green-100 text-green-800";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow";
       case "livestock":
-        return "bg-teal-100 text-teal-800";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow";
       case "probiotics":
-        return "bg-blue-100 text-blue-800";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow";
       case "accessories":
-        return "bg-purple-100 text-purple-800";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow";
       case "equipment":
-        return "bg-orange-100 text-orange-800";
+        return "bg-moss/60 border border-amber-glow/40 text-amber-glow";
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-moss/60 border border-cream/20 text-cream/75";
     }
   };
 
@@ -113,9 +113,9 @@ export default function ProductModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-white text-gray-900">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl bg-ink/95 backdrop-blur-md border border-cream/15 text-cream">
         <DialogHeader>
-          <DialogTitle className="text-2xl font-bold text-gray-900">
+          <DialogTitle className="font-display text-2xl font-medium text-parchment">
             {product.name}
           </DialogTitle>
         </DialogHeader>
@@ -146,7 +146,7 @@ export default function ProductModal({
                 {product.category}
               </Badge>
               {product.stock < 10 && (
-                <Badge className="absolute top-4 right-4 bg-red-100 text-red-800">
+                <Badge className="absolute top-4 right-4 bg-red-950/30 border border-red-800/40 text-red-300">
                   Low Stock
                 </Badge>
               )}
@@ -160,8 +160,8 @@ export default function ProductModal({
                     key={index}
                     onClick={() => handleImageSelect(index)}
                     className={`relative overflow-hidden rounded-md border-2 transition-all duration-200 ${selectedImageIndex === index
-                        ? "border-blue-500 ring-2 ring-blue-200"
-                        : "border-gray-200 hover:border-gray-300"
+                        ? "border-amber-glow ring-2 ring-amber-glow/40"
+                        : "border-cream/20 hover:border-cream/40"
                       }`}
                   >
                     <Image
@@ -178,8 +178,8 @@ export default function ProductModal({
                       }}
                     />
                     {selectedImageIndex === index && (
-                      <div className="absolute inset-0 bg-blue-500 bg-opacity-20 flex items-center justify-center">
-                        <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                      <div className="absolute inset-0 bg-amber-glow/20 flex items-center justify-center">
+                        <div className="w-3 h-3 bg-amber-glow rounded-full"></div>
                       </div>
                     )}
                   </button>
@@ -192,14 +192,14 @@ export default function ProductModal({
           <div className="space-y-6">
             {/* Price and Rating */}
             <div className="flex items-center justify-between">
-              <div className="text-3xl font-bold text-blue-600">
+              <div className="text-3xl font-bold text-amber-glow">
                 {formatPrice(product.price)}
               </div>
-              <div className="flex items-center text-yellow-500">
+              <div className="flex items-center text-yellow-400">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="w-5 h-5 fill-current" />
                 ))}
-                <span className="ml-2 text-gray-600">(4.8)</span>
+                <span className="ml-2 text-cream/70">(4.8)</span>
               </div>
             </div>
 
@@ -210,7 +210,7 @@ export default function ProductModal({
                   }`}
               ></div>
               <span
-                className={`font-medium ${product.stock > 0 ? "text-green-600" : "text-red-600"
+                className={`font-medium ${product.stock > 0 ? "text-green-300" : "text-red-300"
                   }`}
               >
                 {product.stock > 0
@@ -226,14 +226,14 @@ export default function ProductModal({
               return (
                 <div
                   role="alert"
-                  className="rounded-lg border border-amber-300 bg-amber-50 p-3 flex gap-2"
+                  className="rounded-2xl border border-amber-glow/40 bg-amber-950/40 p-3 flex gap-2"
                 >
-                  <AlertTriangle className="w-4 h-4 text-amber-700 flex-shrink-0 mt-0.5" />
+                  <AlertTriangle className="w-4 h-4 text-amber-glow flex-shrink-0 mt-0.5" />
                   <div className="text-sm">
-                    <p className="font-semibold text-amber-900 mb-0.5">
+                    <p className="font-semibold text-amber-glow mb-0.5">
                       {warning.title}
                     </p>
-                    <p className="text-amber-900 leading-relaxed">
+                    <p className="text-cream/80 leading-relaxed">
                       {warning.fullMessage}
                     </p>
                   </div>
@@ -246,11 +246,11 @@ export default function ProductModal({
               const currentCartQuantity = getCartItemQuantity(product.id);
               if (currentCartQuantity > 0) {
                 return (
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-                    <div className="text-sm text-blue-800">
+                  <div className="bg-moss/40 border border-cream/15 rounded-2xl p-3">
+                    <div className="text-sm text-cream/80">
                       <strong>In cart:</strong> {currentCartQuantity}
                       {currentCartQuantity >= product.stock && (
-                        <span className="text-red-600 ml-2">
+                        <span className="text-red-300 ml-2">
                           (Maximum stock reached)
                         </span>
                       )}
@@ -263,25 +263,25 @@ export default function ProductModal({
 
             {/* Description */}
             <div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-900">
+              <h3 className="font-display text-lg font-medium mb-2 text-parchment">
                 Description
               </h3>
               <div
-                className="text-gray-600 leading-relaxed product-description"
+                className="text-cream/70 leading-relaxed product-description"
                 dangerouslySetInnerHTML={{ __html: product.description }}
               />
             </div>
 
             {/* Features */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-900">
+              <h3 className="font-display text-lg font-medium mb-3 text-parchment">
                 Key Features
               </h3>
               <ul className="space-y-2">
                 {product.features.map((feature, index) => (
                   <li key={index} className="flex items-center space-x-2">
-                    <Check className="w-4 h-4 text-green-500" />
-                    <span className="text-gray-600">{feature}</span>
+                    <Check className="w-4 h-4 text-green-300" />
+                    <span className="text-cream/70">{feature}</span>
                   </li>
                 ))}
               </ul>
@@ -289,16 +289,16 @@ export default function ProductModal({
 
             {/* Specifications */}
             <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-900">
+              <h3 className="font-display text-lg font-medium mb-3 text-parchment">
                 Specifications
               </h3>
-              <div className="bg-gray-50 rounded-lg p-4">
+              <div className="bg-cream/5 border border-cream/10 rounded-2xl p-4">
                 <dl className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {Object.entries(product.specifications).map(
                     ([key, value]) => (
                       <div key={key}>
-                        <dt className="font-medium text-gray-900">{key}:</dt>
-                        <dd className="text-gray-600">{value}</dd>
+                        <dt className="font-medium text-cream/90">{key}:</dt>
+                        <dd className="text-cream/60">{value}</dd>
                       </div>
                     )
                   )}
@@ -311,7 +311,7 @@ export default function ProductModal({
               <Button
                 onClick={handleAddToCart}
                 disabled={!canAddToCart()}
-                className="w-full py-3 text-lg"
+                className="w-full py-3 rounded-full bg-amber-glow text-[#04121b] text-[13px] uppercase tracking-[0.14em] font-medium hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
                 size="lg"
               >
                 <ShoppingCart className="w-5 h-5 mr-2" />

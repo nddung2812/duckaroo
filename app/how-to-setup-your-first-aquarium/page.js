@@ -1,5 +1,6 @@
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import PageAmbience from "../components/PageAmbience";
 import Banner from "./components/Banner";
 import GuideContent from "./components/GuideContent";
 
@@ -66,7 +67,9 @@ export default function AquariumGuidePage() {
 
       <Navbar />
 
-      <main className="min-h-screen bg-gray-900 text-gray-100">
+      <PageAmbience />
+
+      <main className="min-h-screen relative z-10 text-cream">
         <Banner />
         <GuideContent />
       </main>

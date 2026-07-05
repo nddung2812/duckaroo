@@ -52,7 +52,7 @@ export default function ShareButton({ blog }) {
       onClick={handleShare}
       variant="outline"
       size="sm"
-      className="flex items-center gap-2 bg-white/5 hover:bg-white/10 text-white/80 hover:text-white border border-white/20 hover:border-white/30 transition-all duration-200"
+      className="flex items-center gap-2 rounded-full bg-transparent hover:bg-cream/5 text-cream/90 hover:text-cream border border-cream/30 hover:border-cream/60 transition-all duration-200"
     >
       {copied ? (
         <>

@@ -1,6 +1,7 @@
 import { getAllDiseases } from "@/lib/diseases";
 import { getDiseaseImages } from "@/lib/cloudinary";
 import Layout from "@/app/components/Layout";
+import PageAmbience from "../components/PageAmbience";
 import DiseasesClientWrapper from "./DiseasesClientWrapper";
 import { Badge } from "@/components/ui/badge";
 
@@ -69,25 +70,28 @@ export default async function CommonAquariumDiseasesPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
       />
-      <Layout className="bg-gradient-to-br from-slate-950 via-slate-900 to-black">
-        <section className="pt-24 pb-12 px-4">
-          <div className="max-w-7xl mx-auto text-center mb-12">
-            <Badge variant="outline" className="mb-4 bg-emerald-500/20 border-emerald-500/50 text-emerald-300">
-              Fish Health Guide
-            </Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">
-                Common Aquarium Diseases
-              </span>
-            </h1>
-            <p className="text-white/70 text-lg max-w-2xl mx-auto">
-              A comprehensive guide to 30 freshwater and marine fish diseases found in Australian aquariums.
-              Identify symptoms, discover Australian-available treatments, and prevent outbreaks in your tank.
-            </p>
-          </div>
-        </section>
+      <Layout>
+        <PageAmbience />
+        <div className="relative z-10">
+          <section className="pt-24 pb-12 px-4">
+            <div className="max-w-7xl mx-auto text-center mb-12">
+              <Badge variant="outline" className="mb-4 rounded-full bg-moss/60 border-amber-glow/40 text-amber-glow">
+                Fish Health Guide
+              </Badge>
+              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium mb-6 [text-wrap:balance]">
+                <span className="text-parchment">
+                  Common Aquarium Diseases
+                </span>
+              </h1>
+              <p className="text-cream/75 text-lg max-w-2xl mx-auto">
+                A comprehensive guide to 30 freshwater and marine fish diseases found in Australian aquariums.
+                Identify symptoms, discover Australian-available treatments, and prevent outbreaks in your tank.
+              </p>
+            </div>
+          </section>
 
-        <DiseasesClientWrapper diseases={diseasesWithImages} />
+          <DiseasesClientWrapper diseases={diseasesWithImages} />
+        </div>
       </Layout>
     </>
   );

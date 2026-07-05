@@ -73,16 +73,16 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="w-full bg-slate-950/95 backdrop-blur-md border-t border-white/10 text-white">
+    <footer className="w-full bg-abyss border-t border-cream/10 text-cream">
       <div className="max-w-[2560px] mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-8">
           {/* Company Info */}
           <div className="lg:col-span-1">
-            <h3 className="text-xl font-bold mb-4 text-emerald-400">
+            <h3 className="text-2xl font-display font-semibold tracking-[0.14em] uppercase mb-4 text-parchment">
               Aquatic Swan Design
             </h3>
-            <p className="text-white/70 mb-4 leading-relaxed">
+            <p className="text-cream/65 mb-4 leading-relaxed">
               Creating stunning aquatic landscapes that bring the tranquility
               and beauty of nature into your space.
             </p>
@@ -93,7 +93,7 @@ const Footer = () => {
                   asChild
                   variant="ghost"
                   size="icon"
-                  className="text-white/70 hover:text-purple-400 hover:bg-white/10"
+                  className="text-cream/65 hover:text-amber-glow hover:bg-cream/10 rounded-full"
                 >
                   <Link
                     href={social.href}
@@ -110,13 +110,13 @@ const Footer = () => {
 
           {/* Services */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">Services</h4>
+            <h4 className="mb-4 text-xs uppercase tracking-[0.3em] text-amber-glow font-medium">Services</h4>
             <ul className="space-y-2">
               {footerLinks.services.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-purple-400 transition-colors duration-200"
+                    className="text-cream/65 hover:text-amber-glow transition-colors duration-200"
                     {...(link.href.startsWith("http") && {
                       target: "_blank",
                       rel: "noreferrer",
@@ -131,13 +131,13 @@ const Footer = () => {
 
           {/* Products */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">Products</h4>
+            <h4 className="mb-4 text-xs uppercase tracking-[0.3em] text-amber-glow font-medium">Products</h4>
             <ul className="space-y-2">
               {footerLinks.products.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-purple-400 transition-colors duration-200"
+                    className="text-cream/65 hover:text-amber-glow transition-colors duration-200"
                     {...(link.href.startsWith("http") && {
                       target: "_blank",
                       rel: "noreferrer",
@@ -152,13 +152,13 @@ const Footer = () => {
 
           {/* Company */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">Company</h4>
+            <h4 className="mb-4 text-xs uppercase tracking-[0.3em] text-amber-glow font-medium">Company</h4>
             <ul className="space-y-2">
               {footerLinks.company.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-white/70 hover:text-purple-400 transition-colors duration-200"
+                    className="text-cream/65 hover:text-amber-glow transition-colors duration-200"
                     {...(link.href.startsWith("http") && {
                       target: "_blank",
                       rel: "noreferrer",
@@ -172,17 +172,17 @@ const Footer = () => {
           </div>
         </div>
 
-        <Separator className="bg-white/10 mb-8" />
+        <Separator className="bg-cream/10 mb-8" />
 
         {/* Bottom Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="text-white/70 text-sm" suppressHydrationWarning>
+          <div className="text-cream/55 text-sm" suppressHydrationWarning>
             Copyright &copy; {new Date().getFullYear()} - Aquatic Swan Design.
             All rights reserved.
           </div>
 
           <div className="flex items-center space-x-4">
-            <span className="text-white/70 text-sm">Secure payments</span>
+            <span className="text-cream/55 text-sm">Secure payments</span>
             <Image
               src="https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1739712660/payment_cewxih"
               alt="Accepted payment methods"

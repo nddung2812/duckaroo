@@ -63,11 +63,11 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-black/20 backdrop-blur-md border-b border-white/10">
+    <nav className="fixed top-0 w-full z-50 bg-abyss/60 backdrop-blur-md border-b border-cream/10">
       <div className="max-w-[2560px] mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between gap-6 h-20">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-2 shrink-0">
             <Image
               src="https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1739712659/swan-logo-transparent_rphcfl"
               alt="Swan logo"
@@ -76,19 +76,19 @@ const Navbar = () => {
               className="w-14 h-14 md:w-16 md:h-16"
               priority
             />
-            <span className="text-white font-bold text-xl hidden sm:block">
+            <span className="text-cream font-display font-semibold text-lg tracking-[0.16em] uppercase whitespace-nowrap hidden sm:block">
               Aquatic Swan Design
             </span>
           </Link>
 
           {/* Desktop Navigation - Only show on XL screens (1280px+) */}
-          <div className="hidden xl:flex items-center space-x-8">
+          <div className="hidden xl:flex items-center space-x-5 2xl:space-x-7">
             {navItems.map((item) => {
               if (item.dropdown) {
                 return (
                   <div key={item.label} className="relative" ref={dropdownRef}>
                     <button
-                      className="text-white/90 hover:text-purple-400 transition-colors duration-200 font-medium flex items-center space-x-1"
+                      className="text-cream/85 hover:text-amber-glow transition-colors duration-200 text-[12px] uppercase tracking-[0.12em] whitespace-nowrap flex items-center space-x-1"
                       onMouseEnter={() => setDropdownOpen(true)}
                     >
                       <span>{item.label}</span>
@@ -99,13 +99,13 @@ const Navbar = () => {
                       />
                     </button>
                     {dropdownOpen && (
-                      <div className="absolute top-full left-0 mt-2 min-w-[220px] bg-black/95 backdrop-blur-md border border-white/10 rounded-lg shadow-xl z-50">
+                      <div className="absolute top-full left-0 mt-2 min-w-[220px] bg-ink/95 backdrop-blur-md border border-cream/10 rounded-lg shadow-xl z-50">
                         <div className="py-2">
                           {item.dropdown.map((dropdownItem) => (
                             <Link
                               key={dropdownItem.href}
                               href={dropdownItem.href}
-                              className="block px-4 py-3 text-white/90 hover:text-purple-400 hover:bg-white/5 transition-all duration-200 font-medium"
+                              className="block px-4 py-3 text-cream/85 hover:text-amber-glow hover:bg-cream/5 transition-all duration-200 text-[13px] uppercase tracking-[0.14em]"
                             >
                               {dropdownItem.label}
                             </Link>
@@ -120,7 +120,7 @@ const Navbar = () => {
                 <Link
                   key={item.label}
                   href={item.href}
-                  className="text-white/90 hover:text-purple-400 transition-colors duration-200 font-medium"
+                  className="text-cream/85 hover:text-amber-glow transition-colors duration-200 text-[12px] uppercase tracking-[0.12em] whitespace-nowrap"
                   {...(item.href.startsWith("http") && {
                     target: "_blank",
                     rel: "noreferrer",
@@ -133,16 +133,16 @@ const Navbar = () => {
           </div>
 
           {/* Desktop CTA Buttons - Only show on XL screens (1280px+) */}
-          <div className="hidden xl:flex items-center space-x-4">
+          <div className="hidden xl:flex items-center space-x-3 shrink-0">
             <Button
               asChild
-              className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white hover:bg-gradient-to-br hover:from-emerald-600 hover:to-teal-700 border-none"
+              className="rounded-full border border-amber-glow/70 bg-transparent text-amber-glow hover:bg-amber-glow hover:text-[#04121b] text-[12px] uppercase tracking-[0.12em] px-5 whitespace-nowrap transition-colors"
             >
               <Link href="/products">Shop Plants</Link>
             </Button>
             <Button
               asChild
-              className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white hover:bg-gradient-to-br hover:from-purple-600 hover:to-indigo-700 border-none"
+              className="rounded-full bg-amber-glow text-[#04121b] hover:bg-amber-glow/90 text-[12px] uppercase tracking-[0.12em] px-5 whitespace-nowrap shadow-[0_4px_20px_rgba(232,160,92,0.3)]"
             >
               <Link href="/service">Service</Link>
             </Button>
@@ -155,7 +155,7 @@ const Navbar = () => {
                 variant="ghost"
                 size="icon"
                 aria-label="Open navigation menu"
-                className="text-white w-12 h-12 border border-white/30 hover:border-white/50 hover:bg-white/10 transition-all duration-200"
+                className="text-cream w-12 h-12 rounded-full border border-cream/30 hover:border-cream/50 hover:bg-cream/10 transition-all duration-200"
               >
                 <Menu className="h-7 w-7" aria-hidden="true" />
                 <span className="sr-only">Open navigation menu</span>
@@ -163,10 +163,10 @@ const Navbar = () => {
             </SheetTrigger>
             <SheetContent
               side="right"
-              className="bg-black/95 border-white/10 [&>button]:text-white [&>button]:hover:text-white/80"
+              className="bg-ink/95 backdrop-blur-md border-cream/10 [&>button]:text-cream [&>button]:hover:text-cream/80"
             >
               <SheetHeader>
-                <SheetTitle className="text-white text-left">
+                <SheetTitle className="text-cream font-display text-left">
                   Navigation Menu
                 </SheetTitle>
               </SheetHeader>
@@ -179,7 +179,7 @@ const Navbar = () => {
                           onClick={() =>
                             setMobileDropdownOpen(!mobileDropdownOpen)
                           }
-                          className="text-white/90 hover:text-purple-400 transition-colors duration-200 font-medium text-lg flex items-center justify-between w-full"
+                          className="text-cream/85 hover:text-amber-glow transition-colors duration-200 font-display text-2xl flex items-center justify-between w-full"
                         >
                           <span>{item.label}</span>
                           <ChevronDown
@@ -189,12 +189,12 @@ const Navbar = () => {
                           />
                         </button>
                         {mobileDropdownOpen && (
-                          <div className="pl-4 space-y-3 border-l-2 border-purple-400/30 animate-in slide-in-from-top-2 duration-200">
+                          <div className="pl-4 space-y-3 border-l-2 border-amber-glow/30 animate-in slide-in-from-top-2 duration-200">
                             {item.dropdown.map((dropdownItem) => (
                               <Link
                                 key={dropdownItem.href}
                                 href={dropdownItem.href}
-                                className="block text-white/80 hover:text-purple-400 transition-colors duration-200 font-medium"
+                                className="block text-cream/75 hover:text-amber-glow transition-colors duration-200"
                               >
                                 {dropdownItem.label}
                               </Link>
@@ -208,7 +208,7 @@ const Navbar = () => {
                     <Link
                       key={item.label}
                       href={item.href}
-                      className="text-white/90 hover:text-purple-400 transition-colors duration-200 font-medium text-lg"
+                      className="text-cream/85 hover:text-amber-glow transition-colors duration-200 font-display text-2xl"
                       {...(item.href.startsWith("http") && {
                         target: "_blank",
                         rel: "noreferrer",
@@ -218,16 +218,16 @@ const Navbar = () => {
                     </Link>
                   );
                 })}
-                <div className="flex flex-col space-y-4 pt-6 border-t border-white/10">
+                <div className="flex flex-col space-y-4 pt-6 border-t border-cream/10">
                   <Button
                     asChild
-                    className="bg-gradient-to-br from-emerald-500 to-teal-600 text-white hover:bg-gradient-to-br hover:from-emerald-600 hover:to-teal-700 border-none"
+                    className="rounded-full border border-amber-glow/70 bg-transparent text-amber-glow hover:bg-amber-glow hover:text-[#04121b] text-[12px] uppercase tracking-[0.14em] transition-colors"
                   >
                     <Link href="/products">Shop Plants</Link>
                   </Button>
                   <Button
                     asChild
-                    className="bg-gradient-to-br from-purple-500 to-indigo-600 text-white hover:bg-gradient-to-br hover:from-purple-600 hover:to-indigo-700 border-none"
+                    className="rounded-full bg-amber-glow text-[#04121b] hover:bg-amber-glow/90 text-[12px] uppercase tracking-[0.14em] shadow-[0_4px_20px_rgba(232,160,92,0.3)]"
                   >
                     <Link href="/service">Service</Link>
                   </Button>

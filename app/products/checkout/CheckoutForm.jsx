@@ -119,7 +119,7 @@ export default function CheckoutForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="flex items-center">
+        <CardTitle className="flex items-center font-display font-medium text-parchment">
           <CreditCard className="w-5 h-5 mr-2" />
           Payment Information
         </CardTitle>
@@ -128,7 +128,7 @@ export default function CheckoutForm({
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Billing Address */}
           <div>
-            <h3 className="text-lg font-medium mb-3">Billing Address</h3>
+            <h3 className="font-display text-lg font-medium text-parchment mb-3">Billing Address</h3>
 
             {/* Same as Shipping Checkbox */}
             <div className="flex items-center space-x-2 mb-4">
@@ -137,11 +137,11 @@ export default function CheckoutForm({
                 id="sameAsShipping"
                 checked={sameAsShipping}
                 onChange={(e) => handleSameAsShippingChange(e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 accent-amber-glow focus:ring-amber-glow/40 border-cream/30 rounded"
               />
               <Label
                 htmlFor="sameAsShipping"
-                className="text-sm font-medium text-gray-700"
+                className="text-sm font-medium text-cream/80"
               >
                 Same as shipping address
               </Label>
@@ -163,7 +163,7 @@ export default function CheckoutForm({
                   }
                   disabled={sameAsShipping}
                   placeholder="Enter billing address"
-                  className={sameAsShipping ? "bg-gray-100" : ""}
+                  className={sameAsShipping ? "bg-cream/10" : ""}
                 />
               </div>
 
@@ -181,7 +181,7 @@ export default function CheckoutForm({
                   }
                   disabled={sameAsShipping}
                   placeholder="Enter suburb"
-                  className={sameAsShipping ? "bg-gray-100" : ""}
+                  className={sameAsShipping ? "bg-cream/10" : ""}
                 />
               </div>
 
@@ -200,7 +200,7 @@ export default function CheckoutForm({
                     }
                     disabled={sameAsShipping}
                     placeholder="City"
-                    className={sameAsShipping ? "bg-gray-100" : ""}
+                    className={sameAsShipping ? "bg-cream/10" : ""}
                   />
                 </div>
                 <div>
@@ -217,7 +217,7 @@ export default function CheckoutForm({
                     }
                     disabled={sameAsShipping}
                     placeholder="State"
-                    className={sameAsShipping ? "bg-gray-100" : ""}
+                    className={sameAsShipping ? "bg-cream/10" : ""}
                   />
                 </div>
                 <div>
@@ -234,7 +234,7 @@ export default function CheckoutForm({
                     }
                     disabled={sameAsShipping}
                     placeholder="Postcode"
-                    className={sameAsShipping ? "bg-gray-100" : ""}
+                    className={sameAsShipping ? "bg-cream/10" : ""}
                   />
                 </div>
               </div>
@@ -243,7 +243,7 @@ export default function CheckoutForm({
                 <Label htmlFor="billingCountry">Country</Label>
                 <Select value="Australia" disabled={true}>
                   <SelectTrigger 
-                    className="bg-gray-100"
+                    className="bg-cream/10"
                     aria-label="Select country"
                   >
                     <SelectValue />
@@ -258,7 +258,7 @@ export default function CheckoutForm({
 
           {/* Payment Element for card details */}
           <div>
-            <h3 className="text-lg font-medium mb-3">Payment Details</h3>
+            <h3 className="font-display text-lg font-medium text-parchment mb-3">Payment Details</h3>
             <PaymentElement
               options={{
                 layout: "tabs",
@@ -267,18 +267,18 @@ export default function CheckoutForm({
           </div>
 
           {/* Order Summary */}
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="bg-cream/5 border border-cream/15 p-4 rounded-2xl">
             <div className="flex justify-between items-center text-lg font-semibold">
               <span>Total:</span>
-              <span className="text-blue-600">${total.toFixed(2)} AUD</span>
+              <span className="text-amber-glow">${total.toFixed(2)} AUD</span>
             </div>
-            <p className="text-sm text-gray-600 mt-1">Order #{orderNumber}</p>
+            <p className="text-sm text-cream/60 mt-1">Order #{orderNumber}</p>
           </div>
 
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full h-12"
+            className="w-full h-12 rounded-full font-medium uppercase tracking-[0.14em] text-[13px] hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
             disabled={!stripe || isProcessing}
           >
             {isProcessing ? (
@@ -294,7 +294,7 @@ export default function CheckoutForm({
             )}
           </Button>
 
-          <p className="text-xs text-gray-500 text-center">
+          <p className="text-xs text-cream/50 text-center">
             Your payment information is secured with 256-bit SSL encryption.
           </p>
         </form>

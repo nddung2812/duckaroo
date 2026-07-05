@@ -1,8 +1,20 @@
 import "./globals.css";
-import { Inter } from "next/font/google";
+import { Cormorant_Garamond, Jost } from "next/font/google";
 import LazyAnalytics from "./components/LazyAnalytics";
 
-const inter = Inter({ subsets: ["latin"] });
+const cormorant = Cormorant_Garamond({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  style: ["normal", "italic"],
+  display: "swap",
+  variable: "--font-cormorant",
+});
+
+const jost = Jost({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jost",
+});
 
 export const metadata = {
   title:
@@ -323,7 +335,7 @@ export default function RootLayout({ children }) {
         <meta name="MobileOptimized" content="width" />
 
       </head>
-      <body className={inter.className}>
+      <body className={`${jost.className} ${jost.variable} ${cormorant.variable}`}>
         <LazyAnalytics />
         {children}
       </body>

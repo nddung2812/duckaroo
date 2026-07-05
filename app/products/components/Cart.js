@@ -75,12 +75,12 @@ export default function Cart() {
           onClick={() => setIsOpen(!isOpen)}
           aria-label={`Open shopping cart, ${totalItems} item${totalItems !== 1 ? "s" : ""}`}
           aria-expanded={isOpen}
-          className="relative h-14 w-14 rounded-full bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-200 p-0"
+          className="relative h-14 w-14 rounded-full bg-amber-glow hover:bg-amber-glow shadow-lg hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)] transition-all duration-200 p-0"
           size="lg"
         >
-          <ShoppingCart className="w-6 h-6 text-white" aria-hidden="true" />
+          <ShoppingCart className="w-6 h-6 text-[#04121b]" aria-hidden="true" />
           {totalItems > 0 && (
-            <Badge className="absolute -top-2 -right-2 bg-red-500 text-white min-w-[24px] h-6 flex items-center justify-center rounded-full text-xs font-bold shadow-md">
+            <Badge className="absolute -top-2 -right-2 bg-moss border border-amber-glow/40 text-amber-glow min-w-[24px] h-6 flex items-center justify-center rounded-full text-xs font-bold shadow-md">
               {totalItems}
             </Badge>
           )}
@@ -97,23 +97,23 @@ export default function Cart() {
           />
 
           {/* Cart Content - Slide in from right */}
-          <div className="fixed right-0 top-0 h-full w-full max-w-md bg-white z-50 shadow-2xl transform transition-transform duration-300 ease-in-out">
+          <div className="fixed right-0 top-0 h-full w-full max-w-md bg-ink/95 backdrop-blur-md border-l border-cream/15 text-cream z-50 shadow-2xl transform transition-transform duration-300 ease-in-out">
             <div className="flex flex-col h-full">
               {/* Header */}
-              <div className="flex items-center justify-between p-4 border-b bg-white">
+              <div className="flex items-center justify-between p-4 border-b border-cream/15">
                 <div className="flex items-center gap-2">
-                  <ShoppingCart className="w-5 h-5 text-gray-700" />
-                  <h2 className="text-lg font-semibold text-gray-900">
+                  <ShoppingCart className="w-5 h-5 text-cream/80" />
+                  <h2 className="font-display text-lg font-medium text-parchment">
                     Shopping Cart
                   </h2>
-                  <Badge variant="secondary">{totalItems} items</Badge>
+                  <Badge variant="secondary" className="bg-moss/60 border border-cream/20 text-cream/75">{totalItems} items</Badge>
                 </div>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsOpen(false)}
                   aria-label="Close cart"
-                  className="h-8 w-8 p-0"
+                  className="h-8 w-8 p-0 text-cream/70 hover:bg-cream/10 hover:text-cream rounded-full"
                 >
                   <X className="w-4 h-4" aria-hidden="true" />
                 </Button>
@@ -122,13 +122,13 @@ export default function Cart() {
               {/* Content */}
               <div className="flex-1 overflow-hidden flex flex-col">
                 {items.length === 0 ? (
-                  <div className="flex-1 flex flex-col items-center justify-center p-8 text-gray-500">
-                    <ShoppingCart className="w-16 h-16 mb-4 text-gray-300" />
+                  <div className="flex-1 flex flex-col items-center justify-center p-8 text-cream/60">
+                    <ShoppingCart className="w-16 h-16 mb-4 text-cream/20" />
                     <p className="text-center mb-4">Your cart is empty</p>
                     <Button
                       variant="outline"
                       onClick={() => setIsOpen(false)}
-                      className="w-full"
+                      className="w-full rounded-full border border-cream/30 bg-transparent text-cream/90 hover:border-cream/60 hover:bg-cream/5 hover:text-cream text-[13px] uppercase tracking-[0.14em]"
                     >
                       Continue Shopping
                     </Button>
@@ -145,7 +145,7 @@ export default function Cart() {
                         return (
                           <div
                             key={item.id}
-                            className="flex flex-col space-y-2 p-3 bg-gray-50 rounded-lg"
+                            className="flex flex-col space-y-2 p-3 bg-cream/5 border border-cream/10 rounded-2xl"
                           ><div className="flex items-center space-x-3">
                             <Image
                               src={
@@ -166,26 +166,26 @@ export default function Cart() {
                               <h4 className="font-medium text-sm truncate">
                                 {item.name}
                               </h4>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-amber-glow">
                                 {formatPrice(item.price)}
                               </p>
                               {/* Stock information - side by side with cart quantity */}
                               <div className="flex justify-between items-center mt-2">
-                                <div className="text-xs text-blue-600">
+                                <div className="text-xs text-amber-glow">
                                   In Cart: {item.quantity}
                                 </div>
                                 <div className="text-xs text-right">
                                   <span
                                     className={
                                       productStock - item.quantity > 0
-                                        ? "text-green-600"
-                                        : "text-red-600"
+                                        ? "text-green-300"
+                                        : "text-red-300"
                                     }
                                   >
                                     Available: {productStock - item.quantity}
                                   </span>
                                   {isAtMaxStock && (
-                                    <span className="text-red-600 ml-1 block">
+                                    <span className="text-red-300 ml-1 block">
                                       {productStock === 0 ? "Out of Stock" : "(Max reached)"}
                                     </span>
                                   )}
@@ -199,12 +199,12 @@ export default function Cart() {
                                   size="sm"
                                   onClick={() => handleDecreaseQuantity(item)}
                                   aria-label="Decrease quantity"
-                                  className="h-6 w-6 p-0"
+                                  className="h-6 w-6 p-0 rounded-full border-cream/30 bg-transparent text-cream/80 hover:bg-cream/10 hover:text-cream"
                                   disabled={item.quantity <= 1}
                                 >
                                   <Minus className="w-3 h-3" aria-hidden="true" />
                                 </Button>
-                                <span className="text-sm font-medium w-8 text-center text-gray-900">
+                                <span className="text-sm font-medium w-8 text-center text-cream">
                                   {item.quantity}
                                 </span>
                                 <Button
@@ -212,7 +212,7 @@ export default function Cart() {
                                   size="sm"
                                   onClick={() => handleIncreaseQuantity(item)}
                                   aria-label="Increase quantity"
-                                  className="h-6 w-6 p-0 disabled:opacity-50 disabled:cursor-not-allowed"
+                                  className="h-6 w-6 p-0 rounded-full border-cream/30 bg-transparent text-cream/80 hover:bg-cream/10 hover:text-cream disabled:opacity-50 disabled:cursor-not-allowed"
                                   disabled={isAtMaxStock}
                                 >
                                   <Plus className="w-3 h-3" aria-hidden="true" />
@@ -223,7 +223,7 @@ export default function Cart() {
                                 size="sm"
                                 onClick={() => onRemove(item.id)}
                                 aria-label="Remove item from cart"
-                                className="h-6 w-6 p-0 text-red-500 hover:text-red-700 hover:bg-red-50"
+                                className="h-6 w-6 p-0 rounded-full text-red-300 hover:text-red-200 hover:bg-red-950/30"
                               >
                                 <Trash2 className="w-3 h-3" aria-hidden="true" />
                               </Button>
@@ -232,11 +232,11 @@ export default function Cart() {
                             {buyerAware && (
                               <div
                                 role="alert"
-                                className="flex items-start gap-2 rounded-md border border-amber-300 bg-amber-50 p-2 text-xs text-amber-900"
+                                className="flex items-start gap-2 rounded-2xl border border-amber-glow/40 bg-amber-950/40 p-2 text-xs text-cream/80"
                               >
-                                <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-700" />
+                                <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5 text-amber-glow" />
                                 <div>
-                                  <span className="font-semibold">{buyerAware.title}: </span>
+                                  <span className="font-semibold text-amber-glow">{buyerAware.title}: </span>
                                   {buyerAware.shortMessage}
                                 </div>
                               </div>
@@ -247,10 +247,10 @@ export default function Cart() {
                     </div>
 
                     {/* Cart Summary - Fixed at bottom */}
-                    <div className="border-t bg-white p-4 space-y-4">
+                    <div className="border-t border-cream/15 p-4 space-y-4">
                       <div className="flex justify-between items-center">
-                        <span className="font-semibold text-lg">Total:</span>
-                        <span className="font-bold text-xl text-blue-600">
+                        <span className="font-semibold text-lg text-cream">Total:</span>
+                        <span className="font-bold text-xl text-amber-glow">
                           {formatPrice(totalPrice)}
                         </span>
                       </div>
@@ -258,7 +258,7 @@ export default function Cart() {
                       <div className="space-y-2">
                         <Button
                           onClick={handleCheckout}
-                          className="w-full"
+                          className="w-full rounded-full bg-amber-glow text-[#04121b] text-[13px] uppercase tracking-[0.14em] font-medium hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]"
                           size="lg"
                         >
                           <CreditCard className="w-4 h-4 mr-2" />
@@ -267,7 +267,7 @@ export default function Cart() {
                         <Button
                           variant="outline"
                           onClick={() => setIsOpen(false)}
-                          className="w-full"
+                          className="w-full rounded-full border border-cream/30 bg-transparent text-cream/90 hover:border-cream/60 hover:bg-cream/5 hover:text-cream text-[13px] uppercase tracking-[0.14em]"
                         >
                           Continue Shopping
                         </Button>

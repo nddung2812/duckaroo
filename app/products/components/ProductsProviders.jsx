@@ -21,7 +21,7 @@ export default function ProductsProviders({ children }) {
         pauseOnFocusLoss
         draggable
         pauseOnHover
-        theme="light"
+        theme="dark"
       />
     </CartProvider>
   );

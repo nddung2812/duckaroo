@@ -97,9 +97,9 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
 
   const cardStyles = {
     default:
-      "bg-white/20 backdrop-blur-md border border-white/30 hover:bg-white/25 hover:border-emerald-400/50 transition-all duration-300",
+      "bg-cream/5 backdrop-blur-md border border-cream/15 rounded-2xl hover:bg-cream/10 hover:border-amber-glow/50 transition-all duration-300",
     contact:
-      "bg-black/60 backdrop-blur-lg border border-white/50 text-white shadow-2xl ring-1 ring-white/20",
+      "bg-cream/10 backdrop-blur-lg border border-cream/15 rounded-2xl text-cream shadow-2xl hover:border-amber-glow/50 transition-all duration-300",
   };
 
   const titleConfig = {
@@ -111,13 +111,14 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
     default: {
       text: "Get Free Quote",
       loadingText: "Sending...",
-      style: "bg-gradient-to-br from-purple-500 to-indigo-600 text-white hover:from-purple-600 hover:to-indigo-700 border-none",
+      style:
+        "bg-amber-glow text-[#04121b] rounded-full text-[13px] uppercase tracking-[0.14em] font-medium border-none hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]",
     },
     contact: {
       text: "Send Message",
       loadingText: "Sending Message...",
       style:
-        "bg-gradient-to-r from-emerald-600 to-emerald-700 hover:from-emerald-700 hover:to-emerald-800 text-white",
+        "bg-amber-glow text-[#04121b] rounded-full text-[13px] uppercase tracking-[0.14em] font-medium border-none hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]",
     },
   };
 
@@ -126,9 +127,9 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
   return (
     <Card className={cardStyles[variant] || cardStyles.default}>
       <CardHeader>
-        <CardTitle className="text-2xl font-bold text-white flex items-center gap-2">
+        <CardTitle className="font-display text-2xl font-medium text-parchment flex items-center gap-2">
           {variant === "contact" && (
-            <MessageCircle className="w-8 h-8 text-emerald-400" />
+            <MessageCircle className="w-8 h-8 text-amber-glow" />
           )}
           {titleConfig[variant] || titleConfig.default}
         </CardTitle>
@@ -136,7 +137,7 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
       <CardContent>
         <form ref={form} onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div>
-            <Label htmlFor="name" className="text-white">
+            <Label htmlFor="name" className="text-cream/80">
               Your Name
             </Label>
             <Input
@@ -144,18 +145,18 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
               name="name"
               type="text"
               placeholder="John Doe"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="bg-abyss/40 border-cream/20 text-cream placeholder:text-cream/40 focus:border-amber-glow focus:ring-amber-glow/40 focus-visible:ring-amber-glow/40"
               {...register("name", { required: true })}
             />
             {errors.name && (
-              <p className="text-red-400 text-sm mt-1">
+              <p className="text-red-300 text-sm mt-1">
                 Please enter your name
               </p>
             )}
           </div>
 
           <div>
-            <Label htmlFor="email" className="text-white">
+            <Label htmlFor="email" className="text-cream/80">
               Email Address
             </Label>
             <Input
@@ -163,18 +164,18 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
               name="email"
               type="email"
               placeholder="john@example.com"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="bg-abyss/40 border-cream/20 text-cream placeholder:text-cream/40 focus:border-amber-glow focus:ring-amber-glow/40 focus-visible:ring-amber-glow/40"
               {...register("email", { required: true })}
             />
             {errors.email && (
-              <p className="text-red-400 text-sm mt-1">
+              <p className="text-red-300 text-sm mt-1">
                 Please enter a valid email
               </p>
             )}
           </div>
 
           <div>
-            <Label htmlFor="phone" className="text-white">
+            <Label htmlFor="phone" className="text-cream/80">
               Phone Number
             </Label>
             <Input
@@ -182,18 +183,18 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
               name="phone"
               type="tel"
               placeholder="(04) 1234 5678"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="bg-abyss/40 border-cream/20 text-cream placeholder:text-cream/40 focus:border-amber-glow focus:ring-amber-glow/40 focus-visible:ring-amber-glow/40"
               {...register("phone", { required: true })}
             />
             {errors.phone && (
-              <p className="text-red-400 text-sm mt-1">
+              <p className="text-red-300 text-sm mt-1">
                 Please enter your phone number
               </p>
             )}
           </div>
 
           <div>
-            <Label htmlFor="location" className="text-white">
+            <Label htmlFor="location" className="text-cream/80">
               Location
             </Label>
             <Input
@@ -201,18 +202,18 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
               name="location"
               type="text"
               placeholder="e.g. Southside Brisbane, CBD, Gold Coast"
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50"
+              className="bg-abyss/40 border-cream/20 text-cream placeholder:text-cream/40 focus:border-amber-glow focus:ring-amber-glow/40 focus-visible:ring-amber-glow/40"
               {...register("location", { required: true })}
             />
             {errors.location && (
-              <p className="text-red-400 text-sm mt-1">
+              <p className="text-red-300 text-sm mt-1">
                 Please enter your location
               </p>
             )}
           </div>
 
           <div>
-            <Label htmlFor="service" className="text-white">
+            <Label htmlFor="service" className="text-cream/80">
               Service Type
             </Label>
             <Select
@@ -220,7 +221,7 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
               defaultValue=""
             >
               <SelectTrigger
-                className="bg-white/10 border-white/20 text-white"
+                className="bg-abyss/40 border-cream/20 text-cream focus:border-amber-glow focus:ring-amber-glow/40"
                 aria-label="Select service type"
               >
                 <SelectValue placeholder="Select a service" />
@@ -253,21 +254,21 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
               {...register("service", { required: true })}
             />
             {errors.service && (
-              <p className="text-red-400 text-sm mt-1">
+              <p className="text-red-300 text-sm mt-1">
                 Please select a service
               </p>
             )}
           </div>
 
           <div>
-            <Label htmlFor="message" className="text-white">
+            <Label htmlFor="message" className="text-cream/80">
               Additional Details
             </Label>
             <Textarea
               id="message"
               name="message"
               placeholder="Tell us about your aquarium..."
-              className="bg-white/10 border-white/20 text-white placeholder:text-white/50 min-h-[100px]"
+              className="bg-abyss/40 border-cream/20 text-cream placeholder:text-cream/40 focus:border-amber-glow focus:ring-amber-glow/40 focus-visible:ring-amber-glow/40 min-h-[100px]"
               {...register("message")}
             />
           </div>
@@ -276,7 +277,7 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
 
           <Button
             type="submit"
-            className={`w-full ${buttonConfig_.style} py-6 text-lg`}
+            className={`w-full ${buttonConfig_.style} py-6`}
             disabled={isSubmitting}
           >
             {isSubmitting ? (
@@ -291,23 +292,23 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
 
           {submitStatus.type && (
             <div
-              className={`p-4 rounded-lg ${
+              className={`p-4 rounded-2xl ${
                 submitStatus.type === "success"
-                  ? "bg-emerald-500/20 border border-emerald-400/30"
-                  : "bg-red-500/20 border border-red-400/30"
+                  ? "bg-green-950/30 border border-green-800/40"
+                  : "bg-red-950/30 border border-red-800/40"
               }`}
             >
               <div className="flex items-center gap-2">
                 {submitStatus.type === "success" ? (
-                  <CheckCircle className="w-5 h-5 text-emerald-400" />
+                  <CheckCircle className="w-5 h-5 text-green-300" />
                 ) : (
-                  <AlertCircle className="w-5 h-5 text-red-400" />
+                  <AlertCircle className="w-5 h-5 text-red-300" />
                 )}
                 <p
                   className={`text-sm font-medium ${
                     submitStatus.type === "success"
-                      ? "text-emerald-200"
-                      : "text-red-200"
+                      ? "text-green-300"
+                      : "text-red-300"
                   }`}
                 >
                   {submitStatus.message}

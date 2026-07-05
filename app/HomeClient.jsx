@@ -1,486 +1,556 @@
 "use client";
-import { useState, useEffect, useRef, useCallback } from "react";
-import HomeBanner from "./components/HomeBanner";
-import ServiceBookingSection from "./components/ServiceBookingSection";
-import Navbar from "./components/Navbar";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Play, Calendar, MapPin, Star, Eye } from "lucide-react";
+
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import { getFavorites } from "./utils/favorites";
-import { projects } from "./customer-stories/clientdata";
-import { getThumbUrl } from "./customer-stories/mediaUtils";
-import { partners } from "../data/partners";
-
-// Thumbnails rendered inline per card; the rest open in the lightbox.
-const MAX_THUMBS = 4;
-
-// Lazy load heavy components to improve LCP
-
-const Duckweeds = dynamic(() => import("./components/Duckweeds"), {
-  ssr: false,
-  loading: () => null,
-});
+import styles from "./home.module.css";
 
 const Footer = dynamic(() => import("./components/Footer"), {
   ssr: false,
   loading: () => null,
 });
 
-// Only loaded when the user opens them
-const MediaLightbox = dynamic(() => import("./customer-stories/MediaLightbox"), {
-  ssr: false,
-  loading: () => null,
-});
+const LOGO =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1739712659/swan-logo-transparent_rphcfl";
+const ROCK_CENTER =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237487/Rock-center_xw2rvu.png";
+const ROCK_BOTTOM_LEFT =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237487/Rock-bottom-left_diuj3o.png";
+const ROCK_FLOATING =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783237486/floating-rock_zvbbxe.png";
 
-const FavoritesPopup = dynamic(() => import("./components/FavoritesPopup"), {
-  ssr: false,
-  loading: () => null,
-});
+const NAV_LINKS = [
+  { href: "#worlds", label: "Worlds" },
+  { href: "/products", label: "Products" },
+  { href: "/service", label: "Service" },
+  { href: "/customer-stories", label: "Stories" },
+  { href: "/contact", label: "Contact" },
+];
+
+const WORLDS = [
+  {
+    name: "Emerald Grove",
+    meta: "Planted ecosystem · North Brisbane",
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757335537/bucephalandra_bush_oyiznj",
+    mask: styles.worldMask1,
+  },
+  {
+    name: "The Guardian",
+    meta: "Custom installation · Brisbane clinic",
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1781524812/Guardian_after_crgvbp.jpg",
+    mask: styles.worldMask2,
+  },
+  {
+    name: "Hanging Gardens",
+    meta: "Paludarium · Brisbane CBD",
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757772271/IMG_1394_blvvzo.jpg",
+    mask: styles.worldMask3,
+  },
+];
+
+const RARE_LIFE = [
+  {
+    name: "Rainbow Guppy",
+    size: 190,
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757336118/different-types-of-guppy-rainbow-fish_panpilai-paipa_Shutterstock-3-1_rvoint",
+  },
+  {
+    name: "Bucephalandra Kedagang",
+    size: 160,
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1749469954/best-place-to-buy-bucephalandra-kedagang-v0-5fhaw341fkjc1_ujrt6m",
+  },
+  {
+    name: "Anubias Nana Petite",
+    size: 220,
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1755522754/Anu_nana_1_nrkqxt.webp",
+  },
+];
+
+// Shown only if the featured-products fetch returned nothing.
+const FALLBACK_ARTEFACTS = [
+  {
+    name: "Complete worlds, built for you",
+    sub: "Tank setup · aquascaping · planted & cycled",
+    href: "/service",
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1739712678/duckaroo-service-brisbane.jpg",
+  },
+  {
+    name: "Botanicals from the edge of the map",
+    sub: "Bucephalandra · rare Anubias · tissue-culture lines",
+    href: "/products",
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757335537/bucephalandra_bush_oyiznj",
+  },
+  {
+    name: "Kept alive by the atelier",
+    sub: "Cleaning · maintenance · rescue across SE Queensland",
+    href: "/service",
+    image:
+      "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1781527151/REgular_rfci71.jpg",
+  },
+];
+
+// Rising bubble columns: [left, scale, duration s, delay s]
+const HERO_BUBBLES = [
+  ["4%", 0.55, 19, 0],
+  ["16%", 0.24, 14, 5],
+  ["34%", 0.16, 16, 9],
+  ["58%", 0.3, 15, 2.5],
+  ["74%", 0.45, 21, 7],
+  ["89%", 0.2, 13, 11],
+];
+
+const BAND_BUBBLES = [
+  ["10%", 0.32, 16, 1],
+  ["50%", 0.18, 13, 6],
+  ["84%", 0.4, 18, 3],
+];
+
+function Bubble({ left, scale, duration, delay }) {
+  return (
+    <div
+      aria-hidden="true"
+      className={styles.bubbleWrap}
+      style={{
+        left,
+        animationDuration: `${duration}s`,
+        animationDelay: `${delay}s`,
+      }}
+    >
+      <div className={styles.bubbleScale} style={{ transform: `scale(${scale})` }}>
+        <div className={styles.bubbleArt}>
+          <i className={styles.bubbleBlue} />
+          <i className={styles.bubbleGreen} />
+          <i className={styles.bubbleDeep} />
+          <i className={styles.bubbleAmber} />
+          <i className={styles.bubbleWhite} />
+          <i className={styles.bubbleDot1} />
+          <i className={styles.bubbleDot2} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function formatPrice(price) {
+  const n = Number(price);
+  if (!Number.isFinite(n)) return null;
+  return `from $${n % 1 === 0 ? n : n.toFixed(2)}`;
+}
+
+// Product descriptions are stored as rich HTML — reduce to plain text for the one-line sub.
+function stripHtml(html) {
+  return (html || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 
 const Home = ({ featuredProducts = [] }) => {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [showPlayButton, setShowPlayButton] = useState(false);
-  const [componentsLoaded, setComponentsLoaded] = useState(false);
-  const [showFavoritesPopup, setShowFavoritesPopup] = useState(false);
-  const [lightbox, setLightbox] = useState(null); // { project, index }
+  const [menuOpen, setMenuOpen] = useState(false);
+  const rootRef = useRef(null);
 
-  const videoRef = useRef(null);
-
-  const openLightbox = (project, mediaIndex) => {
-    setLightbox({ project, index: mediaIndex });
-  };
-
-  const closeLightbox = useCallback(() => {
-    setLightbox(null);
-  }, []);
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString("en-AU", {
-      timeZone: "Australia/Brisbane",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    });
-  };
-
-  const handleVideoPlay = () => {
-    if (videoRef.current) {
-      videoRef.current
-        .play()
-        .then(() => {
-          setShowPlayButton(false);
-        })
-        .catch(() => {
-          setShowPlayButton(true);
-        });
-    }
-  };
-
+  // Parallax: hero layers drift at different depths; headline fades and lifts.
   useEffect(() => {
-    // Use requestIdleCallback for non-critical component loading
-    const componentTimer = window.requestIdleCallback
-      ? window.requestIdleCallback(
-          () => {
-            setComponentsLoaded(true);
-          },
-          { timeout: 1000 }
-        )
-      : setTimeout(() => {
-          setComponentsLoaded(true);
-        }, 500);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = rootRef.current;
+    if (!root) return;
 
-    // Check for favorites and show popup after components load
-    const favoritesTimer = setTimeout(() => {
-      window.requestIdleCallback
-        ? window.requestIdleCallback(
-            () => {
-              const favorites = getFavorites();
-              if (favorites.length > 0) {
-                setShowFavoritesPopup(true);
-              }
-            },
-            { timeout: 2000 }
-          )
-        : setTimeout(() => {
-            const favorites = getFavorites();
-            if (favorites.length > 0) {
-              setShowFavoritesPopup(true);
-            }
-          }, 100);
-    }, 3000);
+    const layers = Array.from(root.querySelectorAll("[data-depth]"));
+    const headline = root.querySelector("[data-hero-headline]");
+    const cue = root.querySelector("[data-hero-cue]");
+    let ticking = false;
 
-    // Start the background video only once the browser is idle so it never
-    // competes with LCP-critical resources for bandwidth.
-    const startVideo = () => {
-      if (videoRef.current) {
-        videoRef.current.play().catch(() => {
-          setShowPlayButton(true);
-        });
-      }
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const y = window.scrollY;
+        const p = Math.min(y / (window.innerHeight * 0.9), 1.4);
+        for (const el of layers) {
+          el.style.transform = `translate3d(0,${y * parseFloat(el.dataset.depth)}px,0)`;
+        }
+        if (headline) {
+          headline.style.opacity = String(Math.max(1 - p * 1.15, 0));
+          headline.style.transform = `translate3d(0,${y * -0.28}px,0)`;
+        }
+        if (cue) cue.style.opacity = String(Math.max(0.7 - p * 2, 0));
+        ticking = false;
+      });
     };
-    const videoTimer = window.requestIdleCallback
-      ? window.requestIdleCallback(startVideo, { timeout: 2500 })
-      : setTimeout(startVideo, 1500);
 
-    return () => {
-      if (window.requestIdleCallback) {
-        window.cancelIdleCallback(componentTimer);
-        window.cancelIdleCallback(videoTimer);
-      } else {
-        clearTimeout(componentTimer);
-        clearTimeout(videoTimer);
-      }
-      clearTimeout(favoritesTimer);
-    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  // Scroll reveals: content is visible without JS; with JS it drifts up into view.
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const root = rootRef.current;
+    if (!root) return;
+
+    const reveals = Array.from(root.querySelectorAll("[data-reveal]"));
+    for (const el of reveals) {
+      el.style.opacity = "0";
+      el.style.transform = "translate3d(0,54px,0)";
+      el.style.transition =
+        "opacity 1s cubic-bezier(.22,.61,.36,1), transform 1.1s cubic-bezier(.22,.61,.36,1)";
+      el.style.transitionDelay = `${el.dataset.delay || 0}ms`;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.style.opacity = "1";
+            e.target.style.transform = "translate3d(0,0,0)";
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.18 }
+    );
+    for (const el of reveals) io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  // Lock page scroll while the mobile menu is open.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [menuOpen]);
+
+  const artefacts =
+    featuredProducts.length > 0
+      ? featuredProducts.map((p) => {
+          const first = Array.isArray(p.images) ? p.images[0] : null;
+          return {
+            name: p.name,
+            sub: stripHtml(p.description),
+            href: `/products/${p.slug}`,
+            image: typeof first === "string" ? first : first?.url || null,
+            price: formatPrice(p.price),
+          };
+        })
+      : FALLBACK_ARTEFACTS;
 
   return (
-    <>
-      {/* Fallback Dark Background */}
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 -z-30"
-        style={{ minWidth: "100vw", minHeight: "100vh" }}
-      />
+    <div ref={rootRef} className={styles.page}>
+      {/* ================= HERO (pinned, parallax layers) ================= */}
+      <div className={styles.heroWrap}>
+        <div className={styles.heroSticky}>
+          <div className={styles.heroOverlay} />
 
-      {/* Background Video - Desktop Only for Performance */}
-      <div className="hidden md:block">
-        <video
-          ref={videoRef}
-          aria-hidden="true"
-          className="fixed top-0 left-0 w-full h-full object-cover -z-20"
-          style={{
-            width: "100%",
-            height: "100%",
-            objectFit: "cover",
-            minWidth: "100vw",
-            minHeight: "100vh",
-          }}
-          muted
-          playsInline
-          loop
-          preload="none"
-          poster="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Crect width='100' height='100' fill='%23334155'/%3E%3C/svg%3E"
-          onLoadedData={() => setVideoLoaded(true)}
-          onError={() => setShowPlayButton(true)}
-        >
-          <source src="https://res.cloudinary.com/dhvj8x2nq/video/upload/f_auto,q_auto:eco,w_960/v1739712678/koifish_feh63y.mp4" />
-        </video>
-      </div>
+          {/* distant silhouettes */}
+          <div data-depth="0.3" className={styles.silhouetteLeft} />
+          <div data-depth="0.3" className={styles.silhouetteRight} />
 
-      {/* Mobile Static Background - Blue Ocean Theme */}
-      <div
-        className="md:hidden fixed top-0 left-0 w-full h-full -z-20"
-        style={{
-          minWidth: "100vw",
-          minHeight: "100vh",
-          background:
-            "linear-gradient(180deg, #0a1628 0%, #0c1f4a 25%, #1e3a8a 50%, #1e40af 75%, #1d4ed8 100%)",
-        }}
-      />
+          {/* god rays */}
+          <div data-depth="0.1" className={`${styles.ray} ${styles.ray1}`} />
+          <div data-depth="0.1" className={`${styles.ray} ${styles.ray2}`} />
+          <div data-depth="0.1" className={`${styles.ray} ${styles.ray3}`} />
+          <div data-depth="0.1" className={`${styles.ray} ${styles.ray4}`} />
 
-      {/* Video Play Button for Desktop Only */}
-      {showPlayButton && (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-40 hidden md:block">
-          <Button
-            onClick={handleVideoPlay}
-            size="lg"
-            aria-label="Play background video"
-            className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white/30 hover:bg-white/30 text-white shadow-2xl"
-          >
-            <Play className="h-8 w-8 ml-1" aria-hidden="true" />
-            <span className="sr-only">Play background video</span>
-          </Button>
-        </div>
-      )}
-
-      {/* Dark overlay for better text readability */}
-      <div
-        className="fixed top-0 left-0 w-full h-full bg-black/30 -z-10"
-        style={{ minWidth: "100vw", minHeight: "100vh" }}
-      />
-
-      {/* Navigation - Load immediately for LCP */}
-      <Navbar />
-
-      {/* Main Content - Critical for LCP */}
-      <div className="min-h-screen relative overflow-x-hidden w-full max-w-[2560px] mx-auto">
-        <main className="relative z-10 w-full overflow-x-hidden">
-          <HomeBanner featuredProducts={featuredProducts} />
-          <ServiceBookingSection />
-
-          {/* Partners Section */}
-          {partners.length > 0 && (
-            <section className="w-full px-4 py-16 relative">
-              <div className="max-w-7xl mx-auto">
-                <div className="text-center mb-10">
-                  <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
-                    Our Regular Customers
-                  </h2>
-                  <p className="text-white/60 max-w-xl mx-auto text-sm">
-                    Trusted businesses we regularly service across Brisbane &
-                    Gold Coast.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 max-w-4xl mx-auto">
-                  {partners.map((partner) => (
-                    <a
-                      key={partner.id}
-                      href={partner.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="group flex flex-col items-center justify-center gap-3 p-4 sm:p-5 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 hover:border-emerald-400/50 transition-all duration-300"
-                    >
-                      <div className="w-20 h-20 sm:w-24 sm:h-24 flex items-center justify-center overflow-hidden">
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img
-                          src={partner.logo.replace(
-                            "/upload/",
-                            "/upload/f_auto,q_auto,w_160,h_160,c_fit/"
-                          )}
-                          alt={`${partner.name} logo`}
-                          width={96}
-                          height={96}
-                          loading="lazy"
-                          className="object-contain w-full h-full filter brightness-90 group-hover:brightness-110 transition-all duration-300"
-                        />
-                      </div>
-                      <span className="inline-flex items-center justify-center w-full text-white/80 group-hover:text-white text-xs font-semibold px-2 py-1.5 text-center transition-colors duration-300 min-h-[2rem]">
-                        {partner.name}
-                      </span>
-                    </a>
-                  ))}
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Customer Success Stories Section */}
-          <section
-            id="customer-success-stories"
-            className="w-full px-4 py-20 relative"
-          >
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
-            <div className="max-w-7xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                  Customer Success Stories
-                </h2>
-                <p className="text-white/70 max-w-2xl mx-auto">
-                  Browse our portfolio of successful aquarium projects across
-                  Brisbane & Gold Coast. Each project showcases our commitment
-                  to excellence in fish tank cleaning and maintenance.
-                </p>
-              </div>
-
-              {/* Projects Grid - Show first 5 projects */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {projects.slice(0, 5).map((project) => (
-                  <Card
-                    key={project.id}
-                    className="group bg-white/20 backdrop-blur-xl border border-white/30 hover:bg-white/25 hover:border-emerald-400/60 transition-all duration-300 overflow-hidden shadow-xl"
-                  >
-                    <CardContent className="p-0">
-                      {/* Project Header */}
-                      <div className="p-6 pb-4">
-                        <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
-                          <div>
-                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-emerald-300 transition-colors">
-                              {project.name}
-                            </h3>
-                            <div className="flex items-center gap-4 text-sm text-white/70 mb-2">
-                              <span className="flex items-center gap-1">
-                                <Calendar className="w-4 h-4" />
-                                {formatDate(project.date)}
-                              </span>
-                              <span className="flex items-center gap-1">
-                                <MapPin className="w-4 h-4" />
-                                {project.location}
-                              </span>
-                            </div>
-                            <div className="flex items-center gap-1 mb-3">
-                              {[...Array(project.rating)].map((_, i) => (
-                                <Star
-                                  key={i}
-                                  className="w-4 h-4 fill-yellow-400 text-yellow-400"
-                                />
-                              ))}
-                              <span className="text-white/70 text-sm ml-2">
-                                {project.client}
-                              </span>
-                            </div>
-                          </div>
-
-                          <Badge className="bg-blue-500/20 border-blue-400 text-blue-200">
-                            {project.type}
-                          </Badge>
-                        </div>
-
-                        <p className="text-white/80 text-sm mb-4 leading-relaxed">
-                          {project.description}
-                        </p>
-
-                        {/* Tags */}
-                        <div className="flex flex-wrap gap-2 mb-4">
-                          {project.tags.map((tag, index) => (
-                            <Badge
-                              key={index}
-                              variant="outline"
-                              className="text-xs border-white/20 text-white/70 hover:border-emerald-400/50 hover:text-emerald-300 transition-colors"
-                            >
-                              {tag}
-                            </Badge>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Image Gallery */}
-                      <div className="p-6 pt-0">
-                        {/* Hero Image - Full Width Landscape */}
-                        <div className="mb-3">
-                          <div
-                            className="relative group cursor-pointer overflow-hidden rounded-lg"
-                            onClick={() => openLightbox(project, 0)}
-                          >
-                            <div className="relative aspect-[16/9] w-full">
-                              <Image
-                                src={getThumbUrl(project.media[0])}
-                                alt={`${project.name} - Main Image`}
-                                fill
-                                className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                loading="lazy"
-                                sizes="(max-width: 1024px) 100vw, 50vw"
-                              />
-                              {/* Video Play Button Overlay */}
-                              {project.media[0].type === "video" && (
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                  <div className="bg-black/60 backdrop-blur-sm rounded-full p-4 group-hover:bg-black/80 transition-all duration-300">
-                                    <Play className="w-12 h-12 text-white fill-white" />
-                                  </div>
-                                </div>
-                              )}
-
-                              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                                <Eye
-                                  className={
-                                    project.media[0].type === "video"
-                                      ? "w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                      : "w-6 h-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                                  }
-                                />
-                              </div>
-                              {/* Main Image Badge */}
-                              <div className="absolute top-3 left-3">
-                                <Badge className="bg-black/50 backdrop-blur-sm border-white/20 text-white text-xs">
-                                  Featured
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Secondary Media Grid - capped; the rest open in the lightbox */}
-                        {project.media.length > 1 && (
-                          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-                            {project.media
-                              .slice(1, 1 + MAX_THUMBS)
-                              .map((media, mediaIndex) => {
-                                const absoluteIndex = mediaIndex + 1;
-                                const hiddenCount =
-                                  project.media.length - 1 - MAX_THUMBS;
-                                const showMoreOverlay =
-                                  mediaIndex === MAX_THUMBS - 1 &&
-                                  hiddenCount > 0;
-                                return (
-                                  <div key={absoluteIndex} className="relative">
-                                    <div
-                                      className="relative aspect-square w-full group cursor-pointer overflow-hidden rounded-lg"
-                                      onClick={() =>
-                                        openLightbox(project, absoluteIndex)
-                                      }
-                                    >
-                                      <Image
-                                        src={getThumbUrl(media)}
-                                        alt={`${project.name} - Media ${
-                                          absoluteIndex + 1
-                                        }`}
-                                        fill
-                                        className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                        loading="lazy"
-                                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 16vw, 12vw"
-                                      />
-
-                                      {/* Video Play Button Overlay */}
-                                      {media.type === "video" &&
-                                        !showMoreOverlay && (
-                                          <div className="absolute inset-0 flex items-center justify-center">
-                                            <div className="bg-black/60 backdrop-blur-sm rounded-full p-2 group-hover:bg-black/80 transition-all duration-300">
-                                              <Play className="w-6 h-6 text-white fill-white" />
-                                            </div>
-                                          </div>
-                                        )}
-
-                                      {showMoreOverlay ? (
-                                        <div className="absolute inset-0 bg-black/60 group-hover:bg-black/70 transition-all duration-300 flex items-center justify-center">
-                                          <span className="text-white text-lg font-semibold">
-                                            +{hiddenCount} more
-                                          </span>
-                                        </div>
-                                      ) : (
-                                        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-300 flex items-center justify-center">
-                                          <Eye className="w-5 h-5 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-                                        </div>
-                                      )}
-                                    </div>
-                                  </div>
-                                );
-                              })}
-                          </div>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
-          </section>
-        </main>
-      </div>
-
-      {/* Heavy components - Load after LCP */}
-      {componentsLoaded && (
-        <>
-          {/* Floating Elements - Desktop only */}
-          <div className="hidden xl:block">
-            <Duckweeds />
+          {/* centre arch — mid layer */}
+          <div data-depth="0.42" className={styles.rockCenter}>
+            <Image
+              src={ROCK_CENTER}
+              alt="Moss-covered stone archway aquascape"
+              width={680}
+              height={680}
+              priority
+              sizes="(max-width: 768px) 58vw, 680px"
+            />
           </div>
 
-          {/* Footer */}
-          <Footer />
-        </>
-      )}
+          {/* mossy rock, bottom left */}
+          <div data-depth="0.42" className={styles.rockLeft}>
+            <Image
+              src={ROCK_BOTTOM_LEFT}
+              alt="Moss-covered aquascape rock"
+              width={460}
+              height={460}
+              priority
+              sizes="(max-width: 768px) 30vw, 460px"
+            />
+          </div>
 
-      {/* Favorites Popup */}
-      {showFavoritesPopup && (
-        <FavoritesPopup
-          isOpen={showFavoritesPopup}
-          onClose={() => setShowFavoritesPopup(false)}
-        />
-      )}
+          {/* mist */}
+          <div className={styles.mistBottom} />
+          <div data-depth="0.5" className={styles.mistBlob1} />
+          <div data-depth="0.5" className={styles.mistBlob2} />
 
-      {/* Lightbox Modal */}
-      {lightbox && (
-        <MediaLightbox
-          project={lightbox.project}
-          startIndex={lightbox.index}
-          onClose={closeLightbox}
-        />
+          {/* floating stone islands */}
+          <div data-depth="0.26" className={styles.islandRight}>
+            <div className={styles.islandRightFloat}>
+              <Image
+                src={ROCK_FLOATING}
+                alt="Floating island of stone and grass"
+                width={190}
+                height={190}
+                sizes="190px"
+              />
+            </div>
+            <div className={styles.islandShadow} />
+          </div>
+          <div data-depth="0.34" className={styles.islandLeft}>
+            <div className={styles.islandLeftFloat}>
+              <Image
+                src={ROCK_FLOATING}
+                alt=""
+                aria-hidden="true"
+                width={100}
+                height={100}
+                sizes="100px"
+              />
+            </div>
+          </div>
+
+          {/* bubbles */}
+          {HERO_BUBBLES.map(([left, scale, duration, delay]) => (
+            <Bubble key={left} left={left} scale={scale} duration={duration} delay={delay} />
+          ))}
+
+          {/* vignette */}
+          <div className={styles.vignette} />
+
+          {/* nav */}
+          <header className={styles.nav}>
+            <Link href="/" className={styles.navBrand} aria-label="Duckaroo home">
+              <Image src={LOGO} alt="Duckaroo logo" width={42} height={42} priority />
+              <span className={styles.navWordmark}>DUCKAROO</span>
+            </Link>
+            <nav className={styles.navLinks} aria-label="Main navigation">
+              {NAV_LINKS.map((l) => (
+                <Link key={l.label} href={l.href}>
+                  {l.label}
+                </Link>
+              ))}
+            </nav>
+            <Link href="/service" className={styles.navCta}>
+              Book a service
+            </Link>
+            <button
+              type="button"
+              className={styles.menuBtn}
+              aria-label="Open navigation menu"
+              aria-expanded={menuOpen}
+              onClick={() => setMenuOpen(true)}
+            >
+              <span />
+              <span />
+              <span />
+            </button>
+          </header>
+
+          {/* headline (fades + drifts up on scroll) */}
+          <div data-hero-headline="" className={styles.headline}>
+            <p className={styles.eyebrow}>Living Art Aquascapes · Brisbane &amp; Gold Coast</p>
+            <h1 className={styles.heroTitle}>
+              Step into the <em>floating</em> world
+            </h1>
+            <p className={styles.heroSub}>
+              Mountains under glass. Stone that hangs in the air. Duckaroo designs, builds and
+              maintains living aquascapes across Brisbane &amp; the Gold Coast — every tank a
+              doorway.
+            </p>
+            <div className={styles.heroCtas}>
+              <a href="#worlds" className={styles.ctaPrimary}>
+                Enter the worlds
+              </a>
+              <Link href="/service" className={styles.ctaGhost}>
+                Book a service
+              </Link>
+            </div>
+          </div>
+
+          {/* scroll cue */}
+          <div data-hero-cue="" className={styles.scrollCue}>
+            <div className={styles.scrollCueLabel}>Descend</div>
+            <div className={styles.scrollCueLine} />
+          </div>
+        </div>
+      </div>
+
+      {/* ================= DEEP BODY (slides over the pinned hero) ================= */}
+      <div className={styles.deepBody}>
+        {/* worlds */}
+        <section id="worlds" className={styles.worlds}>
+          <div className={styles.sectionRay} />
+          <div data-reveal="" className={styles.worldsHeader}>
+            <h2 className={styles.kicker}>Worlds, not tanks</h2>
+            <div className={styles.sectionTitle}>Each installation is its own island</div>
+          </div>
+          <div className={styles.worldsGrid}>
+            {WORLDS.map((w, i) => (
+              <Link
+                key={w.name}
+                href="/customer-stories"
+                data-reveal=""
+                data-delay={i * 150}
+                className={styles.worldCard}
+              >
+                <div className={`${styles.worldImage} ${w.mask}`}>
+                  <Image
+                    src={w.image}
+                    alt={`${w.name} — ${w.meta}`}
+                    fill
+                    sizes="(max-width: 940px) 100vw, 33vw"
+                  />
+                </div>
+                <div className={styles.worldShadow} />
+                <h3 className={styles.worldName}>{w.name}</h3>
+                <div className={styles.worldMeta}>{w.meta}</div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {/* rare life */}
+        <section id="rare-life" className={styles.rare}>
+          <div className={styles.rareGrid}>
+            <div data-reveal="" className={styles.rareText}>
+              <h2 className={styles.kicker}>Rare life</h2>
+              <div className={styles.sectionTitle}>Creatures you thought were myths</div>
+              <p>
+                Rare fish and botanicals, ethically sourced and quarantined in-house, matched to
+                the world we build around them. New arrivals land in the store a few times a
+                year.
+              </p>
+              <Link href="/products" className={styles.rareLink}>
+                Browse the collection →
+              </Link>
+            </div>
+            <div className={styles.rareCircles}>
+              {RARE_LIFE.map((r, i) => (
+                <div key={r.name} data-reveal="" data-delay={i * 150} className={styles.rareItem}>
+                  <div
+                    className={styles.rareCircle}
+                    style={{ width: r.size, height: r.size }}
+                  >
+                    <Image src={r.image} alt={r.name} fill sizes={`${r.size}px`} />
+                  </div>
+                  <div className={styles.rareName}>{r.name}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* artefacts */}
+        <section id="artefacts" className={styles.artefacts}>
+          <h2 data-reveal="" className={styles.kicker}>
+            Artefacts of the atelier
+          </h2>
+          <div className={styles.artefactList}>
+            {artefacts.map((a, i) => (
+              <Link
+                key={a.name}
+                href={a.href}
+                data-reveal=""
+                data-delay={i * 120}
+                className={styles.artefactRow}
+              >
+                <div className={styles.artefactThumb}>
+                  {a.image && (
+                    <Image src={a.image} alt={a.name} fill sizes="120px" />
+                  )}
+                </div>
+                <div className={styles.artefactInfo}>
+                  <h3 className={styles.artefactTitle}>{a.name}</h3>
+                  <div className={styles.artefactSub}>{a.sub}</div>
+                </div>
+                <div className={styles.artefactPrice}>{a.price || "View →"}</div>
+              </Link>
+            ))}
+          </div>
+          <Link href="/products" className={styles.artefactsMore}>
+            Browse the full collection →
+          </Link>
+        </section>
+
+        {/* commissions */}
+        <section id="commissions" className={styles.commission}>
+          <div className={styles.sectionRayAlt} />
+          {BAND_BUBBLES.map(([left, scale, duration, delay]) => (
+            <Bubble key={left} left={left} scale={scale} duration={duration} delay={delay} />
+          ))}
+          <div data-reveal="" className={styles.commissionInner}>
+            <h2 className={styles.kicker}>Commissions</h2>
+            <div className={styles.sectionTitle}>
+              Dream a world. <em>We&apos;ll grow it.</em>
+            </div>
+            <p>
+              Every commission begins with your imagination — a site visit, a hand-drawn concept,
+              and a world built, planted and kept alive by the Duckaroo team across Brisbane &amp;
+              the Gold Coast.
+            </p>
+            <Link href="/service" className={styles.ctaPrimary} style={{ marginTop: 8 }}>
+              Begin your commission
+            </Link>
+            <div className={styles.commissionPhone}>
+              or call <a href="tel:+61457663939">(04) 5766 3939</a>
+            </div>
+          </div>
+        </section>
+
+        <Footer />
+      </div>
+
+      {/* mobile menu overlay */}
+      {menuOpen && (
+        <div className={styles.mobileMenu} role="dialog" aria-modal="true" aria-label="Navigation">
+          <div className={styles.mobileMenuTop}>
+            <Link
+              href="/"
+              className={styles.navBrand}
+              onClick={() => setMenuOpen(false)}
+              aria-label="Duckaroo home"
+            >
+              <Image src={LOGO} alt="Duckaroo logo" width={42} height={42} />
+              <span className={styles.navWordmark}>DUCKAROO</span>
+            </Link>
+            <button
+              type="button"
+              className={styles.mobileClose}
+              aria-label="Close navigation menu"
+              onClick={() => setMenuOpen(false)}
+            >
+              ✕
+            </button>
+          </div>
+          <nav className={styles.mobileLinks} aria-label="Main navigation">
+            {NAV_LINKS.map((l, i) => (
+              <Link key={l.label} href={l.href} onClick={() => setMenuOpen(false)}>
+                <span>{String(i + 1).padStart(2, "0")}</span>
+                {l.label}
+              </Link>
+            ))}
+          </nav>
+          <Link
+            href="/service"
+            className={styles.mobileMenuCta}
+            onClick={() => setMenuOpen(false)}
+          >
+            Book a service
+          </Link>
+        </div>
       )}
-    </>
+    </div>
   );
 };
 

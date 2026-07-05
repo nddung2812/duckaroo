@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
+import PageAmbience from "../../components/PageAmbience";
 import { ChevronRight, AlertTriangle, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -55,22 +56,22 @@ export async function generateMetadata({ params }) {
 }
 
 const TYPE_COLORS = {
-  "Parasitic (Ciliate Protozoan)": "text-amber-400",
-  "Parasitic (Dinoflagellate)": "text-amber-400",
-  "Parasitic (Microsporidian)": "text-amber-400",
-  "Parasitic": "text-amber-400",
-  "Bacterial": "text-blue-400",
-  "Bacterial/Physical": "text-blue-400",
-  "Viral": "text-red-400",
-  "Fungal": "text-purple-400",
-  "Environmental": "text-slate-400",
-  "Environmental/Nutritional": "text-slate-400",
+  "Parasitic (Ciliate Protozoan)": "text-amber-glow",
+  "Parasitic (Dinoflagellate)": "text-amber-glow",
+  "Parasitic (Microsporidian)": "text-amber-glow",
+  "Parasitic": "text-amber-glow",
+  "Bacterial": "text-amber-glow",
+  "Bacterial/Physical": "text-amber-glow",
+  "Viral": "text-amber-glow",
+  "Fungal": "text-amber-glow",
+  "Environmental": "text-amber-glow",
+  "Environmental/Nutritional": "text-amber-glow",
 };
 
 const TANK_COLORS = {
-  Freshwater: "text-cyan-400",
-  Marine: "text-blue-300",
-  Both: "text-emerald-400",
+  Freshwater: "text-cream/75",
+  Marine: "text-cream/75",
+  Both: "text-cream/75",
 };
 
 const getTankTypeLabel = (tankType) => {
@@ -96,8 +97,8 @@ export default async function DiseasePage({ params }) {
 
   const images = await getDiseaseImages(disease.disease_name);
 
-  const typeColor = TYPE_COLORS[disease.disease_type] || "text-slate-400";
-  const tankColor = TANK_COLORS[disease.tank_type] || "text-slate-400";
+  const typeColor = TYPE_COLORS[disease.disease_type] || "text-amber-glow";
+  const tankColor = TANK_COLORS[disease.tank_type] || "text-cream/75";
 
   const structuredData = {
     "@context": "https://schema.org",
@@ -147,59 +148,60 @@ export default async function DiseasePage({ params }) {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
       <Navbar />
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black">
+      <PageAmbience />
+      <div className="min-h-screen relative z-10">
         <div className="max-w-3xl mx-auto px-4 pt-28 pb-24">
 
           {/* Breadcrumb */}
-          <nav className="flex items-center gap-2 text-white/40 text-xs mb-10">
-            <Link href="/" className="hover:text-white/70 transition-colors">Home</Link>
+          <nav className="flex items-center gap-2 text-cream/50 text-xs mb-10">
+            <Link href="/" className="hover:text-amber-glow transition-colors">Home</Link>
             <ChevronRight className="h-3 w-3" />
-            <Link href="/common-aquarium-diseases" className="hover:text-white/70 transition-colors">
+            <Link href="/common-aquarium-diseases" className="hover:text-amber-glow transition-colors">
               Aquarium Diseases
             </Link>
             <ChevronRight className="h-3 w-3" />
-            <span className="text-white/70">{disease.disease_name}</span>
+            <span className="text-cream/80">{disease.disease_name}</span>
           </nav>
 
           {/* Title */}
           <header className="mb-8">
             <div className="flex flex-wrap gap-3 items-center text-xs mb-3">
-              <span className={`font-semibold ${typeColor}`}>
+              <span className={`font-medium uppercase tracking-[0.14em] ${typeColor}`}>
                 {disease.disease_type.split("(")[0].trim()}
               </span>
-              <span className="text-white/20">·</span>
+              <span className="text-cream/30">·</span>
               <span className={`${tankColor}`}>{getTankTypeLabel(disease.tank_type)}</span>
               {disease.contagious?.startsWith("Yes") && (
                 <>
-                  <span className="text-white/20">·</span>
-                  <span className="text-red-400">Contagious</span>
+                  <span className="text-cream/30">·</span>
+                  <span className="text-red-300">Contagious</span>
                 </>
               )}
               {disease.notifiable_in_australia && (
                 <>
-                  <span className="text-white/20">·</span>
+                  <span className="text-cream/30">·</span>
                   <span className="text-red-300 font-semibold">Notifiable in Australia</span>
                 </>
               )}
               {disease.zoonotic && (
                 <>
-                  <span className="text-white/20">·</span>
-                  <span className="text-orange-400">Zoonotic Risk</span>
+                  <span className="text-cream/30">·</span>
+                  <span className="text-orange-300">Zoonotic Risk</span>
                 </>
               )}
             </div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white leading-tight">
+            <h1 className="font-display text-4xl md:text-5xl font-medium text-parchment leading-tight [text-wrap:balance]">
               {disease.disease_name}
             </h1>
             {disease.common_names && (
-              <p className="text-white/50 text-base mt-2 italic">{disease.common_names}</p>
+              <p className="text-cream/60 text-base mt-2 italic">{disease.common_names}</p>
             )}
           </header>
 
           {/* Hero Image */}
           {images.length > 0 && (
             <div className="mb-10">
-              <div className="rounded-xl overflow-hidden h-56 md:h-80 w-full">
+              <div className="rounded-2xl overflow-hidden h-56 md:h-80 w-full border border-cream/15">
                 <img
                   src={images[0].url}
                   alt={disease.disease_name}
@@ -207,15 +209,15 @@ export default async function DiseasePage({ params }) {
                 />
               </div>
               {disease.image_credit && (
-                <p className="text-xs text-white/30 mt-1.5 text-right italic">{disease.image_credit}</p>
+                <p className="text-xs text-cream/40 mt-1.5 text-right italic">{disease.image_credit}</p>
               )}
             </div>
           )}
 
           {/* Alerts */}
           {disease.notifiable_in_australia && (
-            <div className="flex gap-3 bg-red-950/40 border border-red-500/25 rounded-lg p-4 mb-6">
-              <AlertTriangle className="h-5 w-5 text-red-400 flex-shrink-0 mt-0.5" />
+            <div className="flex gap-3 bg-red-950/30 border border-red-800/40 rounded-2xl p-4 mb-6">
+              <AlertTriangle className="h-5 w-5 text-red-300 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-red-300 text-sm mb-1">Notifiable Disease in Australia</p>
                 <p className="text-red-200/75 text-sm leading-relaxed">
@@ -227,8 +229,8 @@ export default async function DiseasePage({ params }) {
           )}
 
           {disease.zoonotic && (
-            <div className="flex gap-3 bg-orange-950/40 border border-orange-500/25 rounded-lg p-4 mb-6">
-              <AlertTriangle className="h-5 w-5 text-orange-400 flex-shrink-0 mt-0.5" />
+            <div className="flex gap-3 bg-orange-950/30 border border-orange-800/40 rounded-2xl p-4 mb-6">
+              <AlertTriangle className="h-5 w-5 text-orange-300 flex-shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-orange-300 text-sm mb-1">Zoonotic Risk</p>
                 <p className="text-orange-200/75 text-sm leading-relaxed">
@@ -240,18 +242,18 @@ export default async function DiseasePage({ params }) {
           )}
 
           {/* Article Body */}
-          <article className="prose prose-invert max-w-none mt-8 divide-y divide-white/10">
+          <article className="prose prose-invert max-w-none mt-8 divide-y divide-cream/15 prose-headings:font-display prose-headings:text-parchment prose-a:text-amber-glow">
 
             {/* Overview */}
             {disease.blog_paragraph && (
               <section className="pb-8">
                 {disease.causative_agent && (
-                  <p className="text-white/50 text-sm mb-4">
-                    <span className="font-medium text-white/70">Causative agent:</span>{" "}
+                  <p className="text-cream/60 text-sm mb-4">
+                    <span className="font-medium text-cream/80">Causative agent:</span>{" "}
                     {disease.causative_agent}
                   </p>
                 )}
-                <p className="text-white/80 leading-relaxed text-base md:text-lg">
+                <p className="text-cream/80 leading-relaxed text-base md:text-lg">
                   {disease.blog_paragraph}
                 </p>
               </section>
@@ -260,11 +262,11 @@ export default async function DiseasePage({ params }) {
             {/* Symptoms */}
             {disease.symptoms && (
               <section className="py-8">
-                <h2 className="text-xl font-bold text-white mb-4">Symptoms</h2>
+                <h2 className="font-display text-2xl font-medium text-parchment mb-4">Symptoms</h2>
                 <ul className="space-y-2">
                   {bulletList(disease.symptoms).map((item, i) => (
-                    <li key={i} className="flex gap-3 text-white/75 text-sm leading-relaxed">
-                      <span className="text-amber-400 mt-1 flex-shrink-0">•</span>
+                    <li key={i} className="flex gap-3 text-cream/75 text-sm leading-relaxed">
+                      <span className="text-amber-glow mt-1 flex-shrink-0">•</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -275,11 +277,11 @@ export default async function DiseasePage({ params }) {
             {/* Treatment */}
             {disease.treatment && (
               <section className="py-8">
-                <h2 className="text-xl font-bold text-white mb-4">Treatment</h2>
+                <h2 className="font-display text-2xl font-medium text-parchment mb-4">Treatment</h2>
                 <ul className="space-y-2">
                   {bulletList(disease.treatment).map((item, i) => (
-                    <li key={i} className="flex gap-3 text-white/75 text-sm leading-relaxed">
-                      <span className="text-emerald-400 mt-1 flex-shrink-0">•</span>
+                    <li key={i} className="flex gap-3 text-cream/75 text-sm leading-relaxed">
+                      <span className="text-amber-glow mt-1 flex-shrink-0">•</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -290,11 +292,11 @@ export default async function DiseasePage({ params }) {
             {/* Australian Medications */}
             {disease.australian_medications && (
               <section className="py-8">
-                <h2 className="text-xl font-bold text-white mb-4">Australian Medications</h2>
+                <h2 className="font-display text-2xl font-medium text-parchment mb-4">Australian Medications</h2>
                 <ul className="space-y-2">
                   {bulletList(disease.australian_medications).map((item, i) => (
-                    <li key={i} className="flex gap-3 text-white/75 text-sm leading-relaxed">
-                      <span className="text-blue-400 mt-1 flex-shrink-0">•</span>
+                    <li key={i} className="flex gap-3 text-cream/75 text-sm leading-relaxed">
+                      <span className="text-amber-glow mt-1 flex-shrink-0">•</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -305,11 +307,11 @@ export default async function DiseasePage({ params }) {
             {/* Commonly Affected Fish */}
             {disease.commonly_affected_fish && (
               <section className="py-8">
-                <h2 className="text-xl font-bold text-white mb-4">Commonly Affected Fish</h2>
+                <h2 className="font-display text-2xl font-medium text-parchment mb-4">Commonly Affected Fish</h2>
                 <ul className="space-y-2">
                   {bulletList(disease.commonly_affected_fish).map((item, i) => (
-                    <li key={i} className="flex gap-3 text-white/75 text-sm leading-relaxed">
-                      <span className="text-cyan-400 mt-1 flex-shrink-0">•</span>
+                    <li key={i} className="flex gap-3 text-cream/75 text-sm leading-relaxed">
+                      <span className="text-amber-glow mt-1 flex-shrink-0">•</span>
                       <span>{item}</span>
                     </li>
                   ))}
@@ -320,20 +322,20 @@ export default async function DiseasePage({ params }) {
             {/* Notes */}
             {disease.notes && (
               <section className="py-8">
-                <h2 className="text-xl font-bold text-amber-300 mb-3">Important Notes</h2>
-                <p className="text-amber-100/80 text-sm leading-relaxed">{disease.notes}</p>
+                <h2 className="font-display text-2xl font-medium text-amber-glow mb-3">Important Notes</h2>
+                <p className="text-cream/75 text-sm leading-relaxed">{disease.notes}</p>
               </section>
             )}
           </article>
 
           {/* Wikipedia Link */}
           {disease.wikipedia_url && (
-            <div className="mt-8 pt-6 border-t border-white/10">
+            <div className="mt-8 pt-6 border-t border-cream/15">
               <a
                 href={disease.wikipedia_url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-emerald-400 hover:text-emerald-300 text-sm transition-colors"
+                className="inline-flex items-center gap-2 text-amber-glow hover:text-amber-glow/80 text-sm transition-colors"
               >
                 Read more on Wikipedia <ExternalLink className="h-3.5 w-3.5" />
               </a>
@@ -341,24 +343,24 @@ export default async function DiseasePage({ params }) {
           )}
 
           {/* CTA */}
-          <div className="mt-12 pt-8 border-t border-white/10">
-            <p className="text-white/50 text-sm mb-1">Concerned about your aquarium?</p>
-            <h2 className="text-xl font-bold text-white mb-3">
+          <div className="mt-12 pt-8 border-t border-cream/15">
+            <p className="text-xs uppercase tracking-[0.3em] text-amber-glow font-medium mb-1">Concerned about your aquarium?</p>
+            <h2 className="font-display text-2xl font-medium text-parchment mb-3">
               Duckaroo covers Brisbane &amp; Gold Coast
             </h2>
-            <p className="text-white/60 text-sm mb-5 leading-relaxed">
+            <p className="text-cream/75 text-sm mb-5 leading-relaxed">
               Our professional aquarium health service can help identify and treat fish diseases
               before they spread through your tank.
             </p>
-            <Button asChild className="bg-emerald-600 hover:bg-emerald-700">
+            <Button asChild className="bg-amber-glow text-[#04121b] rounded-full text-[13px] uppercase tracking-[0.14em] font-medium hover:bg-amber-glow hover:shadow-[0_6px_30px_rgba(232,160,92,0.35)]">
               <Link href="/service">Book an Aquarium Service</Link>
             </Button>
           </div>
 
           {/* Image Gallery Grid */}
           {images.length > 0 && (
-            <div className="mt-12 pt-12 border-t border-white/10">
-              <h3 className="text-lg font-semibold text-white mb-6">Disease Photos</h3>
+            <div className="mt-12 pt-12 border-t border-cream/15">
+              <h3 className="font-display text-xl font-medium text-parchment mb-6">Disease Photos</h3>
               <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                 {images.map((image) => (
                   <a
@@ -366,7 +368,7 @@ export default async function DiseasePage({ params }) {
                     href={image.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group relative overflow-hidden rounded-lg bg-white/5 border border-white/10 hover:border-emerald-500/40 transition-all"
+                    className="group relative overflow-hidden rounded-xl bg-cream/5 border border-cream/15 hover:border-amber-glow/50 transition-all"
                   >
                     <img
                       src={image.url}
@@ -374,7 +376,7 @@ export default async function DiseasePage({ params }) {
                       className="w-full aspect-square object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors flex items-center justify-center">
-                      <ExternalLink className="w-4 h-4 text-white opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <ExternalLink className="w-4 h-4 text-cream opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
                   </a>
                 ))}
@@ -386,7 +388,7 @@ export default async function DiseasePage({ params }) {
           <div className="mt-10">
             <Link
               href="/common-aquarium-diseases"
-              className="text-emerald-400 hover:text-emerald-300 text-sm font-medium transition-colors"
+              className="text-amber-glow hover:text-amber-glow/80 text-xs font-medium uppercase tracking-[0.14em] transition-colors"
             >
               ← All aquarium diseases
             </Link>

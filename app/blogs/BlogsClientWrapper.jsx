@@ -60,7 +60,7 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
       {featuredBlogs.length > 0 && (
         <section className="px-4 mb-12">
           <div className="max-w-3xl mx-auto">
-            <p className="text-xs text-white/40 uppercase tracking-widest mb-5">
+            <p className="text-xs uppercase tracking-[0.3em] text-amber-glow font-medium mb-5">
               Featured
             </p>
             <div className="space-y-6">
@@ -72,25 +72,23 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
                     href={`/blogs/${blog.slug}`}
                     className="group flex gap-5 items-start"
                   >
-                    <div className="w-24 h-16 flex-shrink-0 rounded overflow-hidden bg-white/10">
+                    <div className="w-24 h-16 flex-shrink-0 rounded-xl overflow-hidden bg-cream/10 border border-cream/15">
                       <Image
                         src={blog.image}
                         alt={blog.imageAlt || blog.title}
                         width={96}
                         height={64}
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                       />
                     </div>
                     <div>
-                      <span
-                        className={`text-xs font-medium bg-gradient-to-r ${cat?.color} bg-clip-text text-transparent`}
-                      >
+                      <span className="text-xs font-medium text-amber-glow uppercase tracking-[0.14em]">
                         {cat?.name}
                       </span>
-                      <h2 className="text-white font-semibold group-hover:text-emerald-300 transition-colors leading-snug mt-0.5">
+                      <h2 className="font-display font-medium text-parchment group-hover:text-amber-glow transition-colors leading-snug mt-0.5">
                         {blog.title}
                       </h2>
-                      <p className="text-white/50 text-xs mt-1">
+                      <p className="text-cream/60 text-xs mt-1">
                         {formatDate(blog.publishDate)} · {blog.readTime}
                       </p>
                     </div>
@@ -98,7 +96,7 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
                 );
               })}
             </div>
-            <div className="border-t border-white/10 mt-10" />
+            <div className="border-t border-cream/15 mt-10" />
           </div>
         </section>
       )}
@@ -108,17 +106,17 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
         <div className="max-w-3xl mx-auto">
           <div className="flex flex-col sm:flex-row gap-3">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-white/40 w-4 h-4" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-cream/50 w-4 h-4" />
               <Input
                 placeholder="Search articles..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-9 bg-white/5 border-white/15 text-white placeholder:text-white/40 focus:border-emerald-500/50"
+                className="pl-9 bg-cream/5 border-cream/20 text-cream placeholder:text-cream/40 focus:border-amber-glow/50"
               />
             </div>
             <Select value={selectedCategory} onValueChange={setSelectedCategory}>
               <SelectTrigger
-                className="w-full sm:w-44 bg-white/5 border-white/15 text-white"
+                className="w-full sm:w-44 bg-cream/5 border-cream/20 text-cream"
                 aria-label="Select category"
               >
                 <SelectValue placeholder="Category" />
@@ -134,7 +132,7 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
             </Select>
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger
-                className="w-full sm:w-40 bg-white/5 border-white/15 text-white"
+                className="w-full sm:w-40 bg-cream/5 border-cream/20 text-cream"
                 aria-label="Sort by"
               >
                 <SelectValue placeholder="Sort by" />
@@ -147,7 +145,7 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
               </SelectContent>
             </Select>
           </div>
-          <p className="text-white/35 text-xs mt-3">
+          <p className="text-cream/50 text-xs mt-3">
             {filteredBlogs.length} article{filteredBlogs.length !== 1 ? "s" : ""}
           </p>
         </div>
@@ -155,10 +153,10 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
 
       {/* Blog List */}
       <section className="px-4 pb-24">
-        <div className="max-w-3xl mx-auto divide-y divide-white/10">
+        <div className="max-w-3xl mx-auto divide-y divide-cream/15">
           {filteredBlogs.length === 0 ? (
             <div className="py-12 text-center">
-              <p className="text-white/50">No articles match your search.</p>
+              <p className="text-cream/60">No articles match your search.</p>
               <Button
                 onClick={() => {
                   setSearchQuery("");
@@ -166,7 +164,7 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
                 }}
                 variant="outline"
                 size="sm"
-                className="mt-4 border-white/20 text-white"
+                className="mt-4 border border-cream/30 text-cream/90 rounded-full bg-transparent hover:border-cream/60 hover:bg-cream/5"
               >
                 Clear filters
               </Button>
@@ -176,10 +174,8 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
               const cat = getCategoryInfo(blog.category);
               return (
                 <article key={blog.id} className="py-7 group">
-                  <div className="flex items-center gap-3 mb-2 text-xs text-white/45">
-                    <span
-                      className={`font-medium bg-gradient-to-r ${cat?.color} bg-clip-text text-transparent`}
-                    >
+                  <div className="flex items-center gap-3 mb-2 text-xs text-cream/60">
+                    <span className="font-medium text-amber-glow uppercase tracking-[0.14em]">
                       {cat?.name}
                     </span>
                     <span>·</span>
@@ -193,15 +189,15 @@ export default function BlogsClientWrapper({ blogs, blogCategories, featuredBlog
                       {blog.readTime}
                     </span>
                   </div>
-                  <h2 className="text-lg font-semibold text-white group-hover:text-emerald-300 transition-colors mb-2 leading-snug">
+                  <h2 className="text-xl font-display font-medium text-parchment group-hover:text-amber-glow transition-colors mb-2 leading-snug">
                     <Link href={`/blogs/${blog.slug}`}>{blog.title}</Link>
                   </h2>
-                  <p className="text-white/60 text-sm leading-relaxed mb-3 line-clamp-2">
+                  <p className="text-cream/75 text-sm leading-relaxed mb-3 line-clamp-2">
                     {blog.description}
                   </p>
                   <Link
                     href={`/blogs/${blog.slug}`}
-                    className="text-emerald-400 hover:text-emerald-300 text-sm font-medium transition-colors"
+                    className="text-amber-glow hover:text-amber-glow/80 text-xs font-medium uppercase tracking-[0.14em] transition-colors"
                   >
                     Read article →
                   </Link>

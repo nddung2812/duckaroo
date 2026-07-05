@@ -1,5 +1,6 @@
 import { blogs, blogCategories, getFeaturedBlogs } from "@/data/blogs";
 import Layout from "@/app/components/Layout";
+import PageAmbience from "../components/PageAmbience";
 import BlogsClientWrapper from "./BlogsClientWrapper";
 
 // The listing only needs card metadata — never send full article bodies to the client.
@@ -11,18 +12,19 @@ export default function BlogsPage() {
   const featuredBlogs = getFeaturedBlogs().slice(0, 2).map(toCard);
 
   return (
-    <Layout className="bg-gradient-to-br from-slate-950 via-slate-900 to-black">
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-black">
+    <Layout>
+      <PageAmbience />
+      <div className="min-h-screen relative z-10">
         {/* Header — server-rendered for SEO */}
         <section className="pt-28 pb-12 px-4">
           <div className="max-w-3xl mx-auto">
-            <p className="text-emerald-400 text-sm font-medium tracking-widest uppercase mb-3">
+            <p className="text-xs uppercase tracking-[0.3em] text-amber-glow font-medium mb-3">
               Expert Guides
             </p>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
+            <h1 className="font-display text-4xl md:text-5xl font-medium text-parchment mb-4 leading-tight">
               Aquarium Care Blog
             </h1>
-            <p className="text-white/60 text-lg">
+            <p className="text-cream/75 text-lg">
               Practical fish tank tips, disease guides, and maintenance advice
               from Brisbane&apos;s aquarium specialists.
             </p>
