@@ -35,31 +35,15 @@ const Navbar = () => {
     };
   }, [dropdownOpen]);
 
+  // Mirror the homepage header nav items (HomeClient NAV_LINKS) so every page
+  // outside /products shows the same navigation. "Worlds" links to the homepage
+  // #worlds section so it works from any page.
   const navItems = [
-    { href: "/", label: "Home" },
+    { href: "/#worlds", label: "Worlds" },
     { href: "/products", label: "Products" },
     { href: "/service", label: "Service" },
-    {
-      label: "Blogs",
-      dropdown: [
-        { href: "/blogs", label: "All Blogs" },
-        {
-          href: "/how-to-setup-your-first-aquarium",
-          label: "Aquarium Setup Guide",
-        },
-        {
-          href: "/common-aquarium-diseases",
-          label: "Aquarium Disease Guide",
-        },
-      ],
-    },
-    {
-      href: "/customer-stories",
-      label: "Customer Stories",
-    },
-    { href: "/faq", label: "FAQ" },
+    { href: "/customer-stories", label: "Stories" },
     { href: "/contact", label: "Contact" },
-    { href: "/about-us", label: "About" },
   ];
 
   return (
@@ -138,13 +122,13 @@ const Navbar = () => {
               asChild
               className="rounded-full border border-amber-glow/70 bg-transparent text-amber-glow hover:bg-amber-glow hover:text-[#04121b] text-[12px] uppercase tracking-[0.12em] px-5 whitespace-nowrap transition-colors"
             >
-              <Link href="/products">Shop Plants</Link>
+              <Link href="/products">Shop</Link>
             </Button>
             <Button
               asChild
               className="rounded-full bg-amber-glow text-[#04121b] hover:bg-amber-glow/90 text-[12px] uppercase tracking-[0.12em] px-5 whitespace-nowrap shadow-[0_4px_20px_rgba(232,160,92,0.3)]"
             >
-              <Link href="/service">Service</Link>
+              <Link href="/service">Book a service</Link>
             </Button>
           </div>
 
@@ -223,13 +207,13 @@ const Navbar = () => {
                     asChild
                     className="rounded-full border border-amber-glow/70 bg-transparent text-amber-glow hover:bg-amber-glow hover:text-[#04121b] text-[12px] uppercase tracking-[0.14em] transition-colors"
                   >
-                    <Link href="/products">Shop Plants</Link>
+                    <Link href="/products">Shop</Link>
                   </Button>
                   <Button
                     asChild
                     className="rounded-full bg-amber-glow text-[#04121b] hover:bg-amber-glow/90 text-[12px] uppercase tracking-[0.14em] shadow-[0_4px_20px_rgba(232,160,92,0.3)]"
                   >
-                    <Link href="/service">Service</Link>
+                    <Link href="/service">Book a service</Link>
                   </Button>
                 </div>
               </div>

@@ -766,6 +766,11 @@
   .rockRight {
     bottom: 30px;
   }
+
+  .rockLeft img,
+  .rockRight img {
+    width: clamp(140px, 20vw, 260px);
+  }
 }
 
 .ctaGhost:hover {
