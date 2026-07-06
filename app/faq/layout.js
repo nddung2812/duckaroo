@@ -1,6 +1,6 @@
 import { faqItems } from "./faqData";
 
-const SITE_URL = "https://aquaticswandesign.com.au";
+const SITE_URL = "https://duckaroo.com.au";
 
 export const metadata = {
   title:

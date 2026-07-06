@@ -122,6 +122,59 @@ const nextConfig = {
         destination: "/products/anubias-panda-very-rare-limited-stock",
         permanent: true,
       },
+
+      // ── Migration from the old Shopify store (duckaroo.com.au) ──
+      // Product URLs (/products/{slug}) are intentionally omitted: every slug in
+      // the Shopify sitemap already exists in our DB with an identical slug, so
+      // /products/{slug} resolves natively — no redirect required.
+
+      // Shopify collections → our single product listing.
+      // NOTE: /products cannot pre-filter by ?category= yet (it hardcodes "all"),
+      // so every collection lands on the full listing. Covers best-sellers,
+      // monthly-special, new-arrivals, aquarium-plants, aquarium-shrimp,
+      // aquarium-probiotics, aquarium-designs, accessories, bucephalandra-anubias.
+      {
+        source: "/collections/:slug*",
+        destination: "/products",
+        permanent: true,
+      },
+
+      // Shopify content pages → our equivalents
+      {
+        source: "/pages/contact-us",
+        destination: "/contact",
+        permanent: true,
+      },
+      {
+        source: "/pages/our-services",
+        destination: "/service",
+        permanent: true,
+      },
+      // FLAG: /pages/peter-ford is a person/bio page with no direct equivalent.
+      // Best-effort target is /about-us — confirm the intended destination.
+      {
+        source: "/pages/peter-ford",
+        destination: "/about-us",
+        permanent: true,
+      },
+
+      // Shopify blog articles → our blog. Shopify uses /blogs/news/{slug};
+      // our articles live at /blogs/{slug} (no /news/ segment, so no collision).
+      // Best-effort topical match for the buce article; the algae article and
+      // the news index/tag pages fall through to the blog listing.
+      {
+        source:
+          "/blogs/news/5-popular-bucephalandra-varieties-in-australia-a-closer-look-at-duckaroo-store",
+        destination: "/blogs/bucephalandra-care-guide-beginners",
+        permanent: true,
+      },
+      // FLAG: /blogs/news/dealing-with-algae-in-your-aquarium-a-beginners-guide
+      // has no equivalent article — it falls through to /blogs via the catch-all.
+      {
+        source: "/blogs/news/:path*",
+        destination: "/blogs",
+        permanent: true,
+      },
     ];
   },
   experimental: {

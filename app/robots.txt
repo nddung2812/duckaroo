@@ -24,4 +24,4 @@ User-agent: GoogleOther
 Allow: /
 
 # Sitemap location
-Sitemap: https://aquaticswandesign.com.au/sitemap.xml
+Sitemap: https://duckaroo.com.au/sitemap.xml

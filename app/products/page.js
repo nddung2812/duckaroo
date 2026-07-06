@@ -17,7 +17,7 @@ const getImageSrc = (img) => (typeof img === "string" ? img : img?.url ?? "");
 // JSON-LD structured data component for the products listing page
 function ProductsListingStructuredData({ products, selectedCategory, totalCount }) {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://aquaticswandesign.com.au";
+    process.env.NEXT_PUBLIC_BASE_URL || "https://duckaroo.com.au";
 
   // Organization structured data
   const organizationData = {

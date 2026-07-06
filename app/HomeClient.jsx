@@ -265,8 +265,6 @@ const Home = ({ featuredProducts = [] }) => {
         <div className={styles.heroSticky}>
           <div className={styles.heroOverlay} />
 
-          {/* distant silhouettes */}
-          <div data-depth="0.3" className={styles.silhouetteRight} />
 
           {/* god rays */}
           <div data-depth="0.1" className={`${styles.ray} ${styles.ray1}`} />

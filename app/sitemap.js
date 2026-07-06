@@ -4,7 +4,7 @@ import { blogs } from "../data/blogs";
 
 export default async function sitemap() {
   const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://aquaticswandesign.com.au";
+    process.env.NEXT_PUBLIC_BASE_URL || "https://duckaroo.com.au";
   const [products, diseaseRows] = await Promise.all([
     getAllStockItems(),
     getAllDiseaseSlugs(),

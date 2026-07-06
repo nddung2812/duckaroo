@@ -70,12 +70,12 @@ export default function AquaticSpecialistsClient() {
             "@context": "https://schema.org",
             "@type": "LocalBusiness",
             "@id":
-              "https://aquaticswandesign.com.au/aquatic-specialists-gold-coast#business",
+              "https://duckaroo.com.au/aquatic-specialists-gold-coast#business",
             name: "Duckaroo Aquatic Specialists Gold Coast",
             alternateName: "Gold Coast Aquatic Specialists",
             description:
               "Professional aquatic specialists serving Gold Coast with expert fish tank cleaning, pond maintenance, and aquarium services. 15+ years experience with same-day service available.",
-            url: "https://aquaticswandesign.com.au/aquatic-specialists-gold-coast",
+            url: "https://duckaroo.com.au/aquatic-specialists-gold-coast",
             telephone: "+61457663939",
             email: "aquaticswandesign@gmail.com",
             priceRange: "$80-$400",

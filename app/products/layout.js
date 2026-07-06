@@ -15,16 +15,16 @@ export const metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://aquaticswandesign.com.au"),
+  metadataBase: new URL("https://duckaroo.com.au"),
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/products",
+    canonical: "https://duckaroo.com.au/products",
   },
   openGraph: {
     title:
       "Rare Aquatic Plants Brisbane | Bucephalandra, Anubias & Live Plants | Duckaroo",
     description:
       "Australia Wide Shipping Aquatic Rare Bucephalandra & Other Rarer Plants • Live Arrival Guarantee • 100% Customer Satisfaction Guarantee. Premium aquarium plants, equipment & accessories.",
-    url: "https://aquaticswandesign.com.au/products",
+    url: "https://duckaroo.com.au/products",
     siteName: "Duckaroo Brisbane",
     images: [
       {
@@ -92,11 +92,11 @@ export default function ProductsLayout({ children }) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Store",
-            "@id": "https://aquaticswandesign.com.au/products#store",
+            "@id": "https://duckaroo.com.au/products#store",
             name: "Duckaroo Aquatic Plant Store",
             description:
               "Australia's premier online store for rare aquatic plants including Bucephalandra, Anubias, and aquascaping supplies with live arrival guarantee.",
-            url: "https://aquaticswandesign.com.au/products",
+            url: "https://duckaroo.com.au/products",
             image:
               "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1749469954/best-place-to-buy-bucephalandra-kedagang-v0-5fhaw341fkjc1_ujrt6m",
             address: {
@@ -136,7 +136,7 @@ export default function ProductsLayout({ children }) {
                   price: "24.99",
                   priceCurrency: "AUD",
                   availability: "https://schema.org/InStock",
-                  url: "https://aquaticswandesign.com.au/products/buce-kegadang",
+                  url: "https://duckaroo.com.au/products/buce-kegadang",
                   priceValidUntil: "2026-12-31",
                   aggregateRating: {
                     "@type": "AggregateRating",
@@ -193,7 +193,7 @@ export default function ProductsLayout({ children }) {
                   price: "15.00",
                   priceCurrency: "AUD",
                   availability: "https://schema.org/InStock",
-                  url: "https://aquaticswandesign.com.au/products/anubias-nana",
+                  url: "https://duckaroo.com.au/products/anubias-nana",
                   priceValidUntil: "2026-12-31",
                   aggregateRating: {
                     "@type": "AggregateRating",
@@ -214,7 +214,7 @@ export default function ProductsLayout({ children }) {
                   price: "5.50",
                   priceCurrency: "AUD",
                   availability: "https://schema.org/InStock",
-                  url: "https://aquaticswandesign.com.au/products/amazon-frogbit",
+                  url: "https://duckaroo.com.au/products/amazon-frogbit",
                   priceValidUntil: "2026-12-31",
                   aggregateRating: {
                     "@type": "AggregateRating",
@@ -235,7 +235,7 @@ export default function ProductsLayout({ children }) {
                   price: "8.50",
                   priceCurrency: "AUD",
                   availability: "https://schema.org/InStock",
-                  url: "https://aquaticswandesign.com.au/products/rotala-rotundifolia",
+                  url: "https://duckaroo.com.au/products/rotala-rotundifolia",
                   priceValidUntil: "2026-12-31",
                   aggregateRating: {
                     "@type": "AggregateRating",
@@ -256,7 +256,7 @@ export default function ProductsLayout({ children }) {
                   price: "89.00",
                   priceCurrency: "AUD",
                   availability: "https://schema.org/InStock",
-                  url: "https://aquaticswandesign.com.au/products/albino-blue-topaz-guppy-sold-as-a-pair-male-and-female",
+                  url: "https://duckaroo.com.au/products/albino-blue-topaz-guppy-sold-as-a-pair-male-and-female",
                   priceValidUntil: "2026-12-31",
                   aggregateRating: {
                     "@type": "AggregateRating",
@@ -271,7 +271,7 @@ export default function ProductsLayout({ children }) {
               target: {
                 "@type": "EntryPoint",
                 urlTemplate:
-                  "https://aquaticswandesign.com.au/products?search={search_term_string}",
+                  "https://duckaroo.com.au/products?search={search_term_string}",
               },
               "query-input": "required name=search_term_string",
             },
@@ -285,7 +285,7 @@ export default function ProductsLayout({ children }) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "Service",
-            "@id": "https://aquaticswandesign.com.au/products#shipping-service",
+            "@id": "https://duckaroo.com.au/products#shipping-service",
             serviceType: "Plant Shipping Service",
             name: "Australia Wide Plant Shipping",
             description:
@@ -300,7 +300,7 @@ export default function ProductsLayout({ children }) {
             },
             availableChannel: {
               "@type": "ServiceChannel",
-              serviceUrl: "https://aquaticswandesign.com.au/products",
+              serviceUrl: "https://duckaroo.com.au/products",
               servicePhone: "+61457663939",
             },
             hasOfferCatalog: {

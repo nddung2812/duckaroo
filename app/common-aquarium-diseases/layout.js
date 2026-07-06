@@ -4,15 +4,15 @@ export const metadata = {
     "Complete guide to 30 common aquarium diseases affecting freshwater and marine fish in Australia. Symptoms, treatments, and Australian medications for every disease.",
   keywords:
     "aquarium diseases, fish diseases Australia, freshwater fish diseases, marine fish diseases, aquarium disease treatment, fish health guide, aquarium ich, fin rot, velvet disease",
-  metadataBase: new URL("https://aquaticswandesign.com.au"),
+  metadataBase: new URL("https://duckaroo.com.au"),
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/common-aquarium-diseases",
+    canonical: "https://duckaroo.com.au/common-aquarium-diseases",
   },
   openGraph: {
     title: "Common Aquarium Diseases | Identification & Treatment Guide | Duckaroo",
     description:
       "Identify and treat 30 common aquarium diseases. Symptoms, Australian medications, and expert advice from Brisbane's aquarium specialists.",
-    url: "https://aquaticswandesign.com.au/common-aquarium-diseases",
+    url: "https://duckaroo.com.au/common-aquarium-diseases",
     images: [
       {
         url: "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1756014363/meta_f0bqpw.jpg",
@@ -47,22 +47,22 @@ export default function DiseasesLayout({ children }) {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "CollectionPage",
-    "@id": "https://aquaticswandesign.com.au/common-aquarium-diseases",
-    url: "https://aquaticswandesign.com.au/common-aquarium-diseases",
+    "@id": "https://duckaroo.com.au/common-aquarium-diseases",
+    url: "https://duckaroo.com.au/common-aquarium-diseases",
     name: "Common Aquarium Diseases | Identification & Treatment Guide | Duckaroo",
     description:
       "Complete guide to 30 common aquarium diseases affecting freshwater and marine fish in Australia. Symptoms, treatments, and Australian medications.",
     publisher: {
       "@type": "Organization",
-      "@id": "https://aquaticswandesign.com.au/#organization",
+      "@id": "https://duckaroo.com.au/#organization",
       name: "Duckaroo",
     },
     inLanguage: "en-AU",
     breadcrumb: {
       "@type": "BreadcrumbList",
       itemListElement: [
-        { "@type": "ListItem", position: 1, name: "Home", item: "https://aquaticswandesign.com.au" },
-        { "@type": "ListItem", position: 2, name: "Aquarium Diseases", item: "https://aquaticswandesign.com.au/common-aquarium-diseases" },
+        { "@type": "ListItem", position: 1, name: "Home", item: "https://duckaroo.com.au" },
+        { "@type": "ListItem", position: 2, name: "Aquarium Diseases", item: "https://duckaroo.com.au/common-aquarium-diseases" },
       ],
     },
   };

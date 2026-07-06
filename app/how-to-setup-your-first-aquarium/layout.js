@@ -22,7 +22,7 @@ export const metadata = {
       "How to Setup Your First Aquarium | Complete Beginner's Guide | Duckaroo Brisbane",
     description:
       "The ultimate step-by-step guide for beginners setting up their first aquarium. Expert advice on equipment, fish selection, and maintenance.",
-    url: "https://aquaticswandesign.com.au/how-to-setup-your-first-aquarium",
+    url: "https://duckaroo.com.au/how-to-setup-your-first-aquarium",
     type: "article",
     images: [
       {
@@ -41,7 +41,7 @@ export const metadata = {
   },
   alternates: {
     canonical:
-      "https://aquaticswandesign.com.au/how-to-setup-your-first-aquarium",
+      "https://duckaroo.com.au/how-to-setup-your-first-aquarium",
   },
   robots: {
     index: true,
@@ -66,13 +66,13 @@ export default function AquariumGuideLayout({ children }) {
               "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757335537/bucephalandra_bush_oyiznj",
             author: {
               "@type": "Organization",
-              "@id": "https://aquaticswandesign.com.au/#organization",
+              "@id": "https://duckaroo.com.au/#organization",
               name: "Duckaroo",
-              url: "https://aquaticswandesign.com.au",
+              url: "https://duckaroo.com.au",
             },
             publisher: {
               "@type": "Organization",
-              "@id": "https://aquaticswandesign.com.au/#organization",
+              "@id": "https://duckaroo.com.au/#organization",
               name: "Duckaroo",
               logo: {
                 "@type": "ImageObject",
@@ -84,7 +84,7 @@ export default function AquariumGuideLayout({ children }) {
             mainEntityOfPage: {
               "@type": "WebPage",
               "@id":
-                "https://aquaticswandesign.com.au/how-to-setup-your-first-aquarium",
+                "https://duckaroo.com.au/how-to-setup-your-first-aquarium",
             },
             articleSection: "Aquarium Guides",
             keywords: [

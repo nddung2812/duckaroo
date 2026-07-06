@@ -8,13 +8,13 @@ export const metadata = {
   keywords:
     "aquarium projects Brisbane, fish tank cleaning results, aquarium before after, customer reviews Brisbane, pond maintenance Gold Coast",
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/customer-stories",
+    canonical: "https://duckaroo.com.au/customer-stories",
   },
   openGraph: {
     title: "Customer Success Stories | Real Aquarium Projects | Duckaroo",
     description:
       "Real aquarium projects and customer success stories from Duckaroo's fish tank cleaning and aquarium maintenance services across Brisbane and Gold Coast.",
-    url: "https://aquaticswandesign.com.au/customer-stories",
+    url: "https://duckaroo.com.au/customer-stories",
     siteName: "Duckaroo",
     locale: "en_AU",
     type: "website",
@@ -42,13 +42,13 @@ export default function RealAquariumProjectLayout({ children }) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "CollectionPage",
-            "@id": "https://aquaticswandesign.com.au/customer-stories",
+            "@id": "https://duckaroo.com.au/customer-stories",
             name: "Customer Success Stories | Duckaroo",
             description:
               "Real aquarium projects and customer success stories from Duckaroo's fish tank cleaning and aquarium maintenance services across Brisbane and Gold Coast.",
-            url: "https://aquaticswandesign.com.au/customer-stories",
+            url: "https://duckaroo.com.au/customer-stories",
             publisher: {
-              "@id": "https://aquaticswandesign.com.au/#organization",
+              "@id": "https://duckaroo.com.au/#organization",
             },
             mainEntity: {
               "@type": "ItemList",

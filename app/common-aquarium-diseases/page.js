@@ -5,7 +5,7 @@ import PageAmbience from "../components/PageAmbience";
 import DiseasesClientWrapper from "./DiseasesClientWrapper";
 import { Badge } from "@/components/ui/badge";
 
-const BASE = "https://aquaticswandesign.com.au";
+const BASE = "https://duckaroo.com.au";
 
 export default async function CommonAquariumDiseasesPage() {
   const diseases = await getAllDiseases();

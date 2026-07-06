@@ -11,7 +11,7 @@
 }
 
 .serif {
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
 }
 
 /* ---------------- keyframes ---------------- */
@@ -412,7 +412,7 @@
 }
 
 .navWordmark {
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
   font-size: clamp(19px, 2vw, 26px);
   font-weight: 600;
   letter-spacing: 0.24em;
@@ -521,7 +521,7 @@
 }
 
 .mobileLinks a {
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
   font-size: clamp(30px, 8vw, 42px);
   font-weight: 500;
   color: #f4f1e6;
@@ -580,7 +580,7 @@
 
 .heroTitle {
   margin: 0;
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
   font-size: clamp(44px, 6.5vw, 84px);
   line-height: 1;
   font-weight: 500;
@@ -591,8 +591,14 @@
 }
 
 .heroTitle em {
-  font-style: italic;
+  font-family: var(--font-script), cursive;
+  font-style: normal;
+  font-weight: 400;
   color: #e8a05c;
+  /* script cuts read smaller, so nudge up and give it breathing room */
+  font-size: 1.35em;
+  line-height: 0.9;
+  padding: 0 0.06em;
 }
 
 .heroSub {
@@ -724,7 +730,7 @@
 }
 
 .sectionTitle {
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
   font-weight: 500;
   color: #f4f1e6;
   text-wrap: balance;
@@ -820,7 +826,7 @@
 
 .worldName {
   margin: 10px 0 0;
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
   font-size: 26px;
   font-weight: 500;
   color: #f4f1e6;
@@ -919,7 +925,7 @@
 }
 
 .rareName {
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
   font-size: 19px;
   font-style: italic;
   color: rgba(237, 233, 219, 0.85);
@@ -995,7 +1001,7 @@
 
 .artefactTitle {
   margin: 0;
-  font-family: var(--font-cormorant), serif;
+  font-family: var(--font-jost), sans-serif;
   font-size: clamp(20px, 2.4vw, 26px);
   font-weight: 500;
   color: #f2efe6;

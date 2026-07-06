@@ -35,7 +35,7 @@ export const metadata = {
       "Fish Tank Cleaning Service Brisbane & Gold Coast | Professional Aquarium Maintenance | Duckaroo",
     description:
       "★★★★★ Premium fish tank cleaning service in Brisbane & Gold Coast. Expert aquarium maintenance, pond cleaning & setup services across all Brisbane & Gold Coast areas.",
-    url: "https://aquaticswandesign.com.au/service",
+    url: "https://duckaroo.com.au/service",
     type: "website",
     images: [
       {
@@ -54,7 +54,7 @@ export const metadata = {
       "★★★★★ Premium fish tank cleaning service in Brisbane & Gold Coast. Professional technicians, same-day service available.",
   },
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/service",
+    canonical: "https://duckaroo.com.au/service",
   },
   robots: {
     index: true,
@@ -75,7 +75,7 @@ export default function ServiceLayout({ children }) {
             name: "Duckaroo Fish Tank Cleaning Service Brisbane & Gold Coast",
             description:
               "Premium fish tank cleaning service, aquarium maintenance, and pond services across all Brisbane & Gold Coast areas, Queensland",
-            url: "https://aquaticswandesign.com.au/service",
+            url: "https://duckaroo.com.au/service",
             telephone: "+61457663939",
             email: "aquaticswandesign@gmail.com",
             address: {

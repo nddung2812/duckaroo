@@ -6,13 +6,13 @@ export const metadata = {
   description:
     "Duckaroo shipping policy for live aquatic plants and non-live products. Australia-wide express post, live arrival guarantee, Monday dispatch for live orders. WA, NT and TAS restrictions apply.",
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/shipping-policy",
+    canonical: "https://duckaroo.com.au/shipping-policy",
   },
   openGraph: {
     title: "Shipping Policy | Duckaroo Aquatic Plant Store",
     description:
       "Australia-wide live plant shipping with live arrival guarantee. Express Post Monday dispatch. Learn about our delivery times and policies.",
-    url: "https://aquaticswandesign.com.au/shipping-policy",
+    url: "https://duckaroo.com.au/shipping-policy",
     siteName: "Duckaroo",
     locale: "en_AU",
     type: "website",

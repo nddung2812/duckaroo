@@ -12,7 +12,7 @@ export const metadata = {
       "Customer Stories Brisbane & Gold Coast | Fish Tank Cleaning Success Stories",
     description:
       "Read real customer success stories and see stunning aquarium transformations. Discover why Brisbane & Gold Coast customers choose Duckaroo for professional fish tank cleaning services.",
-    url: "https://aquaticswandesign.com.au/customer-stories",
+    url: "https://duckaroo.com.au/customer-stories",
     siteName: "Duckaroo Brisbane Fish Tank Cleaning Service",
     images: [
       {
@@ -48,7 +48,7 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/customer-stories",
+    canonical: "https://duckaroo.com.au/customer-stories",
   },
   other: {
     "geo.region": "AU-QLD",

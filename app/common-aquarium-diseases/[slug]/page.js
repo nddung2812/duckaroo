@@ -32,14 +32,14 @@ export async function generateMetadata({ params }) {
     title: `${disease.disease_name} | Aquarium Disease Guide | Duckaroo`,
     description,
     keywords: `${disease.disease_name}, ${disease.common_names ?? ""}, aquarium disease, fish disease Australia`,
-    metadataBase: new URL("https://aquaticswandesign.com.au"),
+    metadataBase: new URL("https://duckaroo.com.au"),
     alternates: {
-      canonical: `https://aquaticswandesign.com.au/common-aquarium-diseases/${slug}`,
+      canonical: `https://duckaroo.com.au/common-aquarium-diseases/${slug}`,
     },
     openGraph: {
       title: `${disease.disease_name} | Aquarium Disease Guide`,
       description,
-      url: `https://aquaticswandesign.com.au/common-aquarium-diseases/${slug}`,
+      url: `https://duckaroo.com.au/common-aquarium-diseases/${slug}`,
       images: disease.image_url ? [{ url: disease.image_url, alt: disease.disease_name }] : [],
       type: "article",
       siteName: "Duckaroo",
@@ -105,19 +105,19 @@ export default async function DiseasePage({ params }) {
     "@graph": [
       {
         "@type": "Article",
-        "@id": `https://aquaticswandesign.com.au/common-aquarium-diseases/${slug}#article`,
-        url: `https://aquaticswandesign.com.au/common-aquarium-diseases/${slug}`,
+        "@id": `https://duckaroo.com.au/common-aquarium-diseases/${slug}#article`,
+        url: `https://duckaroo.com.au/common-aquarium-diseases/${slug}`,
         headline: disease.disease_name,
         description: disease.blog_paragraph?.slice(0, 155),
         image: disease.image_url ?? undefined,
         author: {
           "@type": "Organization",
-          "@id": "https://aquaticswandesign.com.au/#organization",
+          "@id": "https://duckaroo.com.au/#organization",
           name: "Duckaroo",
         },
         publisher: {
           "@type": "Organization",
-          "@id": "https://aquaticswandesign.com.au/#organization",
+          "@id": "https://duckaroo.com.au/#organization",
           name: "Duckaroo",
           logo: {
             "@type": "ImageObject",
@@ -127,7 +127,7 @@ export default async function DiseasePage({ params }) {
         datePublished: "2026-04-05",
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `https://aquaticswandesign.com.au/common-aquarium-diseases/${slug}`,
+          "@id": `https://duckaroo.com.au/common-aquarium-diseases/${slug}`,
         },
         articleSection: "Aquarium Diseases",
         keywords: disease.common_names ?? disease.disease_name,
@@ -136,9 +136,9 @@ export default async function DiseasePage({ params }) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://aquaticswandesign.com.au" },
-          { "@type": "ListItem", position: 2, name: "Common Aquarium Diseases", item: "https://aquaticswandesign.com.au/common-aquarium-diseases" },
-          { "@type": "ListItem", position: 3, name: disease.disease_name, item: `https://aquaticswandesign.com.au/common-aquarium-diseases/${slug}` },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://duckaroo.com.au" },
+          { "@type": "ListItem", position: 2, name: "Common Aquarium Diseases", item: "https://duckaroo.com.au/common-aquarium-diseases" },
+          { "@type": "ListItem", position: 3, name: disease.disease_name, item: `https://duckaroo.com.au/common-aquarium-diseases/${slug}` },
         ],
       },
     ],

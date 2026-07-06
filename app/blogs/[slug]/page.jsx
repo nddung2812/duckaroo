@@ -28,12 +28,12 @@ export async function generateMetadata({ params }) {
     description: blog.seo?.metaDescription || blog.description,
     keywords: blog.tags.join(", "),
     alternates: {
-      canonical: `https://aquaticswandesign.com.au/blogs/${resolvedParams.slug}`,
+      canonical: `https://duckaroo.com.au/blogs/${resolvedParams.slug}`,
     },
     openGraph: {
       title: blog.title,
       description: blog.description,
-      url: `https://aquaticswandesign.com.au/blogs/${resolvedParams.slug}`,
+      url: `https://duckaroo.com.au/blogs/${resolvedParams.slug}`,
       images: [{ url: blog.image, alt: blog.title }],
       type: "article",
       publishedTime: blog.publishDate,
@@ -76,8 +76,8 @@ export default async function BlogPost({ params }) {
     "@graph": [
       {
         "@type": "BlogPosting",
-        "@id": `https://aquaticswandesign.com.au/blogs/${blog.slug}#article`,
-        url: `https://aquaticswandesign.com.au/blogs/${blog.slug}`,
+        "@id": `https://duckaroo.com.au/blogs/${blog.slug}#article`,
+        url: `https://duckaroo.com.au/blogs/${blog.slug}`,
         headline: blog.title,
         description: blog.description,
         image: blog.image,
@@ -85,11 +85,11 @@ export default async function BlogPost({ params }) {
         author: {
           "@type": "Person",
           name: blog.author,
-          url: "https://aquaticswandesign.com.au/about-us",
+          url: "https://duckaroo.com.au/about-us",
         },
         publisher: {
           "@type": "Organization",
-          "@id": "https://aquaticswandesign.com.au/#organization",
+          "@id": "https://duckaroo.com.au/#organization",
           name: "Duckaroo",
           logo: {
             "@type": "ImageObject",
@@ -102,7 +102,7 @@ export default async function BlogPost({ params }) {
         dateModified: blog.updatedDate || blog.publishDate,
         mainEntityOfPage: {
           "@type": "WebPage",
-          "@id": `https://aquaticswandesign.com.au/blogs/${blog.slug}`,
+          "@id": `https://duckaroo.com.au/blogs/${blog.slug}`,
         },
         articleSection: categoryInfo?.name ?? "Aquarium Care",
         keywords: blog.tags.join(", "),
@@ -110,9 +110,9 @@ export default async function BlogPost({ params }) {
       {
         "@type": "BreadcrumbList",
         itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Home", item: "https://aquaticswandesign.com.au" },
-          { "@type": "ListItem", position: 2, name: "Blog", item: "https://aquaticswandesign.com.au/blogs" },
-          { "@type": "ListItem", position: 3, name: blog.title, item: `https://aquaticswandesign.com.au/blogs/${blog.slug}` },
+          { "@type": "ListItem", position: 1, name: "Home", item: "https://duckaroo.com.au" },
+          { "@type": "ListItem", position: 2, name: "Blog", item: "https://duckaroo.com.au/blogs" },
+          { "@type": "ListItem", position: 3, name: blog.title, item: `https://duckaroo.com.au/blogs/${blog.slug}` },
         ],
       },
     ],

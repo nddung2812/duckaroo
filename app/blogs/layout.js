@@ -1,6 +1,6 @@
 import { blogs } from "@/data/blogs";
 
-const BASE = "https://aquaticswandesign.com.au";
+const BASE = "https://duckaroo.com.au";
 
 const structuredData = {
   "@context": "https://schema.org",

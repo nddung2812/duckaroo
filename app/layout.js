@@ -1,19 +1,18 @@
 import "./globals.css";
-import { Cormorant_Garamond, Jost } from "next/font/google";
+import { Jost, Great_Vibes } from "next/font/google";
 import LazyAnalytics from "./components/LazyAnalytics";
-
-const cormorant = Cormorant_Garamond({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  display: "swap",
-  variable: "--font-cormorant",
-});
 
 const jost = Jost({
   subsets: ["latin"],
   display: "swap",
   variable: "--font-jost",
+});
+
+const greatVibes = Great_Vibes({
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+  variable: "--font-script",
 });
 
 export const metadata = {
@@ -31,7 +30,7 @@ export const metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL("https://aquaticswandesign.com.au"),
+  metadataBase: new URL("https://duckaroo.com.au"),
   alternates: {
     canonical: "/",
   },
@@ -40,7 +39,7 @@ export const metadata = {
       "Fish Tank Cleaning Service Brisbane & Gold Coast | Duckaroo",
     description:
       "Professional fish tank cleaning, aquarium maintenance, pond cleaning and tank setup across Brisbane & Gold Coast. Same-day service available.",
-    url: "https://aquaticswandesign.com.au",
+    url: "https://duckaroo.com.au",
     siteName: "Duckaroo",
     images: [
       {
@@ -108,7 +107,7 @@ export const metadata = {
     "business:contact_data:country_name": "Australia",
     "business:contact_data:email": "aquaticswandesign@gmail.com",
     "business:contact_data:phone_number": "+61457663939",
-    "business:contact_data:website": "https://aquaticswandesign.com.au",
+    "business:contact_data:website": "https://duckaroo.com.au",
   },
 };
 
@@ -136,20 +135,20 @@ export default function RootLayout({ children }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebSite",
-              "@id": "https://aquaticswandesign.com.au/#website",
-              url: "https://aquaticswandesign.com.au",
+              "@id": "https://duckaroo.com.au/#website",
+              url: "https://duckaroo.com.au",
               name: "Duckaroo",
               description:
                 "Professional fish tank cleaning, aquarium maintenance, and pond services across Brisbane and Gold Coast, Queensland.",
               publisher: {
-                "@id": "https://aquaticswandesign.com.au/#organization",
+                "@id": "https://duckaroo.com.au/#organization",
               },
               potentialAction: {
                 "@type": "SearchAction",
                 target: {
                   "@type": "EntryPoint",
                   urlTemplate:
-                    "https://aquaticswandesign.com.au/products?search={search_term_string}",
+                    "https://duckaroo.com.au/products?search={search_term_string}",
                 },
                 "query-input": "required name=search_term_string",
               },
@@ -165,12 +164,12 @@ export default function RootLayout({ children }) {
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
-              "@id": "https://aquaticswandesign.com.au/#organization",
+              "@id": "https://duckaroo.com.au/#organization",
               name: "Duckaroo",
               alternateName: "Duckaroo Fish Tank Cleaning Service",
               description:
                 "Duckaroo is Brisbane and Gold Coast's professional fish tank cleaning and aquarium maintenance service. We serve residential and commercial clients across Brisbane, Gold Coast, Logan, and Ipswich, Queensland.",
-              url: "https://aquaticswandesign.com.au",
+              url: "https://duckaroo.com.au",
               telephone: "+61457663939",
               email: "aquaticswandesign@gmail.com",
               address: {
@@ -260,7 +259,7 @@ export default function RootLayout({ children }) {
               serviceType: "Fish Tank Cleaning Service",
               provider: {
                 "@type": "LocalBusiness",
-                "@id": "https://aquaticswandesign.com.au/#organization",
+                "@id": "https://duckaroo.com.au/#organization",
               },
               areaServed: {
                 "@type": "State",
@@ -335,7 +334,7 @@ export default function RootLayout({ children }) {
         <meta name="MobileOptimized" content="width" />
 
       </head>
-      <body className={`${jost.className} ${jost.variable} ${cormorant.variable}`}>
+      <body className={`${jost.className} ${jost.variable} ${greatVibes.variable}`}>
         <LazyAnalytics />
         {children}
       </body>

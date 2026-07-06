@@ -15,7 +15,7 @@ npm run lint       # ESLint via next lint
 ## Architecture Overview
 
 **Business**: Duckaroo — fish tank cleaning service in Brisbane & Gold Coast, Australia.  
-**Domain**: `aquaticswandesign.com.au` (main site). Product store lives at `duckaroo.com.au` (separate domain, referenced via preconnect only).
+**Domain**: `duckaroo.com.au` (canonical/primary site — used for all metadataBase, canonicals, OG, sitemap, robots, and JSON-LD URLs). The old `aquaticswandesign.com.au` domain is being retired; 301 redirects from the former Shopify store's URLs live in `next.config.mjs`.
 
 ### Stack
 

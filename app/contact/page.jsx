@@ -10,7 +10,7 @@ export const metadata = {
     title: "Contact Duckaroo Brisbane - Expert Aquarium Services",
     description:
       "Get in touch with Brisbane's premier aquarium specialists. Free quotes for fish tank cleaning, pond maintenance & aquatic services. Same-day response guaranteed.",
-    url: "https://aquaticswandesign.com.au/contact",
+    url: "https://duckaroo.com.au/contact",
     siteName: "Duckaroo Brisbane",
     images: [
       {
@@ -45,7 +45,7 @@ export const metadata = {
     },
   },
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/contact",
+    canonical: "https://duckaroo.com.au/contact",
   },
   other: {
     "geo.region": "AU-QLD",

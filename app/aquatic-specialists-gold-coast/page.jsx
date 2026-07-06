@@ -11,7 +11,7 @@ export const metadata = {
     title: "Aquatic Specialists Gold Coast - Expert Fish Tank & Pond Services",
     description:
       "Gold Coast's most trusted aquatic specialists. Professional fish tank cleaning, pond maintenance & aquarium services. Free quotes, same-day service available.",
-    url: "https://aquaticswandesign.com.au/aquatic-specialists-gold-coast",
+    url: "https://duckaroo.com.au/aquatic-specialists-gold-coast",
     siteName: "Duckaroo",
     images: [
       {
@@ -47,7 +47,7 @@ export const metadata = {
   },
   alternates: {
     canonical:
-      "https://aquaticswandesign.com.au/aquatic-specialists-gold-coast",
+      "https://duckaroo.com.au/aquatic-specialists-gold-coast",
   },
   other: {
     "geo.region": "AU-QLD",
@@ -73,9 +73,9 @@ export default function AquaticSpecialistsGoldCoastPage() {
   const localBusinessSchema = {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
-    "@id": "https://aquaticswandesign.com.au/aquatic-specialists-gold-coast#business",
+    "@id": "https://duckaroo.com.au/aquatic-specialists-gold-coast#business",
     name: "Duckaroo Aquatic Specialists Gold Coast",
-    url: "https://aquaticswandesign.com.au/aquatic-specialists-gold-coast",
+    url: "https://duckaroo.com.au/aquatic-specialists-gold-coast",
     telephone: "+61457663939",
     email: "aquaticswandesign@gmail.com",
     address: {
@@ -96,7 +96,7 @@ export default function AquaticSpecialistsGoldCoastPage() {
     },
     serviceType: ["Fish Tank Cleaning", "Aquarium Maintenance", "Pond Cleaning", "Aquarium Setup"],
     parentOrganization: {
-      "@id": "https://aquaticswandesign.com.au/#organization",
+      "@id": "https://duckaroo.com.au/#organization",
     },
     aggregateRating: {
       "@type": "AggregateRating",

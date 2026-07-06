@@ -18,7 +18,7 @@ export const metadata = {
       "About Duckaroo | Professional Fish Tank Cleaning Service Brisbane & Gold Coast",
     description:
       "Duckaroo provides professional fish tank cleaning and aquarium maintenance across Brisbane and Gold Coast. 1000+ customers, 15+ years experience, 4.9-star rated.",
-    url: "https://aquaticswandesign.com.au/about-us",
+    url: "https://duckaroo.com.au/about-us",
     siteName: "Duckaroo",
     images: [
       {
@@ -55,7 +55,7 @@ export const metadata = {
   },
 
   alternates: {
-    canonical: "https://aquaticswandesign.com.au/about-us",
+    canonical: "https://duckaroo.com.au/about-us",
   },
 
   category: "Aquarium Services",
@@ -71,7 +71,7 @@ export const metadata = {
     "business:contact_data:country_name": "Australia",
     "business:contact_data:postal_code": "4000",
     "business:contact_data:phone_number": "+61457663939",
-    "business:contact_data:website": "https://aquaticswandesign.com.au",
+    "business:contact_data:website": "https://duckaroo.com.au",
   },
 };
 
@@ -85,15 +85,15 @@ export default function AboutUsLayout({ children }) {
           __html: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "AboutPage",
-            "@id": "https://aquaticswandesign.com.au/about-us",
+            "@id": "https://duckaroo.com.au/about-us",
             mainEntity: {
               "@type": "LocalBusiness",
-              "@id": "https://aquaticswandesign.com.au/#organization",
+              "@id": "https://duckaroo.com.au/#organization",
               name: "Duckaroo",
               alternateName: "Duckaroo Fish Tank Cleaning Service",
               description:
                 "Duckaroo is Brisbane and Gold Coast's professional fish tank cleaning and aquarium maintenance service, serving residential and commercial clients across Brisbane, Gold Coast, Logan, and Ipswich, Queensland.",
-              url: "https://aquaticswandesign.com.au",
+              url: "https://duckaroo.com.au",
               telephone: "+61457663939",
               email: "aquaticswandesign@gmail.com",
               address: {
