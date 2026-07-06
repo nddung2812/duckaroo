@@ -771,6 +771,34 @@
   .rockRight img {
     width: clamp(140px, 20vw, 260px);
   }
+
+  /* ---- mobile scroll performance ----
+     The hero images scale on scroll; drop-shadow / blur / mix-blend force the
+     GPU to re-rasterise those layers every frame, which is the main cause of
+     scroll jank on phones. Drop the costly filters — transforms stay smooth. */
+  .rockCenter img,
+  .combatant img,
+  .rockLeft img,
+  .rockRight img,
+  .islandRight img,
+  .islandLeft img,
+  .islandRightFloat .islandKangaroo {
+    filter: none;
+  }
+
+  /* Blurred, screen-blended, endlessly-animating ambience is expensive and
+     barely visible on a small screen — hide it. */
+  .ray,
+  .mistBlob1,
+  .mistBlob2 {
+    display: none;
+  }
+
+  /* backdrop-blur recomputes over moving content on every scroll frame. */
+  .menuBtn,
+  .ctaPrimary {
+    backdrop-filter: none;
+  }
 }
 
 .ctaGhost:hover {
