@@ -820,6 +820,12 @@
     content-visibility: auto;
     contain-intrinsic-size: auto 760px;
   }
+
+  /* worlds section: keep only the middle beam on mobile */
+  .worldBeam:nth-child(1),
+  .worldBeam:nth-child(3) {
+    display: none;
+  }
 }
 
 .ctaGhost:hover {
@@ -861,7 +867,7 @@
   z-index: 10;
   margin-top: -90vh;
   border-radius: 48px 48px 0 0;
-  background: linear-gradient(180deg, #041b0d 0%, #03140a 30%, #020e07 100%);
+  background: linear-gradient(180deg, #164a26 0%, #0f3d1e 35%, #0a2e16 100%);
   box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.65);
 }
 
@@ -911,11 +917,131 @@
 
 .worlds {
   position: relative;
-  padding: 110px clamp(20px, 4vw, 56px) 60px;
+  padding: 110px clamp(20px, 4vw, 56px) 90px;
   overflow: hidden;
+  border-radius: 48px 48px 0 0;
+  background:
+    radial-gradient(ellipse 95% 55% at 50% 100%, rgba(34, 132, 168, 0.22), transparent 60%),
+    radial-gradient(ellipse 70% 45% at 50% 0%, rgba(38, 120, 62, 0.18), transparent 58%),
+    linear-gradient(180deg, #082010 0%, #05160f 48%, #04121c 100%);
+}
+
+/* three soft light beams that drift behind the worlds */
+.worldsBeams {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.worldBeam {
+  position: absolute;
+  top: -12%;
+  width: 120px;
+  margin-left: -60px;
+  height: 124%;
+  background: linear-gradient(
+    180deg,
+    rgba(170, 248, 165, 0.28) 0%,
+    rgba(130, 225, 135, 0.13) 34%,
+    rgba(95, 195, 115, 0.045) 64%,
+    transparent 86%
+  );
+  filter: blur(22px);
+  mix-blend-mode: screen;
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
+
+.worldBeam:nth-child(1) {
+  left: 18%;
+  animation: beamDrift1 14s ease-in-out infinite;
+}
+
+.worldBeam:nth-child(2) {
+  left: 50%;
+  animation: beamDrift2 18s ease-in-out infinite;
+}
+
+.worldBeam:nth-child(3) {
+  left: 82%;
+  animation: beamDrift3 16s ease-in-out infinite;
+}
+
+@keyframes beamDrift1 {
+  0%, 100% { transform: skewX(-6deg) translateX(-16px); opacity: 0.5; }
+  50%      { transform: skewX(-1deg) translateX(18px); opacity: 0.95; }
+}
+
+@keyframes beamDrift2 {
+  0%, 100% { transform: skewX(4deg) translateX(14px); opacity: 0.45; }
+  50%      { transform: skewX(-3deg) translateX(-14px); opacity: 0.85; }
+}
+
+@keyframes beamDrift3 {
+  0%, 100% { transform: skewX(6deg) translateX(16px); opacity: 0.55; }
+  50%      { transform: skewX(1deg) translateX(-18px); opacity: 1; }
+}
+
+/* bioluminescent plankton — ocean of blue stars */
+.worldsPlankton {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, transparent 4%, rgba(0, 0, 0, 0.35) 22%, #000 55%);
+  mask-image: linear-gradient(180deg, transparent 4%, rgba(0, 0, 0, 0.35) 22%, #000 55%);
+}
+
+.worldsPlankton::before,
+.worldsPlankton::after {
+  content: "";
+  position: absolute;
+  inset: -40%;
+  background-repeat: repeat;
+  will-change: transform, opacity;
+}
+
+.worldsPlankton::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 300 300'%3E<circle cx='11' cy='204.1' r='4.59' fill='%230a6bff' opacity='0.45'/><circle cx='11' cy='204.1' r='1.35' fill='%236fc4ff' opacity='0.9'/><circle cx='119.9' cy='233' r='4.25' fill='%230a6bff' opacity='0.41'/><circle cx='119.9' cy='233' r='1.25' fill='%236fc4ff' opacity='0.81'/><circle cx='35.5' cy='148.2' r='2.45' fill='%230a6bff' opacity='0.23'/><circle cx='35.5' cy='148.2' r='0.72' fill='%236fc4ff' opacity='0.47'/><circle cx='142.4' cy='41.7' r='4.62' fill='%230a6bff' opacity='0.37'/><circle cx='142.4' cy='41.7' r='1.36' fill='%236fc4ff' opacity='0.74'/><circle cx='52' cy='83.3' r='2.48' fill='%230a6bff' opacity='0.28'/><circle cx='52' cy='83.3' r='0.73' fill='%236fc4ff' opacity='0.56'/><circle cx='69.5' cy='112.5' r='3.71' fill='%230a6bff' opacity='0.26'/><circle cx='69.5' cy='112.5' r='1.09' fill='%236fc4ff' opacity='0.52'/><circle cx='226.5' cy='225.2' r='4.59' fill='%230a6bff' opacity='0.35'/><circle cx='226.5' cy='225.2' r='1.35' fill='%236fc4ff' opacity='0.7'/><circle cx='119' cy='290.2' r='2.18' fill='%230a6bff' opacity='0.30'/><circle cx='119' cy='290.2' r='0.64' fill='%236fc4ff' opacity='0.61'/><circle cx='213' cy='287.1' r='3.74' fill='%230a6bff' opacity='0.29'/><circle cx='213' cy='287.1' r='1.1' fill='%236fc4ff' opacity='0.58'/><circle cx='108.5' cy='30.2' r='2.99' fill='%230a6bff' opacity='0.39'/><circle cx='108.5' cy='30.2' r='0.88' fill='%236fc4ff' opacity='0.77'/><circle cx='104.8' cy='65' r='2.92' fill='%230a6bff' opacity='0.38'/><circle cx='104.8' cy='65' r='0.86' fill='%236fc4ff' opacity='0.76'/><circle cx='184.9' cy='117' r='2.45' fill='%230a6bff' opacity='0.42'/><circle cx='184.9' cy='117' r='0.72' fill='%236fc4ff' opacity='0.85'/><circle cx='214' cy='105.6' r='2.82' fill='%230a6bff' opacity='0.34'/><circle cx='214' cy='105.6' r='0.83' fill='%236fc4ff' opacity='0.67'/><circle cx='35.9' cy='215.8' r='4.01' fill='%230a6bff' opacity='0.25'/><circle cx='35.9' cy='215.8' r='1.18' fill='%236fc4ff' opacity='0.5'/><circle cx='146.6' cy='279.5' r='2.86' fill='%230a6bff' opacity='0.32'/><circle cx='146.6' cy='279.5' r='0.84' fill='%236fc4ff' opacity='0.64'/><circle cx='53.6' cy='116.5' r='2.24' fill='%230a6bff' opacity='0.35'/><circle cx='53.6' cy='116.5' r='0.66' fill='%236fc4ff' opacity='0.7'/><circle cx='289.6' cy='116.9' r='4.01' fill='%230a6bff' opacity='0.24'/><circle cx='289.6' cy='116.9' r='1.18' fill='%236fc4ff' opacity='0.48'/><circle cx='45.6' cy='82.5' r='1.97' fill='%230a6bff' opacity='0.47'/><circle cx='45.6' cy='82.5' r='0.58' fill='%236fc4ff' opacity='0.95'/><circle cx='229.2' cy='218.5' r='4.69' fill='%230a6bff' opacity='0.48'/><circle cx='229.2' cy='218.5' r='1.38' fill='%236fc4ff' opacity='0.97'/><circle cx='163.5' cy='167.8' r='1.73' fill='%230a6bff' opacity='0.50'/><circle cx='163.5' cy='167.8' r='0.51' fill='%236fc4ff' opacity='1'/><circle cx='85.5' cy='218.6' r='2.21' fill='%230a6bff' opacity='0.32'/><circle cx='85.5' cy='218.6' r='0.65' fill='%236fc4ff' opacity='0.63'/><circle cx='51.2' cy='151.6' r='2.52' fill='%230a6bff' opacity='0.28'/><circle cx='51.2' cy='151.6' r='0.74' fill='%236fc4ff' opacity='0.56'/><circle cx='167.1' cy='214.4' r='4.52' fill='%230a6bff' opacity='0.34'/><circle cx='167.1' cy='214.4' r='1.33' fill='%236fc4ff' opacity='0.67'/><circle cx='167.1' cy='119.1' r='3.77' fill='%230a6bff' opacity='0.42'/><circle cx='167.1' cy='119.1' r='1.11' fill='%236fc4ff' opacity='0.84'/><circle cx='298.1' cy='226' r='2.55' fill='%230a6bff' opacity='0.40'/><circle cx='298.1' cy='226' r='0.75' fill='%236fc4ff' opacity='0.8'/><circle cx='239.5' cy='28' r='4.22' fill='%230a6bff' opacity='0.49'/><circle cx='239.5' cy='28' r='1.24' fill='%236fc4ff' opacity='0.99'/><circle cx='90.1' cy='152.6' r='1.70' fill='%230a6bff' opacity='0.48'/><circle cx='90.1' cy='152.6' r='0.5' fill='%236fc4ff' opacity='0.96'/><circle cx='141.2' cy='75.3' r='2.24' fill='%230a6bff' opacity='0.48'/><circle cx='141.2' cy='75.3' r='0.66' fill='%236fc4ff' opacity='0.97'/><circle cx='164.3' cy='132' r='3.71' fill='%230a6bff' opacity='0.26'/><circle cx='164.3' cy='132' r='1.09' fill='%236fc4ff' opacity='0.52'/><circle cx='86.8' cy='90.2' r='2.65' fill='%230a6bff' opacity='0.23'/><circle cx='86.8' cy='90.2' r='0.78' fill='%236fc4ff' opacity='0.46'/><circle cx='266.1' cy='64.6' r='4.11' fill='%230a6bff' opacity='0.26'/><circle cx='266.1' cy='64.6' r='1.21' fill='%236fc4ff' opacity='0.51'/><circle cx='217.1' cy='133.1' r='4.62' fill='%230a6bff' opacity='0.38'/><circle cx='217.1' cy='133.1' r='1.36' fill='%236fc4ff' opacity='0.76'/><circle cx='39.9' cy='172.3' r='4.39' fill='%230a6bff' opacity='0.25'/><circle cx='39.9' cy='172.3' r='1.29' fill='%236fc4ff' opacity='0.5'/><circle cx='177.7' cy='208.2' r='3.23' fill='%230a6bff' opacity='0.47'/><circle cx='177.7' cy='208.2' r='0.95' fill='%236fc4ff' opacity='0.93'/><circle cx='63.9' cy='169.9' r='2.18' fill='%230a6bff' opacity='0.42'/><circle cx='63.9' cy='169.9' r='0.64' fill='%236fc4ff' opacity='0.84'/><circle cx='33.9' cy='165.1' r='3.40' fill='%230a6bff' opacity='0.25'/><circle cx='33.9' cy='165.1' r='1' fill='%236fc4ff' opacity='0.5'/><circle cx='215.2' cy='189.7' r='3.54' fill='%230a6bff' opacity='0.38'/><circle cx='215.2' cy='189.7' r='1.04' fill='%236fc4ff' opacity='0.76'/><circle cx='70' cy='35.4' r='1.97' fill='%230a6bff' opacity='0.34'/><circle cx='70' cy='35.4' r='0.58' fill='%236fc4ff' opacity='0.68'/><circle cx='106.5' cy='73.9' r='2.72' fill='%230a6bff' opacity='0.47'/><circle cx='106.5' cy='73.9' r='0.8' fill='%236fc4ff' opacity='0.94'/><circle cx='169.3' cy='244.6' r='4.25' fill='%230a6bff' opacity='0.40'/><circle cx='169.3' cy='244.6' r='1.25' fill='%236fc4ff' opacity='0.8'/><circle cx='210.9' cy='91.2' r='3.09' fill='%230a6bff' opacity='0.39'/><circle cx='210.9' cy='91.2' r='0.91' fill='%236fc4ff' opacity='0.78'/><circle cx='231.1' cy='272.9' r='4.39' fill='%230a6bff' opacity='0.28'/><circle cx='231.1' cy='272.9' r='1.29' fill='%236fc4ff' opacity='0.55'/><circle cx='264.9' cy='146.9' r='3.37' fill='%230a6bff' opacity='0.48'/><circle cx='264.9' cy='146.9' r='0.99' fill='%236fc4ff' opacity='0.96'/><circle cx='275.1' cy='90.9' r='3.09' fill='%230a6bff' opacity='0.49'/><circle cx='275.1' cy='90.9' r='0.91' fill='%236fc4ff' opacity='0.98'/><circle cx='262.9' cy='90.5' r='2.86' fill='%230a6bff' opacity='0.24'/><circle cx='262.9' cy='90.5' r='0.84' fill='%236fc4ff' opacity='0.48'/><circle cx='141.3' cy='257' r='4.49' fill='%230a6bff' opacity='0.34'/><circle cx='141.3' cy='257' r='1.32' fill='%236fc4ff' opacity='0.67'/>%3C/svg%3E");
+  background-size: 300px 300px;
+  animation: planktonDrift 44s linear infinite, planktonTwinkle 5.5s ease-in-out infinite;
+}
+
+.worldsPlankton::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='340' height='340' viewBox='0 0 340 340'%3E<circle cx='327.6' cy='195.8' r='6.09' fill='%231180ff' opacity='0.41'/><circle cx='327.6' cy='195.8' r='1.79' fill='%238fd6ff' opacity='0.81'/><circle cx='16.5' cy='330.4' r='7.55' fill='%231180ff' opacity='0.34'/><circle cx='16.5' cy='330.4' r='2.22' fill='%238fd6ff' opacity='0.67'/><circle cx='79.8' cy='111.5' r='7.11' fill='%231180ff' opacity='0.32'/><circle cx='79.8' cy='111.5' r='2.09' fill='%238fd6ff' opacity='0.64'/><circle cx='294.2' cy='318' r='8.06' fill='%231180ff' opacity='0.34'/><circle cx='294.2' cy='318' r='2.37' fill='%238fd6ff' opacity='0.68'/><circle cx='315.2' cy='174.9' r='5.61' fill='%231180ff' opacity='0.33'/><circle cx='315.2' cy='174.9' r='1.65' fill='%238fd6ff' opacity='0.66'/><circle cx='105.4' cy='154.9' r='8.81' fill='%231180ff' opacity='0.39'/><circle cx='105.4' cy='154.9' r='2.59' fill='%238fd6ff' opacity='0.77'/><circle cx='28.5' cy='195' r='7.14' fill='%231180ff' opacity='0.35'/><circle cx='28.5' cy='195' r='2.1' fill='%238fd6ff' opacity='0.71'/><circle cx='301.9' cy='131.1' r='4.59' fill='%231180ff' opacity='0.47'/><circle cx='301.9' cy='131.1' r='1.35' fill='%238fd6ff' opacity='0.95'/><circle cx='42.9' cy='215.7' r='6.26' fill='%231180ff' opacity='0.48'/><circle cx='42.9' cy='215.7' r='1.84' fill='%238fd6ff' opacity='0.96'/><circle cx='181.9' cy='54.8' r='7.99' fill='%231180ff' opacity='0.34'/><circle cx='181.9' cy='54.8' r='2.35' fill='%238fd6ff' opacity='0.67'/><circle cx='54.4' cy='293.5' r='6.70' fill='%231180ff' opacity='0.38'/><circle cx='54.4' cy='293.5' r='1.97' fill='%238fd6ff' opacity='0.75'/><circle cx='333.3' cy='220.9' r='6.70' fill='%231180ff' opacity='0.38'/><circle cx='333.3' cy='220.9' r='1.97' fill='%238fd6ff' opacity='0.75'/><circle cx='329.2' cy='233.3' r='7.65' fill='%231180ff' opacity='0.40'/><circle cx='329.2' cy='233.3' r='2.25' fill='%238fd6ff' opacity='0.79'/><circle cx='260.2' cy='115.2' r='6.12' fill='%231180ff' opacity='0.38'/><circle cx='260.2' cy='115.2' r='1.8' fill='%238fd6ff' opacity='0.76'/><circle cx='50.3' cy='248.7' r='6.12' fill='%231180ff' opacity='0.31'/><circle cx='50.3' cy='248.7' r='1.8' fill='%238fd6ff' opacity='0.62'/><circle cx='167.4' cy='298.3' r='8.30' fill='%231180ff' opacity='0.36'/><circle cx='167.4' cy='298.3' r='2.44' fill='%238fd6ff' opacity='0.73'/>%3C/svg%3E");
+  background-size: 340px 340px;
+  background-position: 70px 30px;
+  filter: blur(2.4px);
+  animation: planktonDrift2 66s linear infinite, planktonTwinkleBack 7s ease-in-out infinite 1.6s;
+}
+
+@keyframes planktonDrift {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(0, -300px, 0); }
+}
+
+@keyframes planktonDrift2 {
+  0%   { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(0, -340px, 0); }
+}
+
+@keyframes planktonTwinkle {
+  0%, 100% { opacity: 0.4; }
+  50%      { opacity: 0.95; }
+}
+
+/* far layer sits deeper — dimmer + softer so it recedes into the dark */
+@keyframes planktonTwinkleBack {
+  0%, 100% { opacity: 0.22; }
+  50%      { opacity: 0.55; }
 }
 
 .worldsHeader {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -930,6 +1056,8 @@
 }
 
 .worldsGrid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 44px;
@@ -995,8 +1123,27 @@
   animation: shadowPulse 10s ease-in-out infinite;
 }
 
+.worldBody {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.worldTag {
+  padding: 5px 16px;
+  border: 1px solid rgba(120, 210, 140, 0.4);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #86dfa5;
+}
+
 .worldName {
-  margin: 10px 0 0;
+  margin: 0;
   font-family: var(--font-jost), sans-serif;
   font-size: 26px;
   font-weight: 500;
@@ -1010,13 +1157,28 @@
   color: rgba(237, 233, 219, 0.55);
 }
 
+.worldExplore {
+  margin-top: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #e8a05c;
+  transition: letter-spacing 0.4s ease, color 0.4s ease;
+}
+
+.worldCard:hover .worldExplore {
+  letter-spacing: 0.28em;
+  color: #f4b877;
+}
+
 /* ---------------- rare life ---------------- */
 
 .rare {
   position: relative;
   padding: 80px clamp(20px, 4vw, 56px);
   overflow: hidden;
-  background: radial-gradient(ellipse 80% 100% at 50% 0%, #0b3018 0%, transparent 70%);
+  background: radial-gradient(ellipse 80% 100% at 50% 0%, #1e7038 0%, transparent 72%);
 }
 
 .rareGrid {
@@ -1059,12 +1221,12 @@
   text-underline-offset: 5px;
 }
 
+/* three circles in a row that cascades down-right — same stack + slide-in as .worldsGrid */
 .rareCircles {
-  display: flex;
-  gap: 34px;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
 }
 
 .rareItem {
@@ -1079,12 +1241,15 @@
 .rareItem:nth-child(3) { animation-duration: 13s; animation-delay: 3s; }
 
 @media (min-width: 720px) {
-  .rareItem:nth-child(2) { margin-top: 60px; }
-  .rareItem:nth-child(3) { margin-top: -30px; }
+  .rareItem:nth-child(2) { margin-top: 70px; }
+  .rareItem:nth-child(3) { margin-top: 26px; }
 }
 
 .rareCircle {
   position: relative;
+  width: 100%;
+  max-width: 200px;
+  aspect-ratio: 1;
   border-radius: 50%;
   overflow: hidden;
   background: rgba(233, 229, 216, 0.09);
@@ -1105,7 +1270,9 @@
 /* ---------------- artefacts ---------------- */
 
 .artefacts {
+  position: relative;
   padding: 70px clamp(20px, 4vw, 56px) 84px;
+  background: radial-gradient(ellipse 80% 90% at 50% 0%, #1e7038 0%, transparent 72%);
 }
 
 .artefacts .kicker {
@@ -1227,7 +1394,7 @@
   text-align: center;
   border-top: 1px solid rgba(233, 229, 216, 0.12);
   overflow: hidden;
-  background: radial-gradient(ellipse 70% 90% at 50% 100%, #0b3018 0%, transparent 75%);
+  background: radial-gradient(ellipse 70% 90% at 50% 100%, #1e7038 0%, transparent 75%);
 }
 
 .commissionInner {

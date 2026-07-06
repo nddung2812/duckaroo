@@ -39,21 +39,24 @@ const NAV_LINKS = [
 const WORLDS = [
   {
     name: "Emerald Grove",
-    meta: "Planted ecosystem · North Brisbane",
+    tag: "Planted ecosystem",
+    location: "North Brisbane",
     image:
       "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757335537/bucephalandra_bush_oyiznj",
     mask: styles.worldMask1,
   },
   {
     name: "The Guardian",
-    meta: "Custom installation · Brisbane clinic",
+    tag: "Custom installation",
+    location: "Brisbane clinic",
     image:
       "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1781524812/Guardian_after_crgvbp.jpg",
     mask: styles.worldMask2,
   },
   {
     name: "Hanging Gardens",
-    meta: "Paludarium · Brisbane CBD",
+    tag: "Paludarium",
+    location: "Brisbane CBD",
     image:
       "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757772271/IMG_1394_blvvzo.jpg",
     mask: styles.worldMask3,
@@ -63,19 +66,16 @@ const WORLDS = [
 const RARE_LIFE = [
   {
     name: "Rainbow Guppy",
-    size: 190,
     image:
       "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1757336118/different-types-of-guppy-rainbow-fish_panpilai-paipa_Shutterstock-3-1_rvoint",
   },
   {
     name: "Bucephalandra Kedagang",
-    size: 160,
     image:
       "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1749469954/best-place-to-buy-bucephalandra-kedagang-v0-5fhaw341fkjc1_ujrt6m",
   },
   {
     name: "Anubias Nana Petite",
-    size: 220,
     image:
       "https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1755522754/Anu_nana_1_nrkqxt.webp",
   },
@@ -581,7 +581,12 @@ const Home = ({ featuredProducts = [] }) => {
       <div className={styles.deepBody}>
         {/* worlds */}
         <section id="worlds" className={styles.worlds}>
-          <div className={styles.sectionRay} />
+          <div className={styles.worldsBeams} aria-hidden="true">
+            <span className={styles.worldBeam} />
+            <span className={styles.worldBeam} />
+            <span className={styles.worldBeam} />
+          </div>
+          <div className={styles.worldsPlankton} aria-hidden="true" />
           <div data-reveal="" className={styles.worldsHeader}>
             <h2 className={styles.kicker}>Worlds, not tanks</h2>
             <div className={styles.sectionTitle}>Each installation is its own island</div>
@@ -598,14 +603,18 @@ const Home = ({ featuredProducts = [] }) => {
                 <div className={`${styles.worldImage} ${w.mask}`}>
                   <Image
                     src={w.image}
-                    alt={`${w.name} — ${w.meta}`}
+                    alt={`${w.name} — ${w.tag}, ${w.location}`}
                     fill
                     sizes="(max-width: 940px) 100vw, 33vw"
                   />
                 </div>
                 <div className={styles.worldShadow} />
-                <h3 className={styles.worldName}>{w.name}</h3>
-                <div className={styles.worldMeta}>{w.meta}</div>
+                <div className={styles.worldBody}>
+                  <span className={styles.worldTag}>{w.tag}</span>
+                  <h3 className={styles.worldName}>{w.name}</h3>
+                  <div className={styles.worldMeta}>{w.location}</div>
+                  <span className={styles.worldExplore}>Explore this world →</span>
+                </div>
               </Link>
             ))}
           </div>
@@ -629,11 +638,8 @@ const Home = ({ featuredProducts = [] }) => {
             <div className={styles.rareCircles}>
               {RARE_LIFE.map((r, i) => (
                 <div key={r.name} data-reveal="" data-delay={i * 150} className={styles.rareItem}>
-                  <div
-                    className={styles.rareCircle}
-                    style={{ width: r.size, height: r.size }}
-                  >
-                    <Image src={r.image} alt={r.name} fill sizes={`${r.size}px`} />
+                  <div className={styles.rareCircle}>
+                    <Image src={r.image} alt={r.name} fill sizes="(max-width: 940px) 30vw, 200px" />
                   </div>
                   <div className={styles.rareName}>{r.name}</div>
                 </div>
