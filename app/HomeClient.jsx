@@ -154,17 +154,6 @@ function Bubble({ left, scale, duration, delay }) {
   );
 }
 
-// Sunlit god-ray beams, same feel as the hero — dropped into each deep-body scene.
-function SectionBeams() {
-  return (
-    <div className={styles.beams} aria-hidden="true">
-      <div className={`${styles.beam} ${styles.beamA}`} />
-      <div className={`${styles.beam} ${styles.beamB}`} />
-      <div className={`${styles.beam} ${styles.beamC}`} />
-    </div>
-  );
-}
-
 function formatPrice(price) {
   const n = Number(price);
   if (!Number.isFinite(n)) return null;
@@ -569,7 +558,7 @@ const Home = ({ featuredProducts = [] }) => {
       <div className={styles.deepBody}>
         {/* worlds */}
         <section id="worlds" className={styles.worlds}>
-          <SectionBeams />
+          <div className={styles.sectionRay} />
           <div data-reveal="" className={styles.worldsHeader}>
             <h2 className={styles.kicker}>Worlds, not tanks</h2>
             <div className={styles.sectionTitle}>Each installation is its own island</div>
@@ -601,7 +590,6 @@ const Home = ({ featuredProducts = [] }) => {
 
         {/* rare life */}
         <section id="rare-life" className={styles.rare}>
-          <SectionBeams />
           <div className={styles.rareGrid}>
             <div data-reveal="" className={styles.rareText}>
               <h2 className={styles.kicker}>Rare life</h2>
@@ -633,7 +621,6 @@ const Home = ({ featuredProducts = [] }) => {
 
         {/* artefacts */}
         <section id="artefacts" className={styles.artefacts}>
-          <SectionBeams />
           <h2 data-reveal="" className={styles.kicker}>
             Artefacts of the atelier
           </h2>
@@ -666,7 +653,7 @@ const Home = ({ featuredProducts = [] }) => {
 
         {/* commissions */}
         <section id="commissions" className={styles.commission}>
-          <SectionBeams />
+          <div className={styles.sectionRayAlt} />
           {BAND_BUBBLES.map(([left, scale, duration, delay]) => (
             <Bubble key={left} left={left} scale={scale} duration={duration} delay={delay} />
           ))}
