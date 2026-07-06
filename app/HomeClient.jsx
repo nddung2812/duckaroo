@@ -133,11 +133,11 @@ const BAND_BUBBLES = [
   ["92%", 0.08, 14, -13],
 ];
 
-function Bubble({ left, scale, duration, delay }) {
+function Bubble({ left, scale, duration, delay, mobileHide = false }) {
   return (
     <div
       aria-hidden="true"
-      className={styles.bubbleWrap}
+      className={`${styles.bubbleWrap}${mobileHide ? ` ${styles.bubbleMobileHide}` : ""}`}
       style={{
         left,
         animationDuration: `${duration}s`,
@@ -199,6 +199,15 @@ const Home = ({ featuredProducts = [] }) => {
     // ease-in-out for buttery accel/decel
     const smooth = (t) => t * t * (3 - 2 * t);
 
+    // Phones get a lighter sequence: smaller zoom (huge scaled textures cause
+    // GPU re-rasterisation jank) and no decorative parallax layers.
+    const mq = window.matchMedia("(max-width: 767px)");
+    let isMobile = mq.matches;
+    const onMqChange = (e) => {
+      isMobile = e.matches;
+    };
+    mq.addEventListener("change", onMqChange);
+
     let ticking = false;
 
     const onScroll = () => {
@@ -211,15 +220,19 @@ const Home = ({ featuredProducts = [] }) => {
         // Camera progress across the pinned range (0 → 1 as the hero unpins).
         const cp = clamp01(y / (vh * 1.3));
 
-        for (const el of layers) {
-          if (camEls.has(el)) continue; // camera layers handled below
-          el.style.transform = `translate3d(0,${y * parseFloat(el.dataset.depth)}px,0)`;
+        // Decorative parallax layers (rays, mist) are hidden on phones —
+        // skip writing transforms to them entirely.
+        if (!isMobile) {
+          for (const el of layers) {
+            if (camEls.has(el)) continue; // camera layers handled below
+            el.style.transform = `translate3d(0,${y * parseFloat(el.dataset.depth)}px,0)`;
+          }
         }
 
         // Centre arch + animals: push in (scale up) as one group.
         if (rockCenter) {
           const py = y * 0.42;
-          const rockScale = 1 + cp * 1.9;
+          const rockScale = 1 + cp * (isMobile ? 1.1 : 1.9);
           rockCenter.style.transform = `translate3d(0,${py}px,0) scale(${rockScale})`;
         }
         // The stone arch fades out first — it "opens up" and disappears.
@@ -229,7 +242,7 @@ const Home = ({ featuredProducts = [] }) => {
         // The two animals zoom in, hold fully visible as the climax, then
         // dissolve at the very end (no vertical lift — stays put).
         if (animals) {
-          const animalScale = 1 + cp * 1.25;
+          const animalScale = 1 + cp * (isMobile ? 0.8 : 1.25);
           animals.style.transform = `translateX(-50%) scale(${animalScale})`;
           animals.style.opacity = String(1 - ramp(cp, 0.85, 0.99));
         }
@@ -266,7 +279,10 @@ const Home = ({ featuredProducts = [] }) => {
 
     window.addEventListener("scroll", onScroll, { passive: true });
     onScroll();
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      mq.removeEventListener("change", onMqChange);
+    };
   }, []);
 
   // Scroll reveals: content is visible without JS; with JS it drifts up into view.
@@ -490,8 +506,15 @@ const Home = ({ featuredProducts = [] }) => {
           </div>
 
           {/* bubbles */}
-          {HERO_BUBBLES.map(([left, scale, duration, delay]) => (
-            <Bubble key={left} left={left} scale={scale} duration={duration} delay={delay} />
+          {HERO_BUBBLES.map(([left, scale, duration, delay], i) => (
+            <Bubble
+              key={left}
+              left={left}
+              scale={scale}
+              duration={duration}
+              delay={delay}
+              mobileHide={i % 2 === 1}
+            />
           ))}
 
           {/* vignette */}
@@ -654,8 +677,15 @@ const Home = ({ featuredProducts = [] }) => {
         {/* commissions */}
         <section id="commissions" className={styles.commission}>
           <div className={styles.sectionRayAlt} />
-          {BAND_BUBBLES.map(([left, scale, duration, delay]) => (
-            <Bubble key={left} left={left} scale={scale} duration={duration} delay={delay} />
+          {BAND_BUBBLES.map(([left, scale, duration, delay], i) => (
+            <Bubble
+              key={left}
+              left={left}
+              scale={scale}
+              duration={duration}
+              delay={delay}
+              mobileHide={i % 2 === 1}
+            />
           ))}
           <div data-reveal="" className={styles.commissionInner}>
             <h2 className={styles.kicker}>Commissions</h2>

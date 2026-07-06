@@ -799,6 +799,27 @@
   .ctaPrimary {
     backdrop-filter: none;
   }
+
+  /* Fewer live bubbles + no blurred glints — each bubble is a composited
+     layer animating forever; halving them noticeably lightens the GPU load. */
+  .bubbleMobileHide {
+    display: none;
+  }
+
+  .bubbleGlint,
+  .bubbleGlintSmall {
+    filter: none;
+  }
+
+  /* Don't paint deep-body sections while they're still offscreen behind the
+     pinned hero — the browser skips their render work during the hero scroll. */
+  .worlds,
+  .rare,
+  .artefacts,
+  .commission {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 760px;
+  }
 }
 
 .ctaGhost:hover {
