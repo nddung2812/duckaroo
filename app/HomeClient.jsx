@@ -25,6 +25,8 @@ const RHINO =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783241985/Rhino_nobg_wjxfsr.png";
 const TREX =
   "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783241984/Trex_nobg_t0clwt.png";
+const KANGAROO =
+  "https://res.cloudinary.com/dhvj8x2nq/image/upload/v1783241986/Kangaroo_nobg_ntdcct.png";
 
 const NAV_LINKS = [
   { href: "#worlds", label: "Worlds" },
@@ -180,6 +182,21 @@ const Home = ({ featuredProducts = [] }) => {
 
     const layers = Array.from(root.querySelectorAll("[data-depth]"));
     const headline = root.querySelector("[data-hero-headline]");
+
+    // Camera-push sequence elements (scroll drives a fly-into-the-arch shot).
+    const rockCenter = root.querySelector('[data-cam="rock"]');
+    const archImg = rockCenter?.querySelector("img") || null;
+    const animals = root.querySelector('[data-cam="animals"]');
+    const rockLeft = root.querySelector('[data-cam="left"]');
+    const rockRight = root.querySelector('[data-cam="right"]');
+    const camEls = new Set([rockCenter, rockLeft, rockRight]);
+
+    const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
+    // remap: 0 while t<a, ramps 0→1 across [a,b], 1 after
+    const ramp = (t, a, b) => clamp01((t - a) / (b - a));
+    // ease-in-out for buttery accel/decel
+    const smooth = (t) => t * t * (3 - 2 * t);
+
     let ticking = false;
 
     const onScroll = () => {
@@ -187,13 +204,51 @@ const Home = ({ featuredProducts = [] }) => {
       ticking = true;
       requestAnimationFrame(() => {
         const y = window.scrollY;
-        const p = Math.min(y / (window.innerHeight * 0.9), 1.4);
+        const vh = window.innerHeight;
+        // Camera progress across the pinned range (0 → 1 as the hero unpins).
+        const cp = clamp01(y / (vh * 1.3));
+
         for (const el of layers) {
+          if (camEls.has(el)) continue; // camera layers handled below
           el.style.transform = `translate3d(0,${y * parseFloat(el.dataset.depth)}px,0)`;
         }
+
+        // Centre arch + animals: push in (scale up) as one group.
+        if (rockCenter) {
+          const py = y * 0.42;
+          const rockScale = 1 + cp * 1.9;
+          rockCenter.style.transform = `translate3d(0,${py}px,0) scale(${rockScale})`;
+        }
+        // The stone arch fades out first — it "opens up" and disappears.
+        if (archImg) {
+          archImg.style.opacity = String(1 - ramp(cp, 0.32, 0.66));
+        }
+        // The two animals zoom in, then lift up to settle centre-screen —
+        // that framed shot is the climax before the next scene arrives.
+        if (animals) {
+          const animalScale = 1 + cp * 1.25;
+          const lift = smooth(ramp(cp, 0.5, 0.82)) * vh * 0.16;
+          animals.style.transform = `translateX(-50%) translate3d(0,${-lift}px,0) scale(${animalScale})`;
+          // hold fully visible through the centred hold, then dissolve at the very end
+          animals.style.opacity = String(1 - ramp(cp, 0.85, 0.99));
+        }
+        // Bottom rocks part outward — left slides left, right slides right.
+        if (rockLeft) {
+          const py = y * 0.42;
+          const dx = -cp * vh * 0.85;
+          rockLeft.style.transform = `translate3d(${dx}px,${py + cp * 60}px,0) scale(${1 + cp * 0.5})`;
+        }
+        if (rockRight) {
+          const py = y * 0.42;
+          const dx = cp * vh * 0.85;
+          rockRight.style.transform = `translate3d(${dx}px,${py + cp * 60}px,0) scale(${1 + cp * 0.5})`;
+        }
+
+        // Headline + CTAs clear out fast, freeing the stage for the animals.
         if (headline) {
-          headline.style.opacity = String(Math.max(1 - p * 1.15, 0));
-          headline.style.transform = `translate3d(0,${y * -0.28}px,0)`;
+          const hp = clamp01(y / (vh * 0.35));
+          headline.style.opacity = String(1 - hp);
+          headline.style.transform = `translate3d(0,${-hp * vh * 0.6}px,0)`;
         }
         ticking = false;
       });
@@ -273,8 +328,9 @@ const Home = ({ featuredProducts = [] }) => {
           <div data-depth="0.1" className={`${styles.ray} ${styles.ray4}`} />
 
           {/* centre arch — mid layer */}
-          <div data-depth="0.42" className={styles.rockCenter}>
+          <div data-depth="0.42" data-cam="rock" className={styles.rockCenter}>
             <Image
+              className={styles.archImg}
               src={ROCK_CENTER}
               alt="Moss-covered stone archway aquascape"
               width={860}
@@ -283,7 +339,7 @@ const Home = ({ featuredProducts = [] }) => {
               sizes="(max-width: 768px) 74vw, 860px"
             />
             {/* T-rex vs rhino, squaring off inside the arch */}
-            <div className={styles.arena}>
+            <div data-cam="animals" className={styles.arena}>
               <div className={`${styles.combatant} ${styles.trex}`}>
                 <Image
                   src={TREX}
@@ -308,7 +364,7 @@ const Home = ({ featuredProducts = [] }) => {
           </div>
 
           {/* mossy rock, bottom left */}
-          <div data-depth="0.42" className={styles.rockLeft}>
+          <div data-depth="0.42" data-cam="left" className={styles.rockLeft}>
             <Image
               src={ROCK_BOTTOM_LEFT}
               alt="Moss-covered aquascape rock"
@@ -320,7 +376,7 @@ const Home = ({ featuredProducts = [] }) => {
           </div>
 
           {/* mossy rock, bottom right */}
-          <div data-depth="0.42" className={styles.rockRight}>
+          <div data-depth="0.42" data-cam="right" className={styles.rockRight}>
             <Image
               src={ROCK_BOTTOM_RIGHT}
               alt=""
@@ -346,6 +402,14 @@ const Home = ({ featuredProducts = [] }) => {
                 width={190}
                 height={190}
                 sizes="190px"
+              />
+              <Image
+                src={KANGAROO}
+                alt="Kangaroo standing on the floating island"
+                width={90}
+                height={90}
+                sizes="90px"
+                className={styles.islandKangaroo}
               />
             </div>
             <div className={styles.islandShadow} />
@@ -384,20 +448,25 @@ const Home = ({ featuredProducts = [] }) => {
                 </Link>
               ))}
             </nav>
-            <Link href="/service" className={styles.navCta}>
-              Book a service
-            </Link>
-            <button
-              type="button"
-              className={styles.menuBtn}
-              aria-label="Open navigation menu"
-              aria-expanded={menuOpen}
-              onClick={() => setMenuOpen(true)}
-            >
-              <span />
-              <span />
-              <span />
-            </button>
+            <div className={styles.navActions}>
+              <Link href="/products" className={styles.navCtaSecondary}>
+                Shop
+              </Link>
+              <Link href="/service" className={styles.navCta}>
+                Book a service
+              </Link>
+              <button
+                type="button"
+                className={styles.menuBtn}
+                aria-label="Open navigation menu"
+                aria-expanded={menuOpen}
+                onClick={() => setMenuOpen(true)}
+              >
+                <span />
+                <span />
+                <span />
+              </button>
+            </div>
           </header>
 
           {/* headline (fades + drifts up on scroll) */}
@@ -571,20 +640,28 @@ const Home = ({ featuredProducts = [] }) => {
             </button>
           </div>
           <nav className={styles.mobileLinks} aria-label="Main navigation">
-            {NAV_LINKS.map((l, i) => (
+            {NAV_LINKS.map((l) => (
               <Link key={l.label} href={l.href} onClick={() => setMenuOpen(false)}>
-                <span>{String(i + 1).padStart(2, "0")}</span>
                 {l.label}
               </Link>
             ))}
           </nav>
-          <Link
-            href="/service"
-            className={styles.mobileMenuCta}
-            onClick={() => setMenuOpen(false)}
-          >
-            Book a service
-          </Link>
+          <div className={styles.mobileMenuActions}>
+            <Link
+              href="/products"
+              className={styles.mobileMenuCtaSecondary}
+              onClick={() => setMenuOpen(false)}
+            >
+              Shop
+            </Link>
+            <Link
+              href="/service"
+              className={styles.mobileMenuCta}
+              onClick={() => setMenuOpen(false)}
+            >
+              Book a service
+            </Link>
+          </div>
         </div>
       )}
     </div>
