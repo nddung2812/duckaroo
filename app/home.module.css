@@ -747,7 +747,7 @@
   .rockCenter {
     bottom: auto;
     top: 50%;
-    margin-top: -6vh;
+    margin-top: 8vh;
   }
 
   .rockCenter img {
@@ -812,34 +812,54 @@
   z-index: 10;
   margin-top: -90vh;
   border-radius: 48px 48px 0 0;
-  background: linear-gradient(180deg, #041b0d 0%, #03140a 30%, #020e07 100%);
+  /* greener + brighter deep-water palette */
+  background: linear-gradient(180deg, #0c3d21 0%, #093118 32%, #052711 100%);
   box-shadow: 0 -30px 80px rgba(0, 0, 0, 0.65);
 }
 
-.sectionRay {
+/* sunlit god-ray beams — same feel as the hero, reused across every scene */
+.beams {
   position: absolute;
-  top: -100px;
-  left: 31%;
-  width: 110px;
-  height: 700px;
-  background: linear-gradient(180deg, rgba(140, 240, 120, 0.14), transparent 80%);
-  filter: blur(12px);
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  /* sits behind the scene content but above the section background */
+  z-index: -1;
+}
+
+.beam {
+  position: absolute;
+  top: -140px;
+  filter: blur(14px);
   mix-blend-mode: screen;
-  animation: beamSway 15s ease-in-out infinite;
+  transform-origin: top center;
   pointer-events: none;
 }
 
-.sectionRayAlt {
-  position: absolute;
-  top: -120px;
-  left: 56%;
-  width: 100px;
-  height: 620px;
-  background: linear-gradient(180deg, rgba(140, 240, 120, 0.16), transparent 80%);
-  filter: blur(11px);
-  mix-blend-mode: screen;
-  animation: beamSway2 12s ease-in-out infinite;
-  pointer-events: none;
+.beamA {
+  left: 15%;
+  width: 130px;
+  height: 780px;
+  background: linear-gradient(180deg, rgba(140, 240, 120, 0.3), rgba(140, 240, 120, 0.06) 55%, transparent 85%);
+  animation: beamSway 13s ease-in-out infinite;
+}
+
+.beamB {
+  left: 48%;
+  width: 90px;
+  height: 720px;
+  background: linear-gradient(180deg, rgba(232, 190, 110, 0.18), rgba(232, 190, 110, 0.04) 50%, transparent 82%);
+  filter: blur(12px);
+  animation: beamSway2 16s ease-in-out 2s infinite;
+}
+
+.beamC {
+  left: 77%;
+  width: 150px;
+  height: 800px;
+  background: linear-gradient(180deg, rgba(140, 240, 120, 0.26), rgba(140, 240, 120, 0.05) 55%, transparent 85%);
+  filter: blur(16px);
+  animation: beamSway 15s ease-in-out 4s infinite;
 }
 
 .kicker {
@@ -864,6 +884,7 @@
   position: relative;
   padding: 110px clamp(20px, 4vw, 56px) 60px;
   overflow: hidden;
+  isolation: isolate;
 }
 
 .worldsHeader {
@@ -967,7 +988,8 @@
   position: relative;
   padding: 80px clamp(20px, 4vw, 56px);
   overflow: hidden;
-  background: radial-gradient(ellipse 80% 100% at 50% 0%, #0b3018 0%, transparent 70%);
+  isolation: isolate;
+  background: radial-gradient(ellipse 80% 100% at 50% 0%, #14512d 0%, transparent 70%);
 }
 
 .rareGrid {
