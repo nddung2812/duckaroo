@@ -189,7 +189,9 @@ const Home = ({ featuredProducts = [] }) => {
     const animals = root.querySelector('[data-cam="animals"]');
     const rockLeft = root.querySelector('[data-cam="left"]');
     const rockRight = root.querySelector('[data-cam="right"]');
-    const camEls = new Set([rockCenter, rockLeft, rockRight]);
+    const islandR = root.querySelector('[data-cam="islandR"]');
+    const islandL = root.querySelector('[data-cam="islandL"]');
+    const camEls = new Set([rockCenter, rockLeft, rockRight, islandR, islandL]);
 
     const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
     // remap: 0 while t<a, ramps 0→1 across [a,b], 1 after
@@ -205,6 +207,7 @@ const Home = ({ featuredProducts = [] }) => {
       requestAnimationFrame(() => {
         const y = window.scrollY;
         const vh = window.innerHeight;
+        const vw = window.innerWidth;
         // Camera progress across the pinned range (0 → 1 as the hero unpins).
         const cp = clamp01(y / (vh * 1.3));
 
@@ -223,25 +226,32 @@ const Home = ({ featuredProducts = [] }) => {
         if (archImg) {
           archImg.style.opacity = String(1 - ramp(cp, 0.32, 0.66));
         }
-        // The two animals zoom in, then lift up to settle centre-screen —
-        // that framed shot is the climax before the next scene arrives.
+        // The two animals zoom in, hold fully visible as the climax, then
+        // dissolve at the very end (no vertical lift — stays put).
         if (animals) {
           const animalScale = 1 + cp * 1.25;
-          const lift = smooth(ramp(cp, 0.5, 0.82)) * vh * 0.16;
-          animals.style.transform = `translateX(-50%) translate3d(0,${-lift}px,0) scale(${animalScale})`;
-          // hold fully visible through the centred hold, then dissolve at the very end
+          animals.style.transform = `translateX(-50%) scale(${animalScale})`;
           animals.style.opacity = String(1 - ramp(cp, 0.85, 0.99));
         }
         // Bottom rocks part outward — left slides left, right slides right.
+        // Slide distance is width-aware so the rocks still clear the frame on
+        // ultra-wide screens (where they start further from the edges).
+        const slide = cp * Math.max(vh * 0.85, vw * 0.55);
         if (rockLeft) {
           const py = y * 0.42;
-          const dx = -cp * vh * 0.85;
-          rockLeft.style.transform = `translate3d(${dx}px,${py + cp * 60}px,0) scale(${1 + cp * 0.5})`;
+          rockLeft.style.transform = `translate3d(${-slide}px,${py + cp * 60}px,0) scale(${1 + cp * 0.5})`;
         }
         if (rockRight) {
           const py = y * 0.42;
-          const dx = cp * vh * 0.85;
-          rockRight.style.transform = `translate3d(${dx}px,${py + cp * 60}px,0) scale(${1 + cp * 0.5})`;
+          rockRight.style.transform = `translate3d(${slide}px,${py + cp * 60}px,0) scale(${1 + cp * 0.5})`;
+        }
+        // Floating islands (+ kangaroo) shrink away and vanish before the next scene.
+        for (const isl of [islandR, islandL]) {
+          if (!isl) continue;
+          const py = y * parseFloat(isl.dataset.depth);
+          const shrink = 1 - smooth(ramp(cp, 0.12, 0.4)) * 0.85; // 1 → 0.15, early
+          isl.style.transform = `translate3d(0,${py}px,0) scale(${shrink})`;
+          isl.style.opacity = String(1 - ramp(cp, 0.15, 0.4));
         }
 
         // Headline + CTAs clear out fast, freeing the stage for the animals.
@@ -299,6 +309,53 @@ const Home = ({ featuredProducts = [] }) => {
     };
   }, [menuOpen]);
 
+  // "Enter the worlds" — slow, cinematic scroll so the hero sequence plays out
+  // (the global CSS smooth-scroll is too fast to appreciate the camera push).
+  const scrollToWorlds = (e) => {
+    e.preventDefault();
+    const target = document.getElementById("worlds");
+    if (!target) return;
+    const startY = window.scrollY;
+    const endY = Math.round(target.getBoundingClientRect().top + startY);
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      window.scrollTo(0, endY);
+      return;
+    }
+    const dist = endY - startY;
+    const duration = Math.min(4200, Math.max(2000, Math.abs(dist) * 1.15));
+    const easeInOut = (t) =>
+      t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const html = document.documentElement;
+    const prevBehavior = html.style.scrollBehavior;
+    html.style.scrollBehavior = "auto"; // override global smooth so steps land exactly
+
+    let start;
+    let cancelled = false;
+    const cleanup = () => {
+      window.removeEventListener("wheel", cancel);
+      window.removeEventListener("touchstart", cancel);
+      window.removeEventListener("keydown", cancel);
+      html.style.scrollBehavior = prevBehavior;
+    };
+    function cancel() {
+      cancelled = true;
+      cleanup();
+    }
+    window.addEventListener("wheel", cancel, { passive: true });
+    window.addEventListener("touchstart", cancel, { passive: true });
+    window.addEventListener("keydown", cancel);
+
+    const step = (ts) => {
+      if (cancelled) return;
+      if (start === undefined) start = ts;
+      const p = Math.min((ts - start) / duration, 1);
+      window.scrollTo(0, startY + dist * easeInOut(p));
+      if (p < 1) requestAnimationFrame(step);
+      else cleanup();
+    };
+    requestAnimationFrame(step);
+  };
+
   const artefacts =
     featuredProducts.length > 0
       ? featuredProducts.map((p) => {
@@ -327,6 +384,8 @@ const Home = ({ featuredProducts = [] }) => {
           <div data-depth="0.1" className={`${styles.ray} ${styles.ray3}`} />
           <div data-depth="0.1" className={`${styles.ray} ${styles.ray4}`} />
 
+          {/* scene stage — max-width keeps the layout cohesive on ultra-wide screens */}
+          <div className={styles.heroStage}>
           {/* centre arch — mid layer */}
           <div data-depth="0.42" data-cam="rock" className={styles.rockCenter}>
             <Image
@@ -387,6 +446,7 @@ const Home = ({ featuredProducts = [] }) => {
               sizes="(max-width: 768px) 30vw, 460px"
             />
           </div>
+          </div>
 
           {/* mist */}
           <div className={styles.mistBottom} />
@@ -394,7 +454,8 @@ const Home = ({ featuredProducts = [] }) => {
           <div data-depth="0.5" className={styles.mistBlob2} />
 
           {/* floating stone islands */}
-          <div data-depth="0.26" className={styles.islandRight}>
+          <div className={styles.heroStage}>
+          <div data-depth="0.26" data-cam="islandR" className={styles.islandRight}>
             <div className={styles.islandRightFloat}>
               <Image
                 src={ROCK_FLOATING}
@@ -414,7 +475,7 @@ const Home = ({ featuredProducts = [] }) => {
             </div>
             <div className={styles.islandShadow} />
           </div>
-          <div data-depth="0.34" className={styles.islandLeft}>
+          <div data-depth="0.34" data-cam="islandL" className={styles.islandLeft}>
             <div className={styles.islandLeftFloat}>
               <Image
                 src={ROCK_FLOATING}
@@ -425,6 +486,7 @@ const Home = ({ featuredProducts = [] }) => {
                 sizes="100px"
               />
             </div>
+          </div>
           </div>
 
           {/* bubbles */}
@@ -481,7 +543,7 @@ const Home = ({ featuredProducts = [] }) => {
               doorway.
             </p>
             <div className={styles.heroCtas}>
-              <a href="#worlds" className={styles.ctaPrimary}>
+              <a href="#worlds" className={styles.ctaPrimary} onClick={scrollToWorlds}>
                 Enter the worlds
               </a>
               <Link href="/service" className={styles.ctaGhost}>

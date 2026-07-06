@@ -23,7 +23,7 @@ function ProductsListingStructuredData({ products, selectedCategory, totalCount 
   const organizationData = {
     "@context": "https://schema.org",
     "@type": "Organization",
-    name: "Duckaroo - Swan Design Aquatic Center",
+    name: "Duckaroo",
     url: baseUrl,
     description:
       "Brisbane's premier aquatic plant and aquarium supply specialist",
@@ -99,7 +99,7 @@ function ProductsListingStructuredData({ products, selectedCategory, totalCount 
           url: `${baseUrl}/products/${product.slug}`,
           seller: {
             "@type": "Organization",
-            name: "Duckaroo - Swan Design Aquatic Center",
+            name: "Duckaroo",
           },
         },
         aggregateRating: product.reviews

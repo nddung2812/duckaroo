@@ -80,7 +80,7 @@ const Footer = () => {
           {/* Company Info */}
           <div className="lg:col-span-1">
             <h3 className="text-2xl font-display font-semibold tracking-[0.14em] uppercase mb-4 text-parchment">
-              Aquatic Swan Design
+              Duckaroo
             </h3>
             <p className="text-cream/65 mb-4 leading-relaxed">
               Creating stunning aquatic landscapes that bring the tranquility
@@ -177,7 +177,7 @@ const Footer = () => {
         {/* Bottom Footer */}
         <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="text-cream/55 text-sm" suppressHydrationWarning>
-            Copyright &copy; {new Date().getFullYear()} - Aquatic Swan Design.
+            Copyright &copy; {new Date().getFullYear()} - Duckaroo.
             All rights reserved.
           </div>
 

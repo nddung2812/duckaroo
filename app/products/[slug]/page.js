@@ -216,7 +216,7 @@ function ProductStructuredData({ product }) {
       seller: {
         "@type": "Organization",
         "@id": `${baseUrl}#organization`,
-        name: "Duckaroo - Swan Design Aquatic Center",
+        name: "Duckaroo",
         url: baseUrl,
         logo: `${baseUrl}/swan-favicon.png`,
         address: {

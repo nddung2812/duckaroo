@@ -70,14 +70,14 @@ const Navbar = () => {
           <Link href="/" className="flex items-center space-x-2 shrink-0">
             <Image
               src="https://res.cloudinary.com/dhvj8x2nq/image/upload/f_auto,q_auto/v1739712659/swan-logo-transparent_rphcfl"
-              alt="Swan logo"
+              alt="Duckaroo logo"
               width={60}
               height={60}
               className="w-14 h-14 md:w-16 md:h-16"
               priority
             />
             <span className="text-cream font-display font-semibold text-lg tracking-[0.16em] uppercase whitespace-nowrap hidden sm:block">
-              Aquatic Swan Design
+              Duckaroo
             </span>
           </Link>
 

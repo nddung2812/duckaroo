@@ -152,6 +152,18 @@
   animation: beamSway2 10s ease-in-out 6s infinite;
 }
 
+/* scene stage — caps the layout width so ultra-wide screens keep the
+   rocks + islands anchored around the centre instead of scattering to the
+   far edges. Transparent + non-interactive; children keep their z-index. */
+.heroStage {
+  position: absolute;
+  inset: 0;
+  margin-inline: auto;
+  max-width: 1800px;
+  height: 100%;
+  pointer-events: none;
+}
+
 /* centre arch — mid parallax layer */
 .rockCenter {
   position: absolute;
@@ -276,7 +288,7 @@
   right: 9%;
   top: 24%;
   z-index: 3;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 
 .islandRightFloat {
@@ -317,7 +329,7 @@
   left: 7%;
   top: 38%;
   z-index: 3;
-  will-change: transform;
+  will-change: transform, opacity;
 }
 
 .islandLeftFloat {
@@ -730,6 +742,29 @@
     width: 100%;
     text-align: center;
     box-sizing: border-box;
+  }
+
+  .rockCenter {
+    bottom: auto;
+    top: 50%;
+    margin-top: -6vh;
+  }
+
+  .rockCenter img {
+    width: 88vw;
+  }
+
+  .arena {
+    gap: 10px;
+  }
+
+  .combatant img {
+    width: 40vw;
+  }
+
+  .rockLeft,
+  .rockRight {
+    bottom: 30px;
   }
 }
 

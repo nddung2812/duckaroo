@@ -54,7 +54,7 @@ export async function POST(request) {
       // Set receipt email for automatic Stripe receipts
       receipt_email: metadata.customerEmail,
       // Add description for better tracking
-      description: `Order #${metadata.orderNumber} - Swan Design Aquatic Center`,
+      description: `Order #${metadata.orderNumber} - Duckaroo`,
     };
 
     // Add shipping information if provided
