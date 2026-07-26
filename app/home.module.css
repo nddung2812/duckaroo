@@ -4,6 +4,14 @@
    ============================================================ */
 
 .page {
+  /* Content shell: every section keeps its background full-bleed but pins its
+     content to this width, so ultra-wide screens don't fling the columns out
+     to the far edges. Gutter is the old section padding — the max() keeps
+     whichever is larger, so narrow screens are unchanged. */
+  --shell: 1440px;
+  --gutter: clamp(20px, 4vw, 56px);
+  --shell-pad: max(var(--gutter), (100% - var(--shell)) / 2);
+
   background: #020e07;
   color: #ede9db;
   font-family: var(--font-jost), sans-serif;
@@ -434,7 +442,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  padding: 20px clamp(20px, 4vw, 56px);
+  padding: 20px var(--shell-pad);
   z-index: 7;
 }
 
@@ -917,7 +925,7 @@
 
 .worlds {
   position: relative;
-  padding: 110px clamp(20px, 4vw, 56px) 90px;
+  padding: 110px var(--shell-pad) 90px;
   overflow: hidden;
   border-radius: 48px 48px 0 0;
   background:
@@ -1071,6 +1079,11 @@
   gap: 6px;
   text-decoration: none;
   animation: hoverFloat 10s ease-in-out infinite;
+  /* Cap + centre inside the grid track: the clip-path islands stretch into
+     unrecognisable slabs if the card is allowed to grow with the viewport. */
+  width: 100%;
+  max-width: 400px;
+  margin-inline: auto;
 }
 
 .worldCard:nth-child(2) { animation-duration: 12s; animation-delay: 2s; }
@@ -1084,7 +1097,9 @@
 .worldImage {
   position: relative;
   width: 100%;
-  height: 330px;
+  /* ratio, not a fixed height, so the clip-path island keeps its shape at
+     every card width */
+  aspect-ratio: 11 / 10;
   overflow: hidden;
   background: rgba(233, 229, 216, 0.06);
 }
@@ -1176,7 +1191,7 @@
 
 .rare {
   position: relative;
-  padding: 80px clamp(20px, 4vw, 56px);
+  padding: 80px var(--shell-pad);
   overflow: hidden;
   background: radial-gradient(ellipse 80% 100% at 50% 0%, #1e7038 0%, transparent 72%);
 }
@@ -1271,7 +1286,7 @@
 
 .artefacts {
   position: relative;
-  padding: 70px clamp(20px, 4vw, 56px) 84px;
+  padding: 70px var(--shell-pad) 84px;
   background: radial-gradient(ellipse 80% 90% at 50% 0%, #1e7038 0%, transparent 72%);
 }
 
@@ -1390,7 +1405,7 @@
 
 .commission {
   position: relative;
-  padding: 110px clamp(20px, 4vw, 56px);
+  padding: 110px var(--shell-pad);
   text-align: center;
   border-top: 1px solid rgba(233, 229, 216, 0.12);
   overflow: hidden;

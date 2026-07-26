@@ -605,7 +605,7 @@ const Home = ({ featuredProducts = [] }) => {
                     src={w.image}
                     alt={`${w.name} — ${w.tag}, ${w.location}`}
                     fill
-                    sizes="(max-width: 940px) 100vw, 33vw"
+                    sizes="(max-width: 940px) 100vw, 400px"
                   />
                 </div>
                 <div className={styles.worldShadow} />
