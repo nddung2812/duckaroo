@@ -21,13 +21,14 @@ import {
   parseArgs,
   getConnectionString,
   describeConnection,
+  renderQuery,
 } from "./_env.mjs";
 
 loadEnvLocal();
 
 const args = parseArgs();
 const dryRun = Boolean(args["dry-run"]);
-const connectionString = getConnectionString();
+const printSql = Boolean(args["print-sql"]);
 
 /**
  * Every statement, in dependency order. One statement per entry — the Neon HTTP
@@ -199,6 +200,19 @@ const statements = [
     `,
   ],
 ];
+
+// Emit the exact statements as SQL text. Lets the schema be reviewed, diffed,
+// or piped into psql without maintaining a second copy that can drift from the
+// one the migration actually runs.
+if (printSql) {
+  for (const [label, run] of statements) {
+    console.log(`-- ${label}`);
+    console.log(`${run(renderQuery).text};\n`);
+  }
+  process.exit(0);
+}
+
+const connectionString = getConnectionString();
 
 console.log(`\nAuth schema migration`);
 console.log(`  target : ${describeConnection(connectionString)}`);

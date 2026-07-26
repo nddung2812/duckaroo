@@ -42,6 +42,45 @@ export function mapShopifyRecord(record) {
   };
 }
 
+/**
+ * The upsert the importer runs, as a single reusable statement.
+ *
+ * Lives here rather than inline in the importer so it has exactly one
+ * definition: the importer executes it against Neon, and the verification
+ * script renders the same function through a fake tag to run it against a real
+ * Postgres. There is no second copy to drift.
+ *
+ * password_hash, source and email_verified_at are absent from the DO UPDATE SET
+ * list, so re-running can never clobber a password a customer has already set.
+ * The WHERE clause suppresses no-op updates, so an unchanged row returns no
+ * rows at all and is reported as unchanged rather than as an update.
+ *
+ * @param sql a Neon `sql` tag, or renderQuery from ./_env.mjs
+ */
+export function upsertUserQuery(sql, user) {
+  return sql`
+    INSERT INTO users (email, first_name, last_name, phone, source, shopify_customer_id)
+    VALUES (
+      ${user.email},
+      ${user.firstName},
+      ${user.lastName},
+      ${user.phone},
+      'shopify',
+      ${user.shopifyCustomerId}
+    )
+    ON CONFLICT (email) DO UPDATE SET
+      first_name          = COALESCE(users.first_name, EXCLUDED.first_name),
+      last_name           = COALESCE(users.last_name, EXCLUDED.last_name),
+      phone               = COALESCE(users.phone, EXCLUDED.phone),
+      shopify_customer_id = COALESCE(users.shopify_customer_id, EXCLUDED.shopify_customer_id)
+    WHERE (users.first_name          IS NULL AND EXCLUDED.first_name          IS NOT NULL)
+       OR (users.last_name           IS NULL AND EXCLUDED.last_name           IS NOT NULL)
+       OR (users.phone               IS NULL AND EXCLUDED.phone               IS NOT NULL)
+       OR (users.shopify_customer_id IS NULL AND EXCLUDED.shopify_customer_id IS NOT NULL)
+    RETURNING (xmax = 0) AS inserted
+  `;
+}
+
 export const SKIP_REASONS = {
   BLANK_EMAIL: "blank email",
   INVALID_EMAIL: "invalid email",

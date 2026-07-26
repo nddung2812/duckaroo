@@ -26,7 +26,7 @@ import {
   PRODUCTION_OVERRIDE_FLAG,
 } from "./_env.mjs";
 import { parseCsv } from "./_csv.mjs";
-import { dedupeShopifyRecords } from "./_shopify.mjs";
+import { dedupeShopifyRecords, upsertUserQuery } from "./_shopify.mjs";
 
 loadEnvLocal();
 
@@ -104,38 +104,9 @@ if (commit && users.length > 0) {
   for (let i = 0; i < users.length; i += BATCH_SIZE) {
     const batch = users.slice(i, i + BATCH_SIZE);
 
-    // password_hash, source and email_verified_at are absent from the DO UPDATE
-    // SET list, so a re-run can never clobber a password someone has already
-    // set, nor demote a 'signup' user back to 'shopify'.
-    //
-    // The WHERE clause means a row that would not actually change is left
-    // alone and returns nothing — so a second run honestly reports 0 created,
-    // 0 updated, everything unchanged.
-    const results = await sql.transaction(
-      batch.map(
-        (user) => sql`
-          INSERT INTO users (email, first_name, last_name, phone, source, shopify_customer_id)
-          VALUES (
-            ${user.email},
-            ${user.firstName},
-            ${user.lastName},
-            ${user.phone},
-            'shopify',
-            ${user.shopifyCustomerId}
-          )
-          ON CONFLICT (email) DO UPDATE SET
-            first_name          = COALESCE(users.first_name, EXCLUDED.first_name),
-            last_name           = COALESCE(users.last_name, EXCLUDED.last_name),
-            phone               = COALESCE(users.phone, EXCLUDED.phone),
-            shopify_customer_id = COALESCE(users.shopify_customer_id, EXCLUDED.shopify_customer_id)
-          WHERE (users.first_name          IS NULL AND EXCLUDED.first_name          IS NOT NULL)
-             OR (users.last_name           IS NULL AND EXCLUDED.last_name           IS NOT NULL)
-             OR (users.phone               IS NULL AND EXCLUDED.phone               IS NOT NULL)
-             OR (users.shopify_customer_id IS NULL AND EXCLUDED.shopify_customer_id IS NOT NULL)
-          RETURNING (xmax = 0) AS inserted
-        `
-      )
-    );
+    // The statement itself lives in _shopify.mjs so the verification script can
+    // execute the very same one against a real Postgres.
+    const results = await sql.transaction(batch.map((user) => upsertUserQuery(sql, user)));
 
     for (const rows of results) {
       if (rows.length === 0) unchanged++;

@@ -27,6 +27,22 @@ export function loadEnvLocal(path = ".env.local") {
   }
 }
 
+/**
+ * A stand-in for the Neon `sql` tag that renders the query instead of running
+ * it, so a statement written once can be printed, reviewed or executed through
+ * psql without being copied out and allowed to drift.
+ *
+ * @returns {{text: string, values: unknown[]}}
+ */
+export function renderQuery(strings, ...values) {
+  let text = "";
+  strings.forEach((part, i) => {
+    text += part;
+    if (i < values.length) text += `$${i + 1}`;
+  });
+  return { text: text.trim(), values };
+}
+
 /** Minimal `--flag` / `--key=value` parser. */
 export function parseArgs(argv = process.argv.slice(2)) {
   const args = {};
