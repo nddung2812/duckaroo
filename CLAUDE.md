@@ -104,6 +104,16 @@ EMAIL_FROM                 # default "Duckaroo <accounts@duckaroo.com.au>"
 EMAIL_PROVIDER             # "resend" | "console". Defaults to resend if RESEND_API_KEY
                            # is set, otherwise console (dev only — it prints emails
                            # instead of sending, and throws in production)
-APP_URL                    # default https://duckaroo.com.au — used to build the links
-                           # inside auth emails; set this locally to http://localhost:3000
+```
+
+**`APP_URL` is required in production** and has no fallback there — auth email
+links are built from it. The tempting default, `duckaroo.com.au`, is wrong:
+that domain still resolves to the old Shopify store (`23.227.38.32`), so a
+guessed link would 404 and silently break the migration for every customer who
+received it. Set it to wherever this app is actually reachable —
+`https://duckaroo.vercel.app` today, `https://duckaroo.com.au` once DNS moves.
+Locally it defaults to `http://localhost:3000`.
+
+```
+APP_URL                    # required in production, e.g. https://duckaroo.vercel.app
 ```
