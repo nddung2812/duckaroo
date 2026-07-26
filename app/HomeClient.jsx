@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import { User } from "lucide-react";
 import styles from "./home.module.css";
 import useCurrentUser, { accountLabel, accountInitial } from "./components/useCurrentUser";
 
@@ -552,8 +553,13 @@ const Home = ({ featuredProducts = [] }) => {
                   </Link>
                 )}
                 {currentUser === null && (
-                  <Link href="/login" className={styles.navSignIn}>
-                    Sign in
+                  <Link
+                    href="/login"
+                    className={styles.navSignIn}
+                    aria-label="Sign in"
+                    title="Sign in"
+                  >
+                    <User size={20} aria-hidden="true" />
                   </Link>
                 )}
               </div>

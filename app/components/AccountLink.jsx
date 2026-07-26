@@ -44,9 +44,10 @@ export default function AccountLink({ variant = "desktop" }) {
     );
   }
 
-  // Signed in, the header shows only an initial in a circle — the full name and
-  // the sign-out button live on /account. The slot holds its size while
-  // /api/auth/me is in flight so the Shop and Book buttons do not shift.
+  // Signed in: their initial in a circle — the full name and the sign-out
+  // button live on /account. Signed out: an empty avatar placeholder linking
+  // to /login. The slot holds its size while /api/auth/me is in flight so the
+  // Shop and Book buttons do not shift.
   return (
     <div className="flex items-center justify-end min-w-10 h-10">
       {user && (
@@ -62,9 +63,11 @@ export default function AccountLink({ variant = "desktop" }) {
       {user === null && (
         <Link
           href="/login"
-          className="text-cream/85 hover:text-amber-glow text-[12px] uppercase tracking-[0.12em] whitespace-nowrap transition-colors"
+          aria-label="Sign in"
+          title="Sign in"
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-cream/25 bg-[#04121b]/35 text-cream/50 hover:border-amber-glow/80 hover:bg-amber-glow/15 hover:text-amber-glow transition-colors"
         >
-          Sign in
+          <User className="h-5 w-5" aria-hidden="true" />
         </Link>
       )}
     </div>
