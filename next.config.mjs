@@ -76,6 +76,20 @@ const nextConfig = {
           },
         ],
       },
+      {
+        // API responses are JSON, so they can't carry a <meta name="robots">.
+        // robots.txt already disallows /api/, but a Disallow only stops the
+        // fetch — it does not stop a URL-only listing for an endpoint someone
+        // links to, and it is ignored outright by crawlers that don't honour
+        // it. This header covers both cases.
+        source: "/api/:path*",
+        headers: [
+          {
+            key: "X-Robots-Tag",
+            value: "noindex, nofollow",
+          },
+        ],
+      },
     ];
   },
 
