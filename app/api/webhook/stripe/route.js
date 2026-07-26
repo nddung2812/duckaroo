@@ -1,7 +1,11 @@
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
-import emailjs from "@emailjs/browser";
 import { createOrder } from "@/lib/orders";
+import { sendEmail } from "@/lib/email";
+import { orderConfirmationEmail } from "@/lib/email/templates.js";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 // Validate webhook secret
 if (!process.env.STRIPE_WEBHOOK_SECRET) {
@@ -27,6 +31,8 @@ const sendConfirmationEmail = async (paymentIntent) => {
     const metadata = paymentIntent.metadata;
     const shipping = paymentIntent.shipping;
 
+    if (!metadata?.customerEmail) return;
+
     // Parse items from metadata
     let items = [];
     try {
@@ -35,34 +41,22 @@ const sendConfirmationEmail = async (paymentIntent) => {
       console.warn("Failed to parse items from metadata:", e);
     }
 
-    const templateParams = {
-      to_email: metadata.customerEmail,
-      customer_name: metadata.customerName,
-      order_number: metadata.orderNumber,
-      order_total: `$${(paymentIntent.amount / 100).toFixed(2)} AUD`,
-      items: items
-        .map(
-          (item) =>
-            `${item.name} (Qty: ${item.quantity}) - $${(
-              item.price * item.quantity
-            ).toFixed(2)}`
-        )
-        .join("\n"),
-      shipping_address: shipping
+    const { subject, html, text } = orderConfirmationEmail({
+      customerName: metadata.customerName,
+      orderNumber: metadata.orderNumber,
+      items,
+      totalFormatted: `$${(paymentIntent.amount / 100).toFixed(2)} AUD`,
+      shippingAddress: shipping
         ? `${shipping.address.line1}, ${shipping.address.city}, ${shipping.address.state} ${shipping.address.postal_code}`
         : "No shipping address provided",
-      shipping_method: "Standard Shipping (5-7 days) - $15.99",
-    };
+    });
 
-    // Send confirmation email using EmailJS
-    await emailjs.send(
-      "service_nyo9717", // EmailJS service ID
-      "template_0xpbklp", // EmailJS template ID for order confirmation
-      templateParams,
-      "PlnxkEthyMpuKG_kJ" // EmailJS public key
-    );
-
-    console.log(`Confirmation email sent for order: ${metadata.orderNumber}`);
+    // sendEmail never throws — a mail outage must not make Stripe retry the
+    // whole webhook and re-process the order.
+    const { sent } = await sendEmail({ to: metadata.customerEmail, subject, html, text });
+    if (sent) {
+      console.log(`Confirmation email sent for order: ${metadata.orderNumber}`);
+    }
   } catch (error) {
     console.error("Failed to send confirmation email via webhook:", error);
   }
@@ -89,9 +83,17 @@ export async function POST(request) {
           { status: 400 }
         );
       }
-    } else {
+    } else if (process.env.NODE_ENV !== "production") {
       // Parse the event without signature verification (development only)
       event = JSON.parse(body);
+    } else {
+      // Never accept unsigned events in production — a forged
+      // payment_intent.succeeded would write fake orders and send emails.
+      console.error("STRIPE_WEBHOOK_SECRET is not set; rejecting webhook");
+      return NextResponse.json(
+        { error: "Webhook not configured" },
+        { status: 500 }
+      );
     }
 
     // Handle the event

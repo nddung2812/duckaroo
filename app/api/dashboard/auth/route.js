@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { timingSafeEqual } from "crypto";
+import { checkLimits, clientIp, LIMITS } from "@/lib/rateLimit";
 
 const COOKIE_OPTIONS = {
   httpOnly: true,
@@ -11,6 +12,17 @@ const COOKIE_OPTIONS = {
 
 export async function POST(request) {
   try {
+    // There is exactly one admin credential, so this endpoint is the whole
+    // attack surface for the dashboard — throttle guessing hard.
+    const ip = clientIp(request);
+    const limit = await checkLimits([[`dashboard-login:ip:${ip}`, LIMITS.dashboardLoginPerIp]]);
+    if (!limit.allowed) {
+      return NextResponse.json(
+        { error: "Too many attempts. Please try again shortly." },
+        { status: 429, headers: { "Retry-After": String(limit.retryAfterSeconds) } }
+      );
+    }
+
     const { username, password } = await request.json();
     const expectedUsername = process.env.DASHBOARD_USERNAME;
     const secret = process.env.DASHBOARD_SECRET;

@@ -18,7 +18,6 @@ import {
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import { ArrowLeft, CreditCard, Truck, Mail, Loader2, AlertTriangle } from "lucide-react";
-import emailjs from "@emailjs/browser";
 import { toast } from "react-toastify";
 import CheckoutForm from "./CheckoutForm";
 import PageAmbience from "../../components/PageAmbience";
@@ -138,67 +137,6 @@ function CheckoutPageContent() {
     return "AQ" + Date.now().toString().slice(-8);
   };
 
-  const formatAddress = (address) => {
-    const parts = [address.address];
-
-    // Add suburb if it exists
-    if (address.suburb) {
-      parts.push(address.suburb);
-    }
-
-    // Add city only if it's different from suburb
-    if (
-      address.city &&
-      address.city.toLowerCase() !== address.suburb?.toLowerCase()
-    ) {
-      parts.push(address.city);
-    }
-
-    // Add state and zipCode
-    if (address.state && address.zipCode) {
-      parts.push(`${address.state} ${address.zipCode}`);
-    }
-
-    return parts.join(", ");
-  };
-
-  const sendConfirmationEmail = useCallback(
-    async (orderDetails) => {
-      try {
-        const templateParams = {
-          to_email: customerInfo.email,
-          customer_name: `${customerInfo.firstName} ${customerInfo.lastName}`,
-          order_number: orderDetails.orderNumber,
-          order_total: formatPrice(orderDetails.total),
-          items: cartItems
-            .map(
-              (item) =>
-                `${item.name} (Qty: ${item.quantity}) - ${formatPrice(
-                  item.price * item.quantity
-                )}`
-            )
-            .join("\n"),
-          shipping_address: formatAddress(shippingAddress),
-          billing_address: orderDetails.billingAddress
-            ? formatAddress(orderDetails.billingAddress)
-            : "Same as shipping address",
-          shipping_method: "Standard Shipping (5-7 days) - $15.00",
-        };
-
-        // Send confirmation email using EmailJS
-        await emailjs.send(
-          "service_nyo9717", // EmailJS service ID
-          "template_0xpbklp", // EmailJS template ID for order confirmation
-          templateParams,
-          "PlnxkEthyMpuKG_kJ" // EmailJS public key
-        );
-      } catch (error) {
-        console.error("Failed to send confirmation email:", error);
-      }
-    },
-    [customerInfo, cartItems, shippingAddress]
-  );
-
   const createPaymentIntent = async () => {
     setIsLoading(true);
     try {
@@ -208,20 +146,17 @@ function CheckoutPageContent() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: getTotal(),
-          currency: "aud",
+          // The server prices these from the database — only ids and
+          // quantities are sent, never amounts.
+          items: cartItems.map((item) => ({
+            id: item.id,
+            quantity: item.quantity,
+          })),
           metadata: {
             orderNumber: generateOrderNumber(),
             customerEmail: customerInfo.email,
             customerName: `${customerInfo.firstName} ${customerInfo.lastName}`,
             shippingAddress: JSON.stringify(shippingAddress),
-            items: JSON.stringify(
-              cartItems.map((item) => ({
-                name: item.name,
-                quantity: item.quantity,
-                price: item.price,
-              }))
-            ),
           },
           shipping: {
             name: `${customerInfo.firstName} ${customerInfo.lastName}`,
@@ -249,6 +184,15 @@ function CheckoutPageContent() {
 
       const data = await response.json();
       if (data.clientSecret) {
+        // The server computed the total from database prices. If it differs
+        // from what this cart is displaying, the cart is stale — stop rather
+        // than charge the customer an amount they haven't seen.
+        if (typeof data.amount === "number" && Math.abs(data.amount - getTotal()) > 0.005) {
+          toast.error(
+            "Prices have changed since you added these items. Please refresh the page and review your cart."
+          );
+          return;
+        }
         setClientSecret(data.clientSecret);
         setOrderNumber(data.metadata?.orderNumber || generateOrderNumber());
         setPaymentStep("payment");
@@ -268,13 +212,9 @@ function CheckoutPageContent() {
   const handlePaymentSuccess = useCallback(
     async (paymentIntent, billingAddressData = null) => {
       try {
-        // Send confirmation email
-        await sendConfirmationEmail({
-          orderNumber: orderNumber,
-          total: getTotal(),
-          paymentId: paymentIntent.id,
-          billingAddress: billingAddressData,
-        });
+        // The confirmation email is sent by the Stripe webhook — server-side,
+        // signed, and fires even if this tab never comes back from the
+        // redirect. Sending another from the browser would double it up.
 
         // Save order to database (fire-and-forget)
         fetch("/api/orders", {
@@ -305,16 +245,13 @@ function CheckoutPageContent() {
           localStorage.removeItem("shopping-cart");
         }
         setOrderComplete(true);
-        toast.success("Payment successful! Confirmation email sent.");
+        toast.success("Payment successful! A confirmation email is on its way.");
       } catch (error) {
         console.error("Post-payment processing failed:", error);
-        toast.warning(
-          "Payment successful, but confirmation email failed to send."
-        );
         setOrderComplete(true);
       }
     },
-    [orderNumber, getTotal, getSubtotal, getShippingCost, sendConfirmationEmail, customerInfo, shippingAddress, billingAddress, cartItems]
+    [orderNumber, getTotal, getSubtotal, getShippingCost, customerInfo, shippingAddress, billingAddress, cartItems]
   );
 
   const handlePaymentReturn = useCallback(
