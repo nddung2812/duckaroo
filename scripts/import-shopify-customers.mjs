@@ -61,7 +61,7 @@ const { users, skipped, mergedRowCount } = dedupeShopifyRecords(records);
 
 // ── Where are we pointing, and are we allowed to go there? ──────────────────
 
-const connectionString = getConnectionString();
+const connectionString = getConnectionString(args);
 const host = describeConnection(connectionString);
 const isProduction = looksLikeProduction(connectionString);
 const mayTouchDatabase = !isProduction || overridden;

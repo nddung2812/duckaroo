@@ -22,7 +22,15 @@ export function loadEnvLocal(path = ".env.local") {
     const eqIdx = trimmed.indexOf("=");
     if (eqIdx === -1) continue;
     const key = trimmed.slice(0, eqIdx).trim();
-    const val = trimmed.slice(eqIdx + 1).trim();
+    let val = trimmed.slice(eqIdx + 1).trim();
+
+    // `vercel env pull` and `vercel integration add` write KEY="value"; the
+    // original loader in seed-products.mjs did not strip those quotes, which
+    // silently turned every connection string into an unparseable one.
+    if (val.length >= 2 && ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'")))) {
+      val = val.slice(1, -1);
+    }
+
     if (key && val && !process.env[key]) process.env[key] = val;
   }
 }
@@ -60,7 +68,15 @@ export function parseArgs(argv = process.argv.slice(2)) {
  * is for the app. Falls back to DATABASE_URL so a local setup with only the one
  * var still works.
  */
-export function getConnectionString() {
+export function getConnectionString(args = {}) {
+  // --db=SOME_ENV_VAR targets a different database, e.g. a dev Neon instance
+  // provisioned alongside production with a DEV_ prefix.
+  if (typeof args.db === "string") {
+    const url = process.env[args.db];
+    if (!url) throw new Error(`--db=${args.db}, but ${args.db} is not set in the environment.`);
+    return url;
+  }
+
   const url = process.env.DATABASE_URL_UNPOOLED || process.env.DATABASE_URL;
   if (!url) {
     throw new Error(
@@ -80,16 +96,28 @@ export function describeConnection(url) {
 }
 
 /**
- * A Neon connection is treated as production unless it is local or points at a
- * non-default branch. Neon branch endpoints are all *.neon.tech, so the host
- * alone cannot tell us which branch we are on — that is exactly why the
- * override below has to be explicit and typed out in full.
+ * "Production" means precisely one thing: the database the deployed app reads
+ * from, i.e. whatever DATABASE_URL points at. Anything else — a local Postgres,
+ * a Neon branch, a separately provisioned dev instance — is not production.
+ *
+ * This used to treat every *.neon.tech host as production, which was crude: it
+ * blocked legitimate dev databases while offering no real protection, since a
+ * branch endpoint looks identical to the production one. Comparing hosts is
+ * both more permissive where it should be and more precise where it matters.
+ *
+ * Neon's pooled and unpooled endpoints for the same database differ only by a
+ * "-pooler" infix, so they are normalised before comparison.
  */
 export function looksLikeProduction(url) {
   const host = describeConnection(url);
   if (/^(localhost|127\.0\.0\.1|\[::1\])(:|$)/.test(host)) return false;
   if (/^host\.docker\.internal(:|$)/.test(host)) return false;
-  return true;
+
+  const productionUrl = process.env.DATABASE_URL || process.env.DATABASE_URL_UNPOOLED;
+  if (!productionUrl) return true; // cannot tell — assume the worst
+
+  const normalise = (h) => h.replace("-pooler", "");
+  return normalise(host) === normalise(describeConnection(productionUrl));
 }
 
 export const PRODUCTION_OVERRIDE_FLAG = "i-know-this-is-production";

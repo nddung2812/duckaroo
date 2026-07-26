@@ -212,7 +212,7 @@ if (printSql) {
   process.exit(0);
 }
 
-const connectionString = getConnectionString();
+const connectionString = getConnectionString(args);
 
 console.log(`\nAuth schema migration`);
 console.log(`  target : ${describeConnection(connectionString)}`);

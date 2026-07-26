@@ -34,3 +34,4 @@ dist-ssr
 
 # Script output — importer reject logs contain customer email addresses
 outputs/
+.env*
