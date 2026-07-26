@@ -11,7 +11,6 @@ export const metadata = {
   title: "Your account | Duckaroo",
   description: "Your Duckaroo account details.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/account" },
 };
 
 export const dynamic = "force-dynamic";

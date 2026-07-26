@@ -2,9 +2,13 @@ import { getAllStockItems } from "@/lib/stock";
 import { getAllDiseaseSlugs } from "@/lib/diseases";
 import { blogs } from "../data/blogs";
 
+// Hardcoded to match robots.txt and the canonicals in every layout — the
+// sitemap must never emit URLs on another host.
+const baseUrl = "https://duckaroo.com.au";
+
+// lastModified is only set where a real date exists (blog publishDate).
+// Stamping new Date() on every build teaches Google to distrust lastmod.
 export default async function sitemap() {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://duckaroo.com.au";
   const [products, diseaseRows] = await Promise.all([
     getAllStockItems(),
     getAllDiseaseSlugs(),
@@ -15,73 +19,61 @@ export default async function sitemap() {
   const staticPages = [
     {
       url: baseUrl,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
     },
     {
       url: `${baseUrl}/about-us`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/products`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/service`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/contact`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/aquatic-specialists-gold-coast`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${baseUrl}/customer-stories`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/blogs`,
-      lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: `${baseUrl}/shipping-policy`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${baseUrl}/how-to-setup-your-first-aquarium`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/common-aquarium-diseases`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${baseUrl}/faq`,
-      lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.7,
     },
@@ -90,7 +82,6 @@ export default async function sitemap() {
   // Product pages
   const productPages = productSlugs.map((slug) => ({
     url: `${baseUrl}/products/${slug}`,
-    lastModified: new Date(),
     changeFrequency: "weekly",
     priority: 0.8,
   }));
@@ -106,7 +97,6 @@ export default async function sitemap() {
   // Disease pages
   const diseasePages = diseaseRows.map((r) => ({
     url: `${baseUrl}/common-aquarium-diseases/${r.slug}`,
-    lastModified: new Date(),
     changeFrequency: "monthly",
     priority: 0.7,
   }));

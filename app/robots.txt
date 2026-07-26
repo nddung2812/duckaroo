@@ -1,8 +1,9 @@
+# /products/checkout, /dashboard, /account and the auth pages are kept out of
+# Google via meta noindex, not Disallow — a Disallow would stop Googlebot from
+# ever seeing the noindex, leaving them indexable as URL-only results.
 User-agent: *
 Allow: /
 Disallow: /api/
-Disallow: /products/checkout
-Disallow: /dashboard
 
 # Allow major AI crawlers for GEO/AEO visibility
 User-agent: GPTBot

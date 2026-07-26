@@ -8,7 +8,6 @@ export const metadata = {
   title: "Sign in | Duckaroo",
   description: "Sign in to your Duckaroo account.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/login" },
 };
 
 export const dynamic = "force-dynamic";

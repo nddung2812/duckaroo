@@ -61,7 +61,7 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://duckaroo.com.au";
+  const baseUrl = "https://duckaroo.com.au";
   const productUrl = `${baseUrl}/products/${product.slug}`;
   const firstImage = getImageSrc(product.images?.[0]);
   const title = getOptimizedTitle(product);
@@ -162,8 +162,7 @@ export async function generateStaticParams() {
 }
 
 function ProductStructuredData({ product }) {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_BASE_URL || "https://duckaroo.com.au";
+  const baseUrl = "https://duckaroo.com.au";
 
   const structuredData = {
     "@context": "https://schema.org/",

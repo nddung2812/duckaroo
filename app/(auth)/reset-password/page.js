@@ -4,7 +4,6 @@ export const metadata = {
   title: "Reset your password | Duckaroo",
   description: "Choose a new password for your Duckaroo account.",
   robots: { index: false, follow: false },
-  alternates: { canonical: "/reset-password" },
 };
 
 export const dynamic = "force-dynamic";
