@@ -86,7 +86,7 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
         setSubmitStatus({
           type: "success",
           message:
-            "Thank you! Brisbane's #1 aquarium experts will contact you as soon as possible.",
+            "Thank you! Duckaroo will contact you as soon as possible.",
         });
         try {
           await fetch("/api/leads", {
