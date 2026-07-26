@@ -12,6 +12,7 @@ import {
   SheetTitle,
 } from "@/components/ui/sheet";
 import { Menu, ChevronDown } from "lucide-react";
+import AccountLink from "./AccountLink";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -118,6 +119,7 @@ const Navbar = () => {
 
           {/* Desktop CTA Buttons - Only show on XL screens (1280px+) */}
           <div className="hidden xl:flex items-center space-x-3 shrink-0">
+            <AccountLink />
             <Button
               asChild
               className="rounded-full border border-amber-glow/70 bg-transparent text-amber-glow hover:bg-amber-glow hover:text-[#04121b] text-[12px] uppercase tracking-[0.12em] px-5 whitespace-nowrap transition-colors"
@@ -216,6 +218,7 @@ const Navbar = () => {
                     <Link href="/service">Book a service</Link>
                   </Button>
                 </div>
+                <AccountLink variant="mobile" />
               </div>
             </SheetContent>
           </Sheet>
