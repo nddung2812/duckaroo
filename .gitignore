@@ -31,3 +31,6 @@ dist-ssr
 .env.test.local
 .env.production.local
 .vercel
+
+# Script output — importer reject logs contain customer email addresses
+outputs/
