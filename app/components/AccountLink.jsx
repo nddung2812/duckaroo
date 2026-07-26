@@ -1,48 +1,20 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { User } from "lucide-react";
 
+import useCurrentUser, { accountLabel } from "./useCurrentUser";
+
 /**
- * Sign in / account control for the navbar.
+ * Sign in / account control for the shared Navbar.
  *
- * Resolves the customer client-side rather than server-side on purpose. Layout
- * wraps every page, so calling getCurrentUser() there would read cookies during
- * render and force ~150 statically generated product and disease pages to
- * become dynamic. The cost of doing it this way is a brief "Sign in" before the
- * name appears for a signed-in customer; the space is reserved so nothing
- * shifts.
+ * The homepage does not use this — it has its own header in HomeClient.jsx with
+ * its own CSS modules, and renders an equivalent control there. Both go through
+ * useCurrentUser() so the behaviour cannot drift.
  */
 export default function AccountLink({ variant = "desktop" }) {
-  const router = useRouter();
-  const [user, setUser] = useState(undefined); // undefined = still loading
-  const [signingOut, setSigningOut] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    fetch("/api/auth/me", { signal: controller.signal })
-      .then((res) => res.json())
-      .then((data) => setUser(data.user ?? null))
-      .catch(() => setUser(null)); // aborted or offline — treat as signed out
-
-    return () => controller.abort();
-  }, []);
-
-  async function handleSignOut() {
-    setSigningOut(true);
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-      setUser(null);
-      router.refresh();
-    } finally {
-      setSigningOut(false);
-    }
-  }
-
-  const label = user ? user.firstName?.trim() || user.email : "Sign in";
+  const { user, signingOut, signOut: handleSignOut } = useCurrentUser();
+  const label = accountLabel(user) || "Sign in";
 
   if (variant === "mobile") {
     return (

@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import styles from "./home.module.css";
+import useCurrentUser, { accountLabel } from "./components/useCurrentUser";
 
 const Footer = dynamic(() => import("./components/Footer"), {
   ssr: false,
@@ -173,6 +174,9 @@ function stripHtml(html) {
 const Home = ({ featuredProducts = [] }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const rootRef = useRef(null);
+  // The homepage has its own header rather than the shared Navbar, so it
+  // renders its own account control off the same hook.
+  const { user: currentUser, signingOut, signOut } = useCurrentUser();
 
   // Parallax: hero layers drift at different depths; headline fades and lifts.
   useEffect(() => {
@@ -534,6 +538,22 @@ const Home = ({ featuredProducts = [] }) => {
               ))}
             </nav>
             <div className={styles.navActions}>
+              <Link
+                href={currentUser ? "/account" : "/login"}
+                className={styles.navAccount}
+              >
+                <span className={styles.navAccountName}>{accountLabel(currentUser) || "Sign in"}</span>
+              </Link>
+              {currentUser && (
+                <button
+                  type="button"
+                  className={styles.navSignOut}
+                  onClick={signOut}
+                  disabled={signingOut}
+                >
+                  {signingOut ? "…" : "Sign out"}
+                </button>
+              )}
               <Link href="/products" className={styles.navCtaSecondary}>
                 Shop
               </Link>
@@ -759,6 +779,26 @@ const Home = ({ featuredProducts = [] }) => {
             >
               Book a service
             </Link>
+            <Link
+              href={currentUser ? "/account" : "/login"}
+              className={styles.mobileMenuAccount}
+              onClick={() => setMenuOpen(false)}
+            >
+              {currentUser ? accountLabel(currentUser) : "Sign in"}
+            </Link>
+            {currentUser && (
+              <button
+                type="button"
+                className={styles.mobileMenuSignOut}
+                onClick={() => {
+                  setMenuOpen(false);
+                  signOut();
+                }}
+                disabled={signingOut}
+              >
+                {signingOut ? "Signing out…" : "Sign out"}
+              </button>
+            )}
           </div>
         </div>
       )}
