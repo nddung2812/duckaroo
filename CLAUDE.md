@@ -7,10 +7,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ```bash
 npm run dev        # Start dev server (webpack mode — do NOT use turbopack, it breaks CSS)
 npm run build      # Production build
-npm run lint       # ESLint via next lint
+npm run lint       # eslint . (flat config in eslint.config.mjs; next lint was removed in Next 16)
+npm test           # node:test against test/*.test.mjs
 ```
-
-> There are no tests in this project.
 
 ## Architecture Overview
 
