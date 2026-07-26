@@ -34,8 +34,27 @@ npm run lint       # ESLint via next lint
 | `leads` | Service enquiries captured from `UnifiedServiceForm` |
 | `orders` | Stripe orders |
 | `aquarium_diseases` | Disease guide content (slug, disease_name, symptoms, treatment, etc.) |
+| `users` | Customer accounts. `password_hash` is **nullable** — see Customer auth below |
+| `auth_tokens` | Single-use set-password / reset-password tokens (SHA-256 only) |
+| `sessions` | Customer sessions (SHA-256 of an opaque cookie token) |
+| `rate_limits` | Fixed-window counters for login and email-sending endpoints |
 
-All DB helper functions live in `lib/` — `stock.js`, `leads.js`, `orders.js`, `diseases.js`. Always use these rather than writing raw SQL in route handlers.
+All DB helper functions live in `lib/` — `stock.js`, `leads.js`, `orders.js`, `diseases.js`, `users.js`, `authTokens.js`, `session.js`, `rateLimit.js`. Always use these rather than writing raw SQL in route handlers.
+
+There is no migration tool. Schema lives in idempotent scripts: `scripts/seed-products.mjs` (products) and `scripts/migrate-auth.mjs` (the four auth tables). Both use `DATABASE_URL_UNPOOLED`.
+
+### Customer auth
+
+Two *separate* auth systems live in this repo — do not conflate them:
+
+- **Admin** — `lib/auth.js`, one shared `DASHBOARD_SECRET` in a `dashboard_session` cookie. Guards `/dashboard` only.
+- **Customer** — `lib/session.js`, per-user rows in `sessions`, `duckaroo_session` cookie. Read the current customer with `getCurrentUser()` from `lib/session.js`; it works in RSC, route handlers and server actions.
+
+Customers migrated from Shopify were imported with `password_hash = NULL`, because Shopify does not export passwords. That NULL is load-bearing: it means "this account exists but has never been claimed on this site". On login, `decideLoginOutcome()` in `lib/auth/policy.mjs` sees it and emails that one person a set-password link instead of authenticating them — this is the lazy migration, which spreads email volume over weeks rather than blasting the whole list at launch.
+
+Pure auth decision logic lives in `lib/auth/policy.mjs` (no DB, no I/O) so it can be unit tested. `npm test` runs `node:test` against `test/*.test.mjs`.
+
+Passwords are argon2id via `@node-rs/argon2`. Auth tokens and session tokens are 32 random bytes; only their SHA-256 is ever stored.
 
 ### Key pages & data flow
 
@@ -75,4 +94,26 @@ NEXT_PUBLIC_EMAILJS_PUBLIC_KEY
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY
 STRIPE_SECRET_KEY
 STRIPE_WEBHOOK_SECRET
+RESEND_API_KEY             # transactional auth email (Vercel Marketplace integration)
+```
+
+Optional, with sensible defaults:
+
+```
+EMAIL_FROM                 # default "Duckaroo <accounts@duckaroo.com.au>"
+EMAIL_PROVIDER             # "resend" | "console". Defaults to resend if RESEND_API_KEY
+                           # is set, otherwise console (dev only — it prints emails
+                           # instead of sending, and throws in production)
+```
+
+**`APP_URL` is required in production** and has no fallback there — auth email
+links are built from it. The tempting default, `duckaroo.com.au`, is wrong:
+that domain still resolves to the old Shopify store (`23.227.38.32`), so a
+guessed link would 404 and silently break the migration for every customer who
+received it. Set it to wherever this app is actually reachable —
+`https://duckaroo.vercel.app` today, `https://duckaroo.com.au` once DNS moves.
+Locally it defaults to `http://localhost:3000`.
+
+```
+APP_URL                    # required in production, e.g. https://duckaroo.vercel.app
 ```
