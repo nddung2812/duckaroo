@@ -146,7 +146,7 @@ function Bubble({ left, scale, duration, delay, mobileHide = false }) {
         animationDelay: `${delay}s`,
       }}
     >
-      <div className={styles.bubbleScale} style={{ transform: `scale(${scale})` }}>
+      <div className={styles.bubbleScale} style={{ "--bubble-size": scale }}>
         <div className={styles.bubbleArt}>
           <i className={styles.bubbleGlint} />
           <i className={styles.bubbleGlintSmall} />
@@ -198,6 +198,21 @@ const Home = ({ featuredProducts = [] }) => {
     const islandL = root.querySelector('[data-cam="islandL"]');
     const camEls = new Set([rockCenter, rockLeft, rockRight, islandR, islandL]);
 
+    // The arch sits on the scaled virtual canvas, so any translate written to
+    // it is multiplied by that scale. Measure the live scale (rect width vs
+    // layout width — 1 when the canvas is off, e.g. on phones) and divide the
+    // arch's parallax by it, so its drift stays in viewport pixels like every
+    // other layer. Without this the arch falls off the bottom ~2x too fast.
+    const stage = root.querySelector("[data-hero-stage]");
+    let stageScale = 1;
+    const readStageScale = () => {
+      if (!stage) return;
+      const layoutW = stage.offsetWidth;
+      const paintedW = stage.getBoundingClientRect().width;
+      stageScale = layoutW > 0 && paintedW > 0 ? paintedW / layoutW : 1;
+    };
+    readStageScale();
+
     const clamp01 = (n) => (n < 0 ? 0 : n > 1 ? 1 : n);
     // remap: 0 while t<a, ramps 0→1 across [a,b], 1 after
     const ramp = (t, a, b) => clamp01((t - a) / (b - a));
@@ -236,7 +251,8 @@ const Home = ({ featuredProducts = [] }) => {
 
         // Centre arch + animals: push in (scale up) as one group.
         if (rockCenter) {
-          const py = y * 0.42;
+          // Divided by the canvas scale so the drift lands in viewport pixels.
+          const py = (y * 0.42) / stageScale;
           const rockScale = 1 + cp * (isMobile ? 1.1 : 1.9);
           rockCenter.style.transform = `translate3d(0,${py}px,0) scale(${rockScale})`;
         }
@@ -282,10 +298,19 @@ const Home = ({ featuredProducts = [] }) => {
       });
     };
 
+    // The canvas scale is viewport-derived, so re-measure it when the window
+    // changes and immediately re-run the sequence at the new scale.
+    const onResize = () => {
+      readStageScale();
+      onScroll();
+    };
+
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize, { passive: true });
     onScroll();
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
       mq.removeEventListener("change", onMqChange);
     };
   }, []);
@@ -405,53 +430,57 @@ const Home = ({ featuredProducts = [] }) => {
           <div data-depth="0.1" className={`${styles.ray} ${styles.ray3}`} />
           <div data-depth="0.1" className={`${styles.ray} ${styles.ray4}`} />
 
-          {/* scene stage — max-width keeps the layout cohesive on ultra-wide screens */}
-          <div className={styles.heroStage}>
-          {/* centre arch — mid layer */}
-          <div data-depth="0.42" data-cam="rock" className={styles.rockCenter}>
-            <Image
-              className={styles.archImg}
-              src={ROCK_CENTER}
-              alt="Moss-covered stone archway aquascape"
-              width={860}
-              height={860}
-              priority
-              sizes="(max-width: 768px) 74vw, 860px"
-            />
-            {/* T-rex vs rhino, squaring off inside the arch */}
-            <div data-cam="animals" className={styles.arena}>
-              <div className={`${styles.combatant} ${styles.trex}`}>
-                <Image
-                  src={TREX}
-                  alt="Dinosaur facing off inside the centre aquascape rock arch"
-                  width={460}
-                  height={460}
-                  priority
-                  sizes="(max-width: 768px) 38vw, 420px"
-                />
-              </div>
-              <div className={`${styles.combatant} ${styles.rhino}`}>
-                <Image
-                  src={RHINO}
-                  alt="Rhino facing off inside the centre aquascape rock arch"
-                  width={460}
-                  height={460}
-                  priority
-                  sizes="(max-width: 768px) 38vw, 420px"
-                />
+          {/* Virtual canvas — a fixed 1600x900 reference stage scaled as one
+              unit, so the centre group holds its proportions from 1080p to 4K.
+              The bottom rocks and islands stay outside it, in viewport space,
+              so they keep tracking the real frame edges on ultrawide. */}
+          <div data-hero-stage="" className={styles.heroStage}>
+            {/* centre arch — mid layer */}
+            <div data-depth="0.42" data-cam="rock" className={styles.rockCenter}>
+              <Image
+                className={styles.archImg}
+                src={ROCK_CENTER}
+                alt="Moss-covered stone archway aquascape"
+                width={1800}
+                height={1400}
+                priority
+                sizes="(max-width: 768px) 88vw, (max-width: 1600px) 900px, 1800px"
+              />
+              {/* T-rex vs rhino, squaring off inside the arch */}
+              <div data-cam="animals" className={styles.arena}>
+                <div className={`${styles.combatant} ${styles.trex}`}>
+                  <Image
+                    src={TREX}
+                    alt="Dinosaur facing off inside the centre aquascape rock arch"
+                    width={2048}
+                    height={1100}
+                    priority
+                    sizes="(max-width: 768px) 40vw, 1040px"
+                  />
+                </div>
+                <div className={`${styles.combatant} ${styles.rhino}`}>
+                  <Image
+                    src={RHINO}
+                    alt="Rhino facing off inside the centre aquascape rock arch"
+                    width={2048}
+                    height={1013}
+                    priority
+                    sizes="(max-width: 768px) 40vw, 1040px"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          {/* mossy rock, bottom left */}
+          {/* mossy rock, bottom left — viewport-anchored edge furniture */}
           <div data-depth="0.42" data-cam="left" className={styles.rockLeft}>
             <Image
               src={ROCK_BOTTOM_LEFT}
               alt="Moss-covered aquascape rock"
-              width={460}
-              height={460}
+              width={625}
+              height={625}
               priority
-              sizes="(max-width: 768px) 30vw, 460px"
+              sizes="(max-width: 768px) 20vw, 960px"
             />
           </div>
 
@@ -461,12 +490,11 @@ const Home = ({ featuredProducts = [] }) => {
               src={ROCK_BOTTOM_RIGHT}
               alt=""
               aria-hidden="true"
-              width={460}
-              height={460}
+              width={900}
+              height={700}
               priority
-              sizes="(max-width: 768px) 30vw, 460px"
+              sizes="(max-width: 768px) 20vw, 960px"
             />
-          </div>
           </div>
 
           {/* mist */}
@@ -474,23 +502,23 @@ const Home = ({ featuredProducts = [] }) => {
           <div data-depth="0.5" className={styles.mistBlob1} />
           <div data-depth="0.5" className={styles.mistBlob2} />
 
-          {/* floating stone islands */}
-          <div className={styles.heroStage}>
+          {/* floating stone islands — viewport-anchored, so they spread with
+              the frame instead of clustering around a centred box */}
           <div data-depth="0.26" data-cam="islandR" className={styles.islandRight}>
             <div className={styles.islandRightFloat}>
               <Image
                 src={ROCK_FLOATING}
                 alt="Floating island of stone and grass"
-                width={190}
-                height={190}
-                sizes="190px"
+                width={200}
+                height={200}
+                sizes="360px"
               />
               <Image
                 src={KANGAROO}
                 alt="Kangaroo standing on the floating island"
-                width={90}
-                height={90}
-                sizes="90px"
+                width={2048}
+                height={2048}
+                sizes="180px"
                 className={styles.islandKangaroo}
               />
             </div>
@@ -502,12 +530,11 @@ const Home = ({ featuredProducts = [] }) => {
                 src={ROCK_FLOATING}
                 alt=""
                 aria-hidden="true"
-                width={100}
-                height={100}
-                sizes="100px"
+                width={200}
+                height={200}
+                sizes="180px"
               />
             </div>
-          </div>
           </div>
 
           {/* bubbles */}

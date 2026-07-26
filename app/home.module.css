@@ -12,6 +12,28 @@
   --gutter: clamp(20px, 4vw, 56px);
   --shell-pad: max(var(--gutter), (100% - var(--shell)) / 2);
 
+  /* ---- hero virtual canvas ----
+     The hero scene is authored once at a 1600x900 reference size and then
+     scaled as a whole, so the composition is identical at 1080p, 1440p, 4K
+     and ultrawide instead of being a small island of art in a big frame.
+
+     Scale is HEIGHT-primary (vh / 900) so the arch keeps the same share of
+     the frame vertically, with a width guard (vw / 1500) so a tall/narrow
+     window can't burst the scene out sideways. tan(atan2(a, b)) is the CSS
+     idiom for "a / b as a unitless number" — in a browser without trig
+     functions the whole declaration is invalid and every consumer falls
+     back to var(--scene-scale, 1), i.e. exactly the pre-existing layout. */
+  --scene-scale: clamp(
+    0.58,
+    min(tan(atan2(100vh, 900px)), tan(atan2(100vw, 1350px))),
+    2.4
+  );
+  /* Damped curves for the two layers whose source art is small (the bottom
+     rocks are 625px, the floating islands 200px) — they grow, but slower
+     than the scene, so upscaling stays inside what the assets can carry. */
+  --rock-scale: calc(1 + (var(--scene-scale, 1) - 1) * 0.75);
+  --island-scale: calc(1 + (var(--scene-scale, 1) - 1) * 0.6);
+
   background: #020e07;
   color: #ede9db;
   font-family: var(--font-jost), sans-serif;
@@ -24,12 +46,13 @@
 
 /* ---------------- keyframes ---------------- */
 
+/* Travel is viewport-relative — a fixed -1240px died halfway up a 4K screen. */
 @keyframes riseBubble {
   0% { transform: translateY(0) translateX(0); opacity: 0; }
   6% { opacity: 0.95; }
-  55% { transform: translateY(-660px) translateX(26px); }
+  55% { transform: translateY(-73vh) translateX(26px); }
   82% { opacity: 0.95; }
-  100% { transform: translateY(-1240px) translateX(-14px); opacity: 0; }
+  100% { transform: translateY(-137vh) translateX(-14px); opacity: 0; }
 }
 
 @keyframes beamSway {
@@ -127,7 +150,7 @@
 
 .ray1 {
   left: 24%;
-  width: 140px;
+  width: calc(140px * var(--scene-scale, 1));
   height: 120vh;
   background: linear-gradient(180deg, rgba(140, 240, 120, 0.38), rgba(140, 240, 120, 0.08) 55%, transparent 85%);
   animation: beamSway 11s ease-in-out infinite;
@@ -135,7 +158,7 @@
 
 .ray2 {
   left: 47%;
-  width: 90px;
+  width: calc(90px * var(--scene-scale, 1));
   height: 110vh;
   background: linear-gradient(180deg, rgba(232, 160, 92, 0.28), rgba(232, 160, 92, 0.06) 50%, transparent 82%);
   filter: blur(11px);
@@ -144,7 +167,7 @@
 
 .ray3 {
   left: 62%;
-  width: 170px;
+  width: calc(170px * var(--scene-scale, 1));
   height: 122vh;
   background: linear-gradient(180deg, rgba(140, 240, 120, 0.32), rgba(140, 240, 120, 0.06) 55%, transparent 85%);
   filter: blur(15px);
@@ -153,22 +176,33 @@
 
 .ray4 {
   left: 81%;
-  width: 70px;
+  width: calc(70px * var(--scene-scale, 1));
   height: 100vh;
   background: linear-gradient(180deg, rgba(140, 240, 120, 0.24), transparent 75%);
   filter: blur(9px);
   animation: beamSway2 10s ease-in-out 6s infinite;
 }
 
-/* scene stage — caps the layout width so ultra-wide screens keep the
-   rocks + islands anchored around the centre instead of scattering to the
-   far edges. Transparent + non-interactive; children keep their z-index. */
+/* scene stage — the virtual canvas. A fixed 1600x900 box holding the centre
+   arch + animals, anchored to the bottom of the frame and scaled as one unit
+   by --scene-scale. Everything inside is authored in reference pixels, so the
+   composition holds its proportions at any resolution.
+
+   Only the centre group lives in here. The bottom rocks and floating islands
+   are deliberately left in viewport space (below) so they keep tracking the
+   real frame edges on ultrawide rather than sitting inside a centred box. */
 .heroStage {
   position: absolute;
-  inset: 0;
-  margin-inline: auto;
-  max-width: 1800px;
-  height: 100%;
+  left: 50%;
+  bottom: 0;
+  width: 1600px;
+  height: 900px;
+  transform: translateX(-50%) scale(var(--scene-scale, 1));
+  transform-origin: 50% 100%;
+  /* The transform makes this a stacking context, so the arch's own z-index is
+     now scoped inside it — hoist the stage to the level the arch used to sit
+     at (behind the mist and islands, in front of the rays). */
+  z-index: 2;
   pointer-events: none;
 }
 
@@ -177,7 +211,7 @@
   position: absolute;
   left: 50%;
   bottom: -6px;
-  margin-left: max(-430px, -37vw);
+  margin-left: -430px;
   z-index: 2;
   /* scale the camera-push from the arch opening, not the box centre */
   transform-origin: 50% 62%;
@@ -185,7 +219,7 @@
 }
 
 .rockCenter img {
-  width: min(860px, 74vw);
+  width: 860px;
   height: auto;
   display: block;
   filter: drop-shadow(0 14px 34px rgba(0, 0, 0, 0.55));
@@ -212,14 +246,20 @@
   will-change: transform, opacity;
 }
 
+/* Note: this width acts as a flex basis, not the painted size. .arena is
+   max-content inside the 860px-wide arch, so the two combatants shrink to
+   fill it (~418px each) — they scale with the arch, which is what we want. */
 .combatant img {
-  width: min(1560px, 132vw);
+  width: 1560px;
   height: auto;
   display: block;
   filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.5));
 }
 
-/* mossy rock — bottom left */
+/* mossy rocks — bottom corners. These sit in VIEWPORT space, not on the
+   virtual canvas: they are the frame's edge furniture and must stay glued to
+   the real left/right edges however wide the screen gets. Sizing rides
+   --rock-scale so they still read at the same weight as the centre group. */
 .rockLeft {
   position: absolute;
   left: -2%;
@@ -229,7 +269,7 @@
 }
 
 .rockLeft img {
-  width: clamp(220px, 30vw, 460px);
+  width: calc(460px * var(--rock-scale, 1));
   height: auto;
   display: block;
   filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55));
@@ -245,7 +285,7 @@
 }
 
 .rockRight img {
-  width: clamp(220px, 30vw, 460px);
+  width: calc(460px * var(--rock-scale, 1));
   height: auto;
   display: block;
   filter: drop-shadow(0 10px 26px rgba(0, 0, 0, 0.55));
@@ -256,7 +296,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 180px;
+  height: max(180px, 17vh);
   background: linear-gradient(180deg, transparent, rgba(2, 14, 7, 0.98) 78%);
   z-index: 3;
   pointer-events: none;
@@ -266,8 +306,8 @@
   position: absolute;
   left: 10%;
   bottom: 12%;
-  width: 380px;
-  height: 64px;
+  width: calc(380px * var(--scene-scale, 1));
+  height: calc(64px * var(--scene-scale, 1));
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(120, 225, 110, 0.14), transparent 70%);
   filter: blur(15px);
@@ -280,8 +320,8 @@
   position: absolute;
   right: 8%;
   bottom: 15%;
-  width: 300px;
-  height: 54px;
+  width: calc(300px * var(--scene-scale, 1));
+  height: calc(54px * var(--scene-scale, 1));
   border-radius: 50%;
   background: radial-gradient(ellipse, rgba(120, 225, 110, 0.11), transparent 70%);
   filter: blur(13px);
@@ -305,7 +345,7 @@
 }
 
 .islandRight img {
-  width: clamp(110px, 13vw, 190px);
+  width: calc(190px * var(--island-scale, 1));
   height: auto;
   display: block;
   filter: drop-shadow(0 24px 34px rgba(0, 0, 0, 0.55));
@@ -316,7 +356,7 @@
   left: 50%;
   bottom: 60%;
   transform: translateX(-50%);
-  width: clamp(51px, 6.05vw, 90px);
+  width: calc(90px * var(--island-scale, 1));
   height: auto;
   filter: drop-shadow(0 8px 14px rgba(0, 0, 0, 0.45));
   z-index: 1;
@@ -345,7 +385,7 @@
 }
 
 .islandLeft img {
-  width: clamp(58px, 7vw, 100px);
+  width: calc(100px * var(--island-scale, 1));
   height: auto;
   display: block;
   transform: scaleX(-1);
@@ -356,7 +396,7 @@
 /* bubbles */
 .bubbleWrap {
   position: absolute;
-  bottom: -260px;
+  bottom: -26vh;
   z-index: 4;
   pointer-events: none;
   animation-name: riseBubble;
@@ -365,8 +405,12 @@
   opacity: 0;
 }
 
+/* --bubble-size is the per-column scale set inline by the Bubble component;
+   folding --scene-scale in here keeps bubbles proportional to the scene
+   instead of shrinking into specks on a 4K frame. */
 .bubbleScale {
   transform-origin: bottom center;
+  transform: scale(calc(var(--bubble-size, 1) * var(--scene-scale, 1)));
 }
 
 /* clear oxygen bubble — translucent water-filled sphere, not iridescent soap */
@@ -429,6 +473,68 @@
   background: radial-gradient(ellipse 120% 90% at 50% 42%, transparent 55%, rgba(2, 12, 6, 0.72) 100%);
   z-index: 5;
   pointer-events: none;
+}
+
+/* ---------------- art direction by aspect ratio ----------------
+   --scene-scale keeps the centre group correctly sized at any resolution, but
+   the frame's proportions still change what the *layout* should do. Ultrawide
+   is short as well as wide, so the edge furniture has to spread out and the
+   headline has to sit higher; tall frames want the opposite. */
+
+/* Ultrawide (21:9 and wider) — spread the edge layers toward the real edges
+   and lift the headline clear of the arch, which sits high in a short frame. */
+@media (min-aspect-ratio: 2 / 1) and (min-width: 768px) {
+  .headline {
+    top: 8vh;
+  }
+
+  .islandRight {
+    right: 13%;
+    top: 20%;
+  }
+
+  .islandLeft {
+    left: 11%;
+    top: 34%;
+  }
+
+  .ray1 { left: 16%; }
+  .ray4 { left: 88%; }
+
+  .mistBlob1 { left: 5%; }
+  .mistBlob2 { right: 4%; }
+}
+
+/* Super-ultrawide (32:9). Nothing can fill this width without the arch being
+   taller than the screen, so widen the ambience instead of the subject. */
+@media (min-aspect-ratio: 2.6 / 1) and (min-width: 768px) {
+  .islandRight { right: 19%; }
+  .islandLeft { left: 17%; }
+
+  .ray1 { left: 10%; }
+  .ray4 { left: 92%; }
+
+  .vignette {
+    background: radial-gradient(ellipse 78% 105% at 50% 45%, transparent 42%, rgba(2, 12, 6, 0.78) 100%);
+  }
+}
+
+/* Tall desktop frames (16:10, 4:3, half-height windows) — there is vertical
+   room to spare, so let the scene breathe rather than crowd the bottom. */
+@media (max-aspect-ratio: 3 / 2) and (min-width: 768px) {
+  .headline {
+    top: 13vh;
+  }
+
+  .islandRight {
+    right: 7%;
+    top: 27%;
+  }
+
+  .islandLeft {
+    left: 5%;
+    top: 42%;
+  }
 }
 
 /* ---------------- nav ---------------- */
@@ -756,7 +862,9 @@
 .heroTitle {
   margin: 0;
   font-family: var(--font-jost), sans-serif;
-  font-size: clamp(44px, 6.5vw, 84px);
+  /* Upper bound rides the scene scale so the title keeps its weight in the
+     frame on 1440p/4K instead of stalling at 84px. */
+  font-size: clamp(44px, 6.5vw, calc(78px * var(--scene-scale, 1)));
   line-height: 1;
   font-weight: 500;
   color: #f4f1e6;
@@ -778,7 +886,7 @@
 
 .heroSub {
   margin: 0;
-  font-size: 15px;
+  font-size: calc(15px * clamp(1, var(--scene-scale, 1), 1.45));
   line-height: 1.7;
   color: rgba(237, 233, 219, 0.78);
   max-width: 52ch;
@@ -840,10 +948,25 @@
     box-sizing: border-box;
   }
 
+  /* Phones keep their own hand-tuned composition — switch the virtual canvas
+     off and let the vw-based rules below drive the scene as they did before. */
+  .page {
+    --scene-scale: 1;
+  }
+
+  .heroStage {
+    left: 0;
+    width: auto;
+    height: 100%;
+    inset: 0;
+    transform: none;
+  }
+
   .rockCenter {
     bottom: auto;
     top: 50%;
     margin-top: 8vh;
+    margin-left: -37vw;
   }
 
   .rockCenter img {
@@ -866,6 +989,18 @@
   .rockLeft img,
   .rockRight img {
     width: clamp(140px, 20vw, 260px);
+  }
+
+  .islandRight img {
+    width: clamp(110px, 13vw, 190px);
+  }
+
+  .islandRightFloat .islandKangaroo {
+    width: clamp(51px, 6.05vw, 90px);
+  }
+
+  .islandLeft img {
+    width: clamp(58px, 7vw, 100px);
   }
 
   /* ---- mobile scroll performance ----
