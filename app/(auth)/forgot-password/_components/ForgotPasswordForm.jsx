@@ -1,6 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import useCurrentUser, { prefill } from "@/app/components/useCurrentUser";
 
 import { Field, SubmitButton, Notice, ErrorText } from "../../_components/formBits";
 
@@ -9,6 +11,16 @@ export default function ForgotPasswordForm() {
   const [notice, setNotice] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // Unlike /login and /signup, this page does not redirect a signed-in
+  // customer — changing your password while logged in is a normal thing to do,
+  // so save them typing the address they are already signed in as.
+  const { user: currentUser } = useCurrentUser();
+
+  useEffect(() => {
+    if (!currentUser?.email) return;
+    setEmail((prev) => prefill(prev, currentUser.email));
+  }, [currentUser]);
 
   async function handleSubmit(e) {
     e.preventDefault();

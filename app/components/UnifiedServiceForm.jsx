@@ -1,6 +1,7 @@
 "use client";
 import { useForm } from "react-hook-form";
 import { useRef, useState, useEffect } from "react";
+import useCurrentUser, { fullName } from "./useCurrentUser";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -32,8 +33,30 @@ const UnifiedServiceForm = ({ variant = "default" }) => {
     handleSubmit,
     reset,
     setValue,
+    getValues,
     formState: { errors },
   } = useForm();
+
+  // Signed-in customers should not retype details we already hold.
+  const { user: currentUser } = useCurrentUser();
+
+  useEffect(() => {
+    if (!currentUser) return;
+
+    // Only ever fills a blank field. /api/auth/me resolves asynchronously, so
+    // someone can be part-way through typing when the account lands — whatever
+    // they have entered always wins.
+    const fillIfBlank = (field, value) => {
+      if (!value) return;
+      const existing = getValues(field);
+      if (typeof existing === "string" && existing.trim()) return;
+      setValue(field, value);
+    };
+
+    fillIfBlank("name", fullName(currentUser));
+    fillIfBlank("email", currentUser.email);
+    fillIfBlank("phone", currentUser.phone);
+  }, [currentUser, getValues, setValue]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import useCurrentUser, { prefill } from "@/app/components/useCurrentUser";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -71,6 +72,22 @@ function CheckoutPageContent() {
   });
 
   const [shippingOption, setShippingOption] = useState("standard");
+
+  // Signed-in customers should not retype details we already hold. Only blank
+  // fields are filled — /api/auth/me resolves asynchronously, so anything
+  // already typed always wins.
+  const { user: currentUser } = useCurrentUser();
+
+  useEffect(() => {
+    if (!currentUser) return;
+    setCustomerInfo((prev) => ({
+      ...prev,
+      firstName: prefill(prev.firstName, currentUser.firstName),
+      lastName: prefill(prev.lastName, currentUser.lastName),
+      email: prefill(prev.email, currentUser.email),
+      phone: prefill(prev.phone, currentUser.phone),
+    }));
+  }, [currentUser]);
 
   // Load cart from localStorage
   useEffect(() => {
