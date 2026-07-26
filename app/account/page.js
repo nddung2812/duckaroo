@@ -11,6 +11,9 @@ export const metadata = {
   title: "Your account | Duckaroo",
   description: "Your Duckaroo account details.",
   robots: { index: false, follow: false },
+  // Empty object replaces the root layout's alternates so no homepage
+  // canonical is inherited onto this noindexed page.
+  alternates: {},
 };
 
 export const dynamic = "force-dynamic";

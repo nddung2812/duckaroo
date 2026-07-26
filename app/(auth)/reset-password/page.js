@@ -4,6 +4,9 @@ export const metadata = {
   title: "Reset your password | Duckaroo",
   description: "Choose a new password for your Duckaroo account.",
   robots: { index: false, follow: false },
+  // Empty object replaces the root layout's alternates so no homepage
+  // canonical is inherited onto this noindexed page.
+  alternates: {},
 };
 
 export const dynamic = "force-dynamic";

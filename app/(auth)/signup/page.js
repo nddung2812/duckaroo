@@ -9,6 +9,9 @@ export const metadata = {
   title: "Create an account | Duckaroo",
   description: "Create a Duckaroo account to track your orders and bookings.",
   robots: { index: false, follow: false },
+  // Empty object replaces the root layout's alternates so no homepage
+  // canonical is inherited onto this noindexed page.
+  alternates: {},
 };
 
 export const dynamic = "force-dynamic";
