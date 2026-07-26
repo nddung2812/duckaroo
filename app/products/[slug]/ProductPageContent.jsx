@@ -199,7 +199,7 @@ export default function ProductPageContent({ product, relatedProducts = [] }) {
                 >
                   {product.category}
                 </Badge>
-                {product.stock < 10 && (
+                {product.stock < 2 && (
                   <Badge className="absolute top-4 right-4 bg-red-950/30 border border-red-800/40 text-red-300">
                     Low Stock
                   </Badge>

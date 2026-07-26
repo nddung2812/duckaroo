@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-const LOW_STOCK_THRESHOLD = 5;
+const LOW_STOCK_THRESHOLD = 2;
 
 const CATEGORY_LABELS = {
   plants: "Plants",
@@ -44,7 +44,7 @@ export default function StockTable({ items, onEdit, onDelete }) {
         </TableHeader>
         <TableBody>
           {items.map((item) => {
-            const isLowStock = Number(item.stock) <= LOW_STOCK_THRESHOLD;
+            const isLowStock = Number(item.stock) < LOW_STOCK_THRESHOLD;
             const firstImage = Array.isArray(item.images) ? item.images[0] : null;
             return (
               <TableRow key={item.id} className={isLowStock ? "bg-amber-50" : ""}>
