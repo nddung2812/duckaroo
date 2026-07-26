@@ -1,3 +1,80 @@
+const isDev = process.env.NODE_ENV !== "production";
+
+/**
+ * Content-Security-Policy.
+ *
+ * Currently sent as Content-Security-Policy-Report-Only: browsers evaluate it
+ * and report what *would* have been blocked without actually blocking anything.
+ * Violations are logged by /api/csp-report (see `report-uri` below) and also
+ * appear in the DevTools console. Once the report stream is quiet for real
+ * traffic — checkout and the service form are the two paths most likely to
+ * surface a missing host — flip CSP_HEADER_NAME to the enforcing name.
+ *
+ * Note on 'unsafe-inline' in script-src: the strict alternative is a per-request
+ * nonce, which requires generating the header in middleware and makes every page
+ * dynamic — that would cost us static prerendering across the whole site. So
+ * inline scripts stay allowed and this CSP is a defence-in-depth layer (it stops
+ * an injected script from *loading* or *exfiltrating to* an unlisted origin)
+ * rather than a complete XSS block.
+ */
+const CSP_HEADER_NAME = "Content-Security-Policy-Report-Only";
+
+const cspDirectives = {
+  "default-src": ["'self'"],
+  "script-src": [
+    "'self'",
+    "'unsafe-inline'",
+    "https://js.stripe.com", // Stripe Elements (checkout)
+    "https://www.googletagmanager.com", // GA via @next/third-parties
+    // next dev compiles with eval; harmless in production where it is absent
+    ...(isDev ? ["'unsafe-eval'"] : []),
+  ],
+  // Tailwind ships a stylesheet, but React inline style attributes and
+  // next/font's injected <style> need 'unsafe-inline'.
+  "style-src": ["'self'", "'unsafe-inline'"],
+  "img-src": [
+    "'self'",
+    "data:",
+    "blob:",
+    // must stay in sync with images.remotePatterns below
+    "https://res.cloudinary.com",
+    "https://upcdn.io",
+    "https://firebasestorage.googleapis.com",
+    "https://images.unsplash.com",
+    "https://cdn.shopify.com",
+    "https://upload.wikimedia.org",
+    // GA collect-via-pixel fallback
+    "https://www.googletagmanager.com",
+    "https://*.google-analytics.com",
+  ],
+  // next/font self-hosts the Google fonts at build time, so no gstatic host.
+  "font-src": ["'self'", "data:"],
+  "connect-src": [
+    "'self'",
+    "https://api.stripe.com",
+    "https://m.stripe.com",
+    "https://api.emailjs.com", // UnifiedServiceForm + contact form
+    "https://www.googletagmanager.com",
+    "https://*.google-analytics.com",
+    "https://*.analytics.google.com",
+    ...(isDev ? ["ws:", "wss:"] : []), // HMR socket
+  ],
+  // Stripe Elements renders its card fields in iframes from these hosts.
+  "frame-src": ["'self'", "https://js.stripe.com", "https://hooks.stripe.com", "https://m.stripe.network"],
+  "worker-src": ["'self'", "blob:"],
+  "manifest-src": ["'self'"],
+  "object-src": ["'none'"],
+  "base-uri": ["'self'"],
+  "form-action": ["'self'"],
+  "frame-ancestors": ["'self'"], // mirrors X-Frame-Options: SAMEORIGIN
+  "upgrade-insecure-requests": [],
+  "report-uri": ["/api/csp-report"],
+};
+
+const cspValue = Object.entries(cspDirectives)
+  .map(([directive, values]) => (values.length ? `${directive} ${values.join(" ")}` : directive))
+  .join("; ");
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   productionBrowserSourceMaps: false,
@@ -73,6 +150,10 @@ const nextConfig = {
           {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
+          },
+          {
+            key: CSP_HEADER_NAME,
+            value: cspValue,
           },
         ],
       },

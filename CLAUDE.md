@@ -70,6 +70,18 @@ Every route segment has a `layout.js` that exports `metadata` (title, descriptio
 
 JSON-LD schemas in use: `LocalBusiness`, `Organization`, `WebSite` (root), `Product`+`Offer` (product pages), `Article`+`BreadcrumbList` (disease pages), `FAQPage` (service), `HowTo`+`Article` (how-to-setup), `CollectionPage`+`ItemList` (customer stories).
 
+### Security headers
+
+All set in `next.config.mjs` `headers()`: HSTS, `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, plus a CSP. `poweredByHeader` is off.
+
+The CSP is currently **report-only** (`CSP_HEADER_NAME` at the top of `next.config.mjs`). Violations POST to `/api/csp-report`, which logs one line per report to the Vercel runtime logs (`CSP violation …`) and stores nothing. To enforce it, change that one constant to `"Content-Security-Policy"` — but check the report stream first, especially `/products/checkout` (Stripe Elements) and `/service` (EmailJS).
+
+If you add a third-party script, image host, or API the browser talks to directly, add its origin to `cspDirectives`. The `img-src` list must stay in sync with `images.remotePatterns`. `script-src` keeps `'unsafe-inline'` on purpose: a nonce would have to be generated in middleware, which makes every page dynamic and loses static prerendering.
+
+`/.well-known/security.txt` is a static file in `public/` (RFC 9116). Its `Expires` field must be refreshed before 2027-07-26 or the file is formally stale.
+
+Note: `x-vercel-id`, `x-matched-path` and `x-nextjs-prerender` are injected by Vercel's edge after this config runs and cannot be stripped from here.
+
 ### Cloudinary conventions
 
 - All disease images live under `AquaticSwan/Aquarium Diseases/{disease_name}` — folder name must match `disease_name` column exactly (not the slug).
