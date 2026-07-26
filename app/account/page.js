@@ -30,7 +30,8 @@ export default async function AccountPage() {
       <PageAmbience />
 
       <Layout>
-        <div className="relative z-10 min-h-[60vh] px-4 py-16">
+        {/* pt clears the fixed h-20 Navbar — see AuthShell. */}
+        <div className="relative z-10 min-h-[60vh] px-4 pt-32 pb-16">
           <div className="mx-auto w-full max-w-md">
             <h1 className="font-display text-3xl md:text-4xl font-medium text-parchment text-center [text-wrap:balance]">
               Your account

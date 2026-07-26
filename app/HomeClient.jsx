@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import styles from "./home.module.css";
-import useCurrentUser, { accountLabel } from "./components/useCurrentUser";
+import useCurrentUser, { accountLabel, accountInitial } from "./components/useCurrentUser";
 
 const Footer = dynamic(() => import("./components/Footer"), {
   ssr: false,
@@ -538,22 +538,25 @@ const Home = ({ featuredProducts = [] }) => {
               ))}
             </nav>
             <div className={styles.navActions}>
-              <Link
-                href={currentUser ? "/account" : "/login"}
-                className={styles.navAccount}
-              >
-                <span className={styles.navAccountName}>{accountLabel(currentUser) || "Sign in"}</span>
-              </Link>
-              {currentUser && (
-                <button
-                  type="button"
-                  className={styles.navSignOut}
-                  onClick={signOut}
-                  disabled={signingOut}
-                >
-                  {signingOut ? "…" : "Sign out"}
-                </button>
-              )}
+              {/* Signed in, the header shows only an initial in a circle — the
+                  name and the sign-out button live on /account. */}
+              <div className={styles.navAccountSlot}>
+                {currentUser && (
+                  <Link
+                    href="/account"
+                    className={styles.navAvatar}
+                    aria-label={`Your account — ${accountLabel(currentUser)}`}
+                    title={accountLabel(currentUser)}
+                  >
+                    <span aria-hidden="true">{accountInitial(currentUser)}</span>
+                  </Link>
+                )}
+                {currentUser === null && (
+                  <Link href="/login" className={styles.navSignIn}>
+                    Sign in
+                  </Link>
+                )}
+              </div>
               <Link href="/products" className={styles.navCtaSecondary}>
                 Shop
               </Link>

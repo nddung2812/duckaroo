@@ -14,7 +14,9 @@ export default function AuthShell({ title, intro, children, footer }) {
       <PageAmbience />
 
       <Layout>
-        <div className="relative z-10 min-h-[70vh] flex items-center justify-center px-4 py-16">
+        {/* pt clears the fixed h-20 Navbar, which the glass card would otherwise
+            slide under — the site convention for pages inside Layout. */}
+        <div className="relative z-10 min-h-[70vh] flex items-center justify-center px-4 pt-32 pb-16">
           <div className="w-full max-w-md">
             <div className="bg-cream/5 backdrop-blur-md border border-cream/15 rounded-2xl shadow-2xl p-8">
               <h1 className="font-display text-3xl md:text-4xl font-medium text-parchment [text-wrap:balance]">

@@ -507,55 +507,59 @@
   gap: 12px;
 }
 
-/* Sign in / account link in the hero header. Hidden on narrow screens like the
-   other nav actions — the burger menu carries it there instead. */
-.navAccount {
+/* Sign in / account control in the hero header. Hidden on narrow screens like
+   the other nav actions — the burger menu carries it there instead.
+   The slot holds its width while /api/auth/me is in flight so the Shop and
+   Book buttons do not jump sideways when the answer lands. */
+.navAccountSlot {
   display: none;
   align-items: center;
-  gap: 6px;
+  justify-content: flex-end;
+  min-width: 42px;
+  min-height: 42px;
+}
+
+/* Signed in: just their initial in a circle, sized to match the CTA pills. */
+.navAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid rgba(237, 233, 219, 0.35);
+  background: rgba(3, 13, 20, 0.35);
+  backdrop-filter: blur(6px);
+  font-family: var(--font-jost), sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: #ede9db;
+  text-decoration: none;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease,
+    transform 0.25s ease;
+}
+
+.navAvatar:hover {
+  background: rgba(232, 160, 92, 0.18);
+  border-color: rgba(232, 160, 92, 0.85);
+  color: #e8a05c;
+  transform: translateY(-2px);
+}
+
+.navSignIn {
   font-size: 12px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(244, 240, 232, 0.8);
+  color: rgba(237, 233, 219, 0.85);
   text-decoration: none;
   white-space: nowrap;
-  /* Reserved so the label appearing after the /api/auth/me fetch does not
-     shove the Shop and Book buttons sideways. */
-  min-width: 84px;
   transition: color 0.25s ease;
 }
 
-.navAccount:hover {
-  color: #f4f0e8;
-}
-
-.navAccountName {
-  max-width: 140px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.navSignOut {
-  display: none;
-  background: none;
-  border: none;
-  padding: 0;
-  cursor: pointer;
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: rgba(244, 240, 232, 0.5);
-  transition: color 0.25s ease;
-}
-
-.navSignOut:hover {
-  color: rgba(244, 240, 232, 0.85);
-}
-
-.navSignOut:disabled {
-  opacity: 0.5;
-  cursor: default;
+.navSignIn:hover {
+  color: #e8a05c;
 }
 
 .mobileMenuAccount {
@@ -626,8 +630,7 @@
   .navLinks { display: flex; }
   .navCta { display: inline-block; }
   .navCtaSecondary { display: inline-block; }
-  .navAccount { display: inline-flex; }
-  .navSignOut { display: inline-block; }
+  .navAccountSlot { display: flex; }
   .menuBtn { display: none; }
   .navBrand img { width: 63px; height: 63px; }
 }

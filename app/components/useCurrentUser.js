@@ -53,3 +53,14 @@ export function accountLabel(user) {
   if (!user) return "Sign in";
   return user.firstName?.trim() || user.email;
 }
+
+/**
+ * The single letter for the header avatar — their first name's initial, or
+ * their email's if we never got a name. Desktop headers show only this circle;
+ * the full name and the sign-out button live on /account.
+ */
+export function accountInitial(user) {
+  if (!user) return "";
+  const source = user.firstName?.trim() || user.email || "";
+  return source.trim().charAt(0).toUpperCase();
+}
