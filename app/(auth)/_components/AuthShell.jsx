@@ -1,27 +1,46 @@
 import Link from "next/link";
 
+import Layout from "@/app/components/Layout";
+import PageAmbience from "@/app/components/PageAmbience";
+
 /**
- * Shared chrome for the auth pages — a single centred card. Plain Tailwind, to
- * match the idiom already used by the dashboard login form.
+ * Shared chrome for the auth pages — a single centred glass card sitting on the
+ * site's "Living Art" backdrop, inside the usual Navbar/Footer. Signing in is
+ * part of the site, not a detour out of it.
  */
 export default function AuthShell({ title, intro, children, footer }) {
   return (
-    <main className="min-h-[70vh] flex items-center justify-center px-4 py-16">
-      <div className="w-full max-w-md">
-        <div className="bg-white border border-gray-200 rounded-xl shadow-sm p-8">
-          <h1 className="text-2xl font-semibold text-gray-900">{title}</h1>
-          {intro && <p className="mt-2 text-sm leading-relaxed text-gray-600">{intro}</p>}
-          <div className="mt-6">{children}</div>
+    <>
+      <PageAmbience />
+
+      <Layout>
+        <div className="relative z-10 min-h-[70vh] flex items-center justify-center px-4 py-16">
+          <div className="w-full max-w-md">
+            <div className="bg-cream/5 backdrop-blur-md border border-cream/15 rounded-2xl shadow-2xl p-8">
+              <h1 className="font-display text-3xl md:text-4xl font-medium text-parchment [text-wrap:balance]">
+                {title}
+              </h1>
+              {intro && (
+                <p className="mt-3 text-sm leading-relaxed text-cream/70">{intro}</p>
+              )}
+              <div className="mt-6">{children}</div>
+            </div>
+            {footer && (
+              <div className="mt-6 text-center text-sm text-cream/60">{footer}</div>
+            )}
+          </div>
         </div>
-        {footer && <div className="mt-6 text-center text-sm text-gray-600">{footer}</div>}
-      </div>
-    </main>
+      </Layout>
+    </>
   );
 }
 
 export function AuthLink({ href, children }) {
   return (
-    <Link href={href} className="text-teal-700 font-medium hover:text-teal-800 underline">
+    <Link
+      href={href}
+      className="text-amber-glow font-medium hover:text-amber-glow/80 underline underline-offset-4 transition-colors"
+    >
       {children}
     </Link>
   );

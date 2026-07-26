@@ -54,7 +54,7 @@ export default function LoginForm() {
     return (
       <div className="space-y-4">
         <Notice>{notice}</Notice>
-        <p className="text-sm text-gray-600">
+        <p className="text-sm text-cream/60">
           The link is good for one hour and can only be used once.
         </p>
       </div>

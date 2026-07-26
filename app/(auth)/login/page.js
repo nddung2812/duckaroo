@@ -22,7 +22,7 @@ export default async function LoginPage() {
       footer={
         <>
           New here? <AuthLink href="/signup">Create an account</AuthLink>
-          <span className="mx-2 text-gray-300">|</span>
+          <span className="mx-2 text-cream/25">|</span>
           <AuthLink href="/forgot-password">Forgot your password?</AuthLink>
         </>
       }

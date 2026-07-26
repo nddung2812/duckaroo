@@ -30,7 +30,7 @@ export default async function TokenGate({ token, title, intro, submitLabel }) {
         intro={DEAD_TOKEN_COPY[check.reason] ?? DEAD_TOKEN_COPY.not_found}
         footer={<AuthLink href="/login">Back to sign in</AuthLink>}
       >
-        <p className="text-sm text-gray-600">
+        <p className="text-sm leading-relaxed text-cream/70">
           <AuthLink href="/forgot-password">Request a new link</AuthLink> and we'll email you a
           fresh one.
         </p>
