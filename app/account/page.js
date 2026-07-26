@@ -3,7 +3,9 @@ import { redirect } from "next/navigation";
 import Layout from "@/app/components/Layout";
 import PageAmbience from "@/app/components/PageAmbience";
 import SignOutButton from "./_components/SignOutButton";
+import OrderHistory from "./_components/OrderHistory";
 import { getCurrentUser } from "@/lib/session";
+import { getOrdersForEmail } from "@/lib/orders";
 
 export const metadata = {
   title: "Your account | Duckaroo",
@@ -24,6 +26,7 @@ export default async function AccountPage() {
   if (!user) redirect("/login");
 
   const fullName = [user.firstName, user.lastName].filter(Boolean).join(" ");
+  const orders = await getOrdersForEmail(user.email);
 
   return (
     <>
@@ -32,7 +35,7 @@ export default async function AccountPage() {
       <Layout>
         {/* pt clears the fixed h-20 Navbar — see AuthShell. */}
         <div className="relative z-10 min-h-[60vh] px-4 pt-32 pb-16">
-          <div className="mx-auto w-full max-w-md">
+          <div className="mx-auto w-full max-w-2xl">
             <h1 className="font-display text-3xl md:text-4xl font-medium text-parchment text-center [text-wrap:balance]">
               Your account
             </h1>
@@ -55,6 +58,11 @@ export default async function AccountPage() {
                 <SignOutButton />
               </div>
             </div>
+
+            <h2 className="mt-12 font-display text-2xl md:text-3xl font-medium text-parchment text-center">
+              Order history
+            </h2>
+            <OrderHistory orders={orders} />
           </div>
         </div>
       </Layout>

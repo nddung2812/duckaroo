@@ -1,6 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Leaf, Droplet, Wrench, Search, X, Fish } from "lucide-react";
 export default function CategoryFilter({
@@ -118,12 +117,7 @@ export default function CategoryFilter({
                   {getCategoryIcon(category.id)}
                   <span className="font-medium">{category.name}</span>
                 </div>
-                <Badge
-                  variant="secondary"
-                  className="ml-auto bg-moss/60 border border-cream/20 text-cream/75"
-                >
-                  {category.count}
-                </Badge>
+                <span className="ml-auto text-cream/75">{category.count}</span>
               </Button>
             ))}
           </div>
